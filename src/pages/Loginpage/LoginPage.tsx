@@ -43,7 +43,8 @@ const {
 
     try {
       await login(username, password);
-      navigate("/landing");
+      navigate("/select-role", { replace: true });
+      // navigate("/landing");
     } catch (e: any) {
       setError("password", { message: e?.message ?? "Login failed" });
     }

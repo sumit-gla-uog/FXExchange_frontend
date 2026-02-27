@@ -1,9 +1,9 @@
 // import { useEffect,useState } from "react";
 import useSWR from "swr";
 import { useNavigate } from "react-router-dom";
-import { logout,me } from "../api/auth";
-import { fetcher } from "../api/swr";
-import { getAccessToken } from "../api/client";
+import { logout,me } from "../../api/auth";
+import { fetcher } from "../../api/swr";
+import { getAccessToken } from "../../api/client";
 
 export type User = {
   id:number
@@ -12,11 +12,10 @@ export type User = {
   role:string
 }
 
-export const LandingPage = () => {
+export const AdminLandingPage = () => {
   const navigate = useNavigate();
   const token = getAccessToken();
-  // const [user,setUser] = useState<User | null>(null)
-  // const [loading,setLoading]= useState(true)
+  
   const { data, error, isLoading } = useSWR(
     token ? "/api/v1/auth/me/" : null,
     fetcher);
@@ -28,19 +27,6 @@ export const LandingPage = () => {
     return null;
   }
 
-  
-  // useEffect(() =>{
-  //   me()
-  //   .then((res) =>{
-  //     setUser(res.user)
-  //   })
-  //   .catch(() =>{
-  //     logout()
-  //     navigate("/login")
-  //   })
-  //   .finally(() => setLoading(false))
-  // },[])
-
   const handleLogout = () => {
     logout()
     navigate("/login")
@@ -49,7 +35,6 @@ export const LandingPage = () => {
   if (isLoading) return <p>Loading...</p>;
 
   const user = data.user as User;
-
 
   return (
     <div style={{ padding: 32 }}>
