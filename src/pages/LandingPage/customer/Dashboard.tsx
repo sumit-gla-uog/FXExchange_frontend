@@ -95,6 +95,7 @@ const StatCard = ({
 const PairCard = ({ item }: { item: MarketPair }) => {
   const pct = parseFloat(item.change_pct)
   const isPositive = pct >= 0
+  const quoteCode = item.pair.split("/")[1];  // GBP/USD → USD
   return (
     <div
       style={{
@@ -111,22 +112,15 @@ const PairCard = ({ item }: { item: MarketPair }) => {
         gap: 6,
       }}
     >
-      <div style={{ fontSize: 36 }}>{item.base_flag}</div>
+      <div style={{ fontSize: 28 }}>{item.quote_flag}</div>  {/* quote_flag */}
       <Text style={{ fontWeight: 600, fontSize: 15, color: "#111827" }}>
-        {item.pair.split("/")[0]}
+        {quoteCode}                                           {/* this will be USD not GBP, as GBP is base currency */}
       </Text>
       <Text style={{ fontSize: 13, color: "#374151" }}>
         {parseFloat(item.rate).toFixed(4)}
       </Text>
-      <Text
-        style={{
-          fontSize: 12,
-          fontWeight: 600,
-          color: isPositive ? "#059669" : "#dc2626",
-        }}
-      >
-        {isPositive ? "↗ +" : "↘ "}
-        {pct.toFixed(2)}%
+      <Text style={{ fontSize: 12, fontWeight: 600, color: isPositive ? "#059669" : "#dc2626" }}>
+        {isPositive ? "↗ +" : "↘ "}{pct.toFixed(2)}%
       </Text>
     </div>
   );
