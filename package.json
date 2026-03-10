@@ -13,6 +13,8 @@
     "@salt-ds/core": "^1.57.1",
     "@salt-ds/icons": "^1.17.1",
     "@salt-ds/theme": "^1.40.0",
+    "ag-grid-community": "^35.1.0",
+    "ag-grid-react": "^35.1.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.71.2",
