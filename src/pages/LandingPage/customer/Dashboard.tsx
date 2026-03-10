@@ -49,14 +49,17 @@ const StatCard = ({
   label,
   value,
   sub,
+  onClick,
   children,
 }: {
   label: string
   value?: string
   sub?: string
+  onClick?: () => void
   children?: React.ReactNode
 }) => (
   <Card
+    onClick={onClick}
     style={{
       flex: 1,
       minWidth: 180,
@@ -65,6 +68,8 @@ const StatCard = ({
       background: "white",
       boxShadow: "0 1px 4px rgba(0,0,0,0.07)",
       border: "1px solid #e5e7eb",
+      cursor: onClick ? "pointer" : "default",
+      transition: "box-shadow 0.15s",
     }}
   >
     <StackLayout gap={0.5}>
@@ -162,6 +167,7 @@ export const DashboardPage = () => {
         {/* Portfolio Value */}
         <StatCard
           label="Portfolio Value"
+          onClick={() => navigate("/customer/portfolio")}
           value={
             loadingSummary
               ? "..."
