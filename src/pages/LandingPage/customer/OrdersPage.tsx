@@ -33,7 +33,21 @@ interface OrdersResponse {
   orders: Order[];
 }
 
-type TabStatus = "open" | "filled" | "cancelled";
+interface Trade {
+    id: number;
+    pair: string;
+    side: "buy" | "sell";
+    amount: string;
+    rate: string;
+    total: string;
+    executed_at: string;
+  }
+  
+  interface TradesResponse {
+    trades: Trade[];
+  }
+
+type TabStatus = "all" | "open" | "filled" | "cancelled"
 
 
 const StatusBadge = ({ value }: { value: string }) => {
@@ -134,39 +148,78 @@ const TabBtn = ({
 
 
 export const OrdersPage = () => {
-  const [activeTab, setActiveTab] = useState<TabStatus>("open");
-
-  // Fetching all three statuses for tab counts
-  const { data: openData } = useSWR<OrdersResponse>(
-    "/api/v1/orders/?status=open",
+  const [activeTab, setActiveTab] = useState<TabStatus>("all");
+  const { data: allOrdersData, isLoading: ordersLoading } = useSWR<OrdersResponse>(
+    "/api/v1/orders/",
     fetcher
-  )
-  const { data: filledData } = useSWR<OrdersResponse>(
-    "/api/v1/orders/?status=filled",
+  );
+  
+  const { data: tradesData, isLoading: tradesLoading } = useSWR<TradesResponse>(
+    "/api/v1/trades/",
     fetcher
-  )
-  const { data: cancelledData } = useSWR<OrdersResponse>(
-    "/api/v1/orders/?status=cancelled",
-    fetcher
-  )
+  );
+  
+  const isLoading = ordersLoading || tradesLoading;
 
-  const counts = {
-    open:      openData?.orders.length ?? 0,
-    filled:    filledData?.orders.length ?? 0,
-    cancelled: cancelledData?.orders.length ?? 0,
-  }
 
-  const activeOrders: Order[] =
-    activeTab === "open"
-      ? openData?.orders ?? []
-      : activeTab === "filled"
-      ? filledData?.orders ?? []
-      : cancelledData?.orders ?? [];
+  const allOrders = allOrdersData?.orders ?? [];
+const allTrades = tradesData?.trades ?? [];
 
-  const isLoading =
-    (activeTab === "open" && !openData) ||
-    (activeTab === "filled" && !filledData) ||
-    (activeTab === "cancelled" && !cancelledData);
+const normalizedTrades = allTrades.map(t => ({
+  id: `m-${t.id}`,
+  pair: t.pair,
+  side: t.side,
+  amount: t.amount,
+  limit_rate: t.rate,
+  status: "filled" as const,
+  created_at: t.executed_at,
+  updated_at: t.executed_at,
+  type: "market",
+  total: t.total,
+}))
+
+const normalizedOrders = allOrders.map(o => ({
+  ...o,
+  type: "limit",
+  total: (parseFloat(o.amount) * parseFloat(o.limit_rate)).toFixed(2),
+}))
+
+const counts = {
+  all:       normalizedTrades.length + normalizedOrders.length,
+  open:      normalizedOrders.filter(o => o.status === "open").length,
+  filled:    normalizedOrders.filter(o => o.status === "filled").length + normalizedTrades.length,
+  cancelled: normalizedOrders.filter(o => o.status === "cancelled").length,
+}
+
+//   const counts = {
+//     open:      openData?.orders.length ?? 0,
+//     filled:    filledData?.orders.length ?? 0,
+//     cancelled: cancelledData?.orders.length ?? 0,
+//   }
+
+const activeOrders = useMemo(() => {
+    const all = [...normalizedTrades, ...normalizedOrders];
+    
+    switch (activeTab) {
+      case "all":       return all;
+      case "open":      return normalizedOrders.filter(o => o.status === "open");
+      case "filled":    return [...normalizedTrades, ...normalizedOrders.filter(o => o.status === "filled")];
+      case "cancelled": return normalizedOrders.filter(o => o.status === "cancelled");
+      default:          return all;
+    }
+  }, [activeTab, normalizedTrades, normalizedOrders]);
+
+//   const activeOrders: Order[] =
+//     activeTab === "open"
+//       ? openData?.orders ?? []
+//       : activeTab === "filled"
+//       ? filledData?.orders ?? []
+//       : cancelledData?.orders ?? [];
+
+//   const isLoading =
+//     (activeTab === "open" && !openData) ||
+//     (activeTab === "filled" && !filledData) ||
+//     (activeTab === "cancelled" && !cancelledData);
 
 
   const columnDefs = useMemo<ColDef[]>(
@@ -291,6 +344,11 @@ export const OrdersPage = () => {
         {/* Tabs */}
         {/* <div style={{ borderBottom: "1px solid #e5e7eb", marginBottom: 20 }}> */}
         <div style={{ borderBottom: "1px solid #e5e7eb" }}>
+        <TabBtn label="All"       
+        count={counts.all}       
+        active={activeTab === "all"}      
+         onClick={() => setActiveTab("all")} />
+
           <TabBtn
             label="Pending"
             count={counts.open}
@@ -317,7 +375,7 @@ export const OrdersPage = () => {
             <Spinner />
           </FlexLayout>
         ) : activeOrders.length === 0 ? (
-          <div
+            <div
             style={{
               padding: "40px 0",
               textAlign: "center",
@@ -325,7 +383,10 @@ export const OrdersPage = () => {
               fontSize: 14,
             }}
           >
-            No {activeTab === "open" ? "pending" : activeTab} orders
+            {activeTab === "all"       && "No orders or trades yet"}
+            {activeTab === "open"      && "No pending orders"}
+            {activeTab === "filled"    && "No executed orders"}
+            {activeTab === "cancelled" && "No cancelled orders"}
           </div>
         ) : (
           <div
