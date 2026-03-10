@@ -6,6 +6,10 @@ import "ag-grid-community/styles/ag-grid.css";
 // import "ag-grid-community/styles/ag-theme-quartz.css";
 
 import "ag-grid-community/styles/ag-theme-alpine.css";
+import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
+
+ModuleRegistry.registerModules([AllCommunityModule]); //I will move this part in seperate module.registry file
+
 import {
   Card,
   FlexLayout,
@@ -146,7 +150,6 @@ const TabBtn = ({
     </button>
   )
 
-
 export const OrdersPage = () => {
   const [activeTab, setActiveTab] = useState<TabStatus>("all");
   const { data: allOrdersData, isLoading: ordersLoading } = useSWR<OrdersResponse>(
@@ -159,37 +162,79 @@ export const OrdersPage = () => {
     fetcher
   );
   
-  const isLoading = ordersLoading || tradesLoading;
+//   const isLoading = ordersLoading || tradesLoading;
+const isLoading = !allOrdersData || !tradesData;
 
+  const { counts, activeOrders } = useMemo(() => {
+    const allOrders = allOrdersData?.orders ?? [];
+    const allTrades = tradesData?.trades ?? [];
+  
+    const normalizedTrades = allTrades.map(t => ({
+      id: `m-${t.id}`,
+      pair: t.pair,
+      side: t.side,
+      amount: t.amount,
+      limit_rate: t.rate,
+      status: "filled" as const,
+      created_at: t.executed_at,
+      updated_at: t.executed_at,
+      type: "market",
+      total: t.total,
+    }))
+  
+    const normalizedOrders = allOrders.map(order => ({
+      ...order,
+      type: "limit",
+      total: (parseFloat(order.amount) * parseFloat(order.limit_rate)).toFixed(2),
+    }))
+  
+    const counts = {
+      all:       normalizedTrades.length + normalizedOrders.length,
+      open:      normalizedOrders.filter(o => o.status === "open").length,
+      filled:    normalizedOrders.filter(o => o.status === "filled").length + normalizedTrades.length,
+      cancelled: normalizedOrders.filter(o => o.status === "cancelled").length,
+    };
+  
+    let activeOrders;
+    switch (activeTab) {
+      case "open":      activeOrders = normalizedOrders.filter(o => o.status === "open"); break;
+      case "filled":    activeOrders = [...normalizedTrades, ...normalizedOrders.filter(o => o.status === "filled")]; break;
+      case "cancelled": activeOrders = normalizedOrders.filter(o => o.status === "cancelled"); break;
+      default:          activeOrders = [...normalizedTrades, ...normalizedOrders];
+    }
+  
+    return { counts, activeOrders };
+  }, [allOrdersData, tradesData, activeTab]);
 
-  const allOrders = allOrdersData?.orders ?? [];
-const allTrades = tradesData?.trades ?? [];
+  console.log("activeOrders:", activeOrders);
+//   const allOrders = allOrdersData?.orders ?? [];
+// const allTrades = tradesData?.trades ?? [];
 
-const normalizedTrades = allTrades.map(t => ({
-  id: `m-${t.id}`,
-  pair: t.pair,
-  side: t.side,
-  amount: t.amount,
-  limit_rate: t.rate,
-  status: "filled" as const,
-  created_at: t.executed_at,
-  updated_at: t.executed_at,
-  type: "market",
-  total: t.total,
-}))
+// const normalizedTrades = allTrades.map(t => ({
+//   id: `m-${t.id}`,
+//   pair: t.pair,
+//   side: t.side,
+//   amount: t.amount,
+//   limit_rate: t.rate,
+//   status: "filled" as const,
+//   created_at: t.executed_at,
+//   updated_at: t.executed_at,
+//   type: "market",
+//   total: t.total,
+// }))
 
-const normalizedOrders = allOrders.map(o => ({
-  ...o,
-  type: "limit",
-  total: (parseFloat(o.amount) * parseFloat(o.limit_rate)).toFixed(2),
-}))
+// const normalizedOrders = allOrders.map(o => ({
+//   ...o,
+//   type: "limit",
+//   total: (parseFloat(o.amount) * parseFloat(o.limit_rate)).toFixed(2),
+// }))
 
-const counts = {
-  all:       normalizedTrades.length + normalizedOrders.length,
-  open:      normalizedOrders.filter(o => o.status === "open").length,
-  filled:    normalizedOrders.filter(o => o.status === "filled").length + normalizedTrades.length,
-  cancelled: normalizedOrders.filter(o => o.status === "cancelled").length,
-}
+// const counts = {
+//   all:       normalizedTrades.length + normalizedOrders.length,
+//   open:      normalizedOrders.filter(o => o.status === "open").length,
+//   filled:    normalizedOrders.filter(o => o.status === "filled").length + normalizedTrades.length,
+//   cancelled: normalizedOrders.filter(o => o.status === "cancelled").length,
+// }
 
 //   const counts = {
 //     open:      openData?.orders.length ?? 0,
@@ -197,17 +242,17 @@ const counts = {
 //     cancelled: cancelledData?.orders.length ?? 0,
 //   }
 
-const activeOrders = useMemo(() => {
-    const all = [...normalizedTrades, ...normalizedOrders];
+// const activeOrders = useMemo(() => {
+//     const all = [...normalizedTrades, ...normalizedOrders];
     
-    switch (activeTab) {
-      case "all":       return all;
-      case "open":      return normalizedOrders.filter(o => o.status === "open");
-      case "filled":    return [...normalizedTrades, ...normalizedOrders.filter(o => o.status === "filled")];
-      case "cancelled": return normalizedOrders.filter(o => o.status === "cancelled");
-      default:          return all;
-    }
-  }, [activeTab, normalizedTrades, normalizedOrders]);
+//     switch (activeTab) {
+//       case "all":       return all;
+//       case "open":      return normalizedOrders.filter(o => o.status === "open");
+//       case "filled":    return [...normalizedTrades, ...normalizedOrders.filter(o => o.status === "filled")];
+//       case "cancelled": return normalizedOrders.filter(o => o.status === "cancelled");
+//       default:          return all;
+//     }
+//   }, [activeTab, normalizedTrades, normalizedOrders]);
 
 //   const activeOrders: Order[] =
 //     activeTab === "open"
@@ -393,6 +438,7 @@ const activeOrders = useMemo(() => {
             // className="ag-theme-quartz"
             className="ag-theme-alpine"
             style={{ width: "100%", height: Math.min(400, activeOrders.length * 58 + 50) }}
+            // style={{ width: "100%", height: 400 }} 
           >
             <AgGridReact
               rowData={activeOrders}
@@ -402,6 +448,7 @@ const activeOrders = useMemo(() => {
               headerHeight={46}
               suppressMovableColumns
               suppressCellFocus
+              getRowId={(params) => String(params.data.id)} 
             />
           </div>
         )}
