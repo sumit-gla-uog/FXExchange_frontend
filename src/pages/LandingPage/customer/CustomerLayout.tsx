@@ -29,10 +29,10 @@ export const  CustomerLayout = () => {
             </div>
 
             <FlexLayout gap={1} align="center">
-              <Button appearance="solid" sentiment="accented" onClick={() => navigate("/customer/pairs")}>
+              {/* <Button appearance="solid" sentiment="accented" onClick={() => navigate("/customer/pairs")}>
                 New Trade
-              </Button>
-              <Button appearance="outlined" onClick={handleLogout}>
+              </Button> */}
+              <Button appearance="outlined" style={{ color: "white", fontSize: 16 }} onClick={handleLogout}>
                 Logout
               </Button>
             </FlexLayout>
