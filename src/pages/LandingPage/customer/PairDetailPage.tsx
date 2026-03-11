@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import useSWR, { mutate } from "swr"
 import Highcharts from "highcharts"
@@ -317,11 +317,14 @@ const LimitOrderModal = ({
 }
 
 export const PairDetailPage = () => {
-  const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
-  const [period, setPeriod] = useState<Period>("1d");
-  const [showMarket, setShowMarket] = useState(false);
-  const [showLimit, setShowLimit] = useState(false);
+  const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
+  const [period, setPeriod] = useState<Period>("1d")
+  const [showMarket, setShowMarket] = useState(false)
+  const [showLimit, setShowLimit] = useState(false)
+  const { data: tradesData } = useSWR<{ trades: any[] }>("/api/v1/trades/", fetcher)
+
+
 
   const { data: latestData, isLoading: loadingPair } = useSWR<PairLatest>(
     `/api/v1/pairs/${id}/latest/`,
@@ -337,6 +340,14 @@ export const PairDetailPage = () => {
   const { data: portfolio } = useSWR<Portfolio>("/api/v1/portfolio/", fetcher)
 
   const pair = latestData?.pair
+
+  const pairTrades = useMemo(() => {
+    return (tradesData?.trades ?? []).filter((t) => t.pair === pair?.pair)
+  }, [tradesData, pair])
+  
+  const buyCount  = pairTrades.filter((t) => t.side === "buy").length
+  const sellCount = pairTrades.filter((t) => t.side === "sell").length
+  const totalVolume = pairTrades.reduce((sum, t) => sum + parseFloat(t.amount), 0)
 
   const history = historyData?.history ?? []
   const chartData = history.map((h) => [
@@ -501,40 +512,72 @@ export const PairDetailPage = () => {
         )}
       </Card>
 
+      {/* Market activity */}
       <Card style={{ padding: "24px 28px", borderRadius: 12, border: "1px solid #e5e7eb", boxShadow: "0 1px 4px rgba(0,0,0,0.07)" }}>
-        <Text style={{ fontWeight: 700, fontSize: 18, marginBottom: 4 }}>Market Activity</Text>
-        <Text styleAs="label" style={{ color: "#f59e0b", fontSize: 12, marginBottom: 16 }}>
+        <Text style={{ fontWeight: 700, fontSize: 18 }}>Market Activity</Text>
+        <Text styleAs="label" style={{ color: "#f59e0b", fontSize: 12, marginBottom: 20, display: "block" }}>
           ^ Buy/Sell counts are based on your personal trade history.
         </Text>
-
-        <FlexLayout gap={4} wrap>
-          {["buy", "sell"].map((side) => {
-            // We'll show portfolio-based counts — real data from trades
-            return (
-              <StackLayout key={side} gap={0}>
-                <Text styleAs="label" style={{ color: "#6b7280", fontSize: 13 }}>
-                  {side === "buy" ? "Buy Count" : "Sell Count"}
-                </Text>
-                <Text style={{
-                  fontSize: 32, fontWeight: 700,
-                  color: side === "buy" ? "#059669" : "#dc2626"
-                }}>
-                  -
-                </Text>
-              </StackLayout>
-            )
-          })}
+        <FlexLayout gap={6}>
           <StackLayout gap={0}>
-            <Text styleAs="label" style={{ color: "#6b7280", fontSize: 13 }}>24h Change</Text>
-            <Text style={{
-              fontSize: 32, fontWeight: 700,
-              color: isPositive ? "#059669" : "#dc2626"
-            }}>
-              {isPositive ? "+" : ""}{parseFloat(pair.change_pct).toFixed(2)}%
+            <Text styleAs="label" style={{ color: "#6b7280", fontSize: 13 }}>Buy Count</Text>
+            <Text style={{ fontSize: 24, fontWeight: 700, color: "#059669" }}>{buyCount}</Text>
+          </StackLayout>
+          <StackLayout gap={0}>
+            <Text styleAs="label" style={{ color: "#6b7280", fontSize: 13 }}>Sell Count</Text>
+            <Text style={{ fontSize: 24, fontWeight: 700, color: "#dc2626" }}>{sellCount}</Text>
+          </StackLayout>
+          <StackLayout gap={0}>
+            <Text styleAs="label" style={{ color: "#6b7280", fontSize: 13 }}>Total Volume</Text>
+            <Text style={{ fontSize: 24, fontWeight: 700, color: "#111827" }}>
+              {totalVolume.toLocaleString("en-GB", { minimumFractionDigits: 0 })}
             </Text>
           </StackLayout>
         </FlexLayout>
       </Card>
+
+      {/* Recent trades */}
+      <Card style={{ padding: "24px 28px", borderRadius: 12, border: "1px solid #e5e7eb", boxShadow: "0 1px 4px rgba(0,0,0,0.07)" }}>
+        <Text style={{ fontWeight: 700, fontSize: 18, marginBottom: 16 }}>Recent Trades</Text>
+        {pairTrades.length === 0 ? (
+          <Text style={{ color: "#9ca3af", fontSize: 13 }}>No trades yet for this pair.</Text>
+        ) : (
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+            <thead>
+              <tr style={{ background: "#f9fafb" }}>
+                {["ID", "Type", "Amount", "Rate", "Total", "Timestamp"].map((h) => (
+                  <th key={h} style={{ padding: "10px 12px", textAlign: "left", fontWeight: 700, color: "#374151", borderBottom: "1px solid #e5e7eb" }}>
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {pairTrades.slice(0, 10).map((t) => (
+                <tr key={t.id} style={{ borderBottom: "1px solid #f3f4f6" }}>
+                  <td style={{ padding: "10px 12px", color: "#6b7280" }}>{t.id}</td>
+                  <td style={{ padding: "10px 12px", fontWeight: 600, color: t.side === "buy" ? "#059669" : "#dc2626" }}>
+                    {t.side}
+                  </td>
+                  <td style={{ padding: "10px 12px" }}>{parseFloat(t.amount).toLocaleString("en-GB")}</td>
+                  <td style={{ padding: "10px 12px" }}>{parseFloat(t.rate).toFixed(4)}</td>
+                  <td style={{ padding: "10px 12px" }}>{parseFloat(t.total).toLocaleString("en-GB", { minimumFractionDigits: 2 })}</td>
+                  <td style={{ padding: "10px 12px", color: "#6b7280" }}>
+                    {new Date(t.executed_at).toLocaleString("en-GB")}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </Card>
+
+      {/*  Disclaimer*/}
+      <div style={{ padding: "14px 18px", background: "#fefce8", borderRadius: 10, border: "1px solid #fef08a" }}>
+        <Text style={{ fontSize: 13, color: "#854d0e" }}>
+          <strong>Disclaimer:</strong> This is a reference-only platform. Not financial advice. Bank fees may apply for real transactions. All trades are simulated within this platform.
+        </Text>
+      </div>
 
       {showMarket && (
         <MarketExchangeModal pair={pair} portfolio={portfolio} onClose={() => setShowMarket(false)} />
