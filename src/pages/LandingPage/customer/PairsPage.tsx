@@ -15,6 +15,7 @@ import {
 } from "@salt-ds/core";
 import { fetcher } from "../../../api/swr";
 import { apiFetch } from "../../../api/client";
+import { useNavigate } from "react-router-dom";
 
 interface Pair {
   id: number;
@@ -196,6 +197,7 @@ const TradeModal = ({
 export const PairsPage = () => {
   const [search, setSearch] = useState("");
   const [selectedPair, setSelectedPair] = useState<Pair | null>(null);
+  const navigate = useNavigate()
 
   const { data, isLoading } = useSWR<PairsResponse>(
     `/api/v1/pairs/${search ? `?search=${search}` : ""}`,
@@ -356,7 +358,8 @@ export const PairsPage = () => {
                           padding: "6px 20px",
                           fontWeight: 600,
                         }}
-                        onClick={() => setSelectedPair(p)}
+                        // onClick={() => setSelectedPair(p)}
+                        onClick={() => navigate(`/customer/pairs/${p.id}`)}
                       >
                         Trade
                       </Button>

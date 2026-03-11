@@ -1,10 +1,10 @@
 import { useState, useMemo } from "react";
 import useSWR from "swr";
-import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
-import { AgGridReact } from "ag-grid-react";
-import type { ColDef, ICellRendererParams } from "ag-grid-community";
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-alpine.css";
+import { ModuleRegistry, AllCommunityModule } from "ag-grid-community"
+import { AgGridReact } from "ag-grid-react"
+import type { ColDef, ICellRendererParams } from "ag-grid-community"
+import "ag-grid-community/styles/ag-grid.css"
+import "ag-grid-community/styles/ag-theme-alpine.css"
 import {
   Card,
   FlexLayout,
@@ -13,11 +13,11 @@ import {
   Button,
   Spinner,
   Input,
-} from "@salt-ds/core";
-import { fetcher } from "../../../api/swr";
-import { apiFetch } from "../../../api/client";
+} from "@salt-ds/core"
+import { fetcher } from "../../../api/swr"
+import { apiFetch } from "../../../api/client"
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+ModuleRegistry.registerModules([AllCommunityModule])
 
 interface Trade {
   id: number
@@ -296,7 +296,6 @@ export const HistoryPage = () => {
     []
   )
 
-
   const handleExport = async () => {
     try {
       const blob = await apiFetch<Blob>("/api/v1/trades/export/", {
@@ -345,7 +344,6 @@ export const HistoryPage = () => {
           value={isLoading ? "..." : stats.mostTraded}
         />
       </FlexLayout>
-
 
       <Card
         style={{
