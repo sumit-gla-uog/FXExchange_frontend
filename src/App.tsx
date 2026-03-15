@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { LoginPage } from "./pages/Loginpage/LoginPage";
 import { CustomerLandingPage } from "./pages/LandingPage/customer/CustomerLandingPage"
-import { AdminLandingPage } from "./pages/LandingPage/AdminLandingPage"
+import { AdminLandingPage } from "./pages/LandingPage/admin/AdminLandingPage"
 // import {SelectRolePage} from "./pages/SelectRolePage"
 import { RequireAuth } from "./auth/RequireAuth"
 import {SelectRolePage} from './pages/SelectRolePage/SelectRolePage'
