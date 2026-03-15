@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { LoginPage } from "./pages/Loginpage/LoginPage";
 import { CustomerLandingPage } from "./pages/LandingPage/customer/CustomerLandingPage"
 import { AdminLandingPage } from "./pages/LandingPage/admin/AdminLandingPage"
+import { AdminDashboardPage } from "./pages/LandingPage/admin/AdminDashboardPage"
 // import {SelectRolePage} from "./pages/SelectRolePage"
 import { RequireAuth } from "./auth/RequireAuth"
 import {SelectRolePage} from './pages/SelectRolePage/SelectRolePage'
@@ -14,6 +15,8 @@ import {OrdersPage} from "./pages/landingpage/customer/OrdersPage"
 import {HistoryPage} from "./pages/landingpage/customer/HistoryPage"
 import {SettingsPage} from "./pages/landingpage/customer/SettingsPage"
 import { PairDetailPage } from "./pages/LandingPage/customer/PairDetailPage"
+import { AdminCurrenciesPage } from "./pages/LandingPage/admin/AdminCurrenciesPage";
+import { AdminRatesPage } from "./pages/LandingPage/admin/AdminRatesPage";
 
 
 export default function App() {
@@ -27,20 +30,20 @@ export default function App() {
       </RequireAuth>
         
         } />
-      {/* <Route path="/customer" element={
-        <RequireAuth>
-          <CustomerLandingPage />
-        </RequireAuth>
-      } /> */}
 
 <Route
-    path="/admin"
-    element={
-      <RequireAuth>
-        <AdminLandingPage />
-      </RequireAuth>
-    }
-  />
+  path="/admin"
+  element={
+    <RequireAuth>
+      <AdminLandingPage />
+    </RequireAuth>
+  }
+>
+  <Route index element={<AdminDashboardPage />} />
+  <Route path="dashboard" element={<AdminDashboardPage />} />
+  <Route path="currencies" element={<AdminCurrenciesPage />} />
+  <Route path="rates" element={<AdminRatesPage />} />
+</Route>
   <Route
   path="/customer"
   element={
