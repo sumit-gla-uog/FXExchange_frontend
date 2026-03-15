@@ -24,7 +24,9 @@ import {
   CloseIcon,
   BooleanIcon,
   BooleanSolidIcon,
+  ArrowLeftIcon,
 } from "@salt-ds/icons"
+import { useNavigate } from "react-router-dom"
 
 ModuleRegistry.registerModules([AllCommunityModule])
 
@@ -44,6 +46,7 @@ interface CurrenciesResponse {
 
 
 export const AdminCurrenciesPage = () => {
+  const navigate = useNavigate()
   const [showForm, setShowForm] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
@@ -195,6 +198,25 @@ export const AdminCurrenciesPage = () => {
   return (
     <StackLayout gap={3}>
       {/* Header */}
+      <button
+                onClick={() => navigate("/admin/dashboard")}
+                style={{
+                    background: "none",
+                    border: "none",
+                    color: "#6b7280",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    fontSize: 13,
+                    fontWeight: 600,
+                    padding: 0,
+                    marginBottom: 8,
+                }}
+            >
+                <ArrowLeftIcon size={1} />
+                Back to Dashboard
+            </button>
       <FlexLayout justify="space-between" align="center">
         <StackLayout gap={0}>
           <Text style={{ fontWeight: 700, fontSize: 22, color: "#111827" }}>
