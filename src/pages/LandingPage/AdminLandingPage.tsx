@@ -16,14 +16,25 @@ export const AdminLandingPage = () => {
   const navigate = useNavigate();
   const token = getAccessToken();
   
+  
   const { data, error, isLoading } = useSWR(
     token ? "/api/v1/auth/me/" : null,
     fetcher);
 
+    if (isLoading) return <p>Loading...</p>;
+  
 
-  if (error) {
-    logout();
-    navigate("/login");
+    if (error || !data.user) {
+      logout();
+      navigate("/login", { replace: true });
+      return null;
+    }
+
+    const user = data.user as User;
+
+   // Role guard so that customer dont land on admin page
+   if (user.role !== "admin") {
+    navigate("/login", { replace: true });
     return null;
   }
 
@@ -32,13 +43,10 @@ export const AdminLandingPage = () => {
     navigate("/login")
   };
 
-  if (isLoading) return <p>Loading...</p>;
-
-  const user = data.user as User;
 
   return (
     <div style={{ padding: 32 }}>
-      <h1>Landing</h1>
+      <h1>Admin Landing</h1>
       {user && (
         <>
           <p>Welcome, {user.username}</p>
