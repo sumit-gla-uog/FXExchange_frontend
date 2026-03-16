@@ -104,7 +104,7 @@ const MarketExchangeModal = ({
     }
 
     return (
-        <Dialog open onOpenChange={(_, open) => !open && onClose()} size="sm">
+        <Dialog open onOpenChange={(open) => !open && onClose()} size="sm">
             <DialogHeader header="Market Exchange" />
             <DialogContent>
                 <StackLayout gap={2}>
@@ -261,7 +261,7 @@ const LimitOrderModal = ({
     }
 
     return (
-        <Dialog open onOpenChange={(_, open) => !open && onClose()} size="sm">
+        <Dialog open onOpenChange={(open) => !open && onClose()} size="sm">
             <DialogHeader header="Place Limit Order" />
             <DialogContent>
                 <StackLayout gap={2}>

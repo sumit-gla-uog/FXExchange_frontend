@@ -4,7 +4,7 @@ export const SettingsPage = () => {
   return (
     <Card style={{ padding: 16 }}>
       <H3>SettingsPage</H3>
-      <Text styleAs="secondary">We will build the SettingsPage here.</Text>
+      <Text variant="secondary">We will build the SettingsPage here.</Text>
     </Card>
   );
 }

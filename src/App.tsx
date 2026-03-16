@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { LoginPage } from "./pages/Loginpage/LoginPage";
-import { CustomerLandingPage } from "./pages/LandingPage/customer/CustomerLandingPage"
+// import { CustomerLandingPage } from "./pages/LandingPage/customer/CustomerLandingPage"
 import { AdminLandingPage } from "./pages/LandingPage/admin/AdminLandingPage"
 import { AdminDashboardPage } from "./pages/LandingPage/admin/AdminDashboardPage"
 // import {SelectRolePage} from "./pages/SelectRolePage"
@@ -8,12 +8,12 @@ import { RequireAuth } from "./auth/RequireAuth"
 import {SelectRolePage} from './pages/SelectRolePage/SelectRolePage'
 import {CustomerLayout} from "../src/pages/LandingPage/customer/CustomerLayout"
 import {DashboardPage} from "../src/pages/LandingPage/customer/Dashboard"
-import {PortfolioPage} from "./pages/landingpage/customer/PortfolioPage"
-import {CurrenciesPage} from "./pages/landingpage/customer/CurrenciesPage"
-import {PairsPage} from "./pages/landingpage/customer/PairsPage"
-import {OrdersPage} from "./pages/landingpage/customer/OrdersPage"
-import {HistoryPage} from "./pages/landingpage/customer/HistoryPage"
-import {SettingsPage} from "./pages/landingpage/customer/SettingsPage"
+import {PortfolioPage} from "./pages/LandingPage/customer/PortfolioPage"
+import {CurrenciesPage} from "./pages/LandingPage/customer/CurrenciesPage"
+import {PairsPage} from "./pages/LandingPage/customer/PairsPage"
+import {OrdersPage} from "./pages/LandingPage/customer/OrdersPage"
+import {HistoryPage} from "./pages/LandingPage/customer/HistoryPage"
+import {SettingsPage} from "./pages/LandingPage/customer/SettingsPage"
 import { PairDetailPage } from "./pages/LandingPage/customer/PairDetailPage"
 import { AdminCurrenciesPage } from "./pages/LandingPage/admin/AdminCurrenciesPage";
 import { AdminRatesPage } from "./pages/LandingPage/admin/AdminRatesPage";

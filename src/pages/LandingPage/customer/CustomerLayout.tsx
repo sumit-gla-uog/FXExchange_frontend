@@ -23,7 +23,7 @@ export const  CustomerLayout = () => {
           <FlexLayout justify="space-between" align="center" wrap>
             <div>
               <Text style={{ color: "white", fontSize: 24, fontWeight: 800 }}>Customer</Text>
-              <Text styleAs="secondary" style={{ color: "#d1fae5" }}>
+              <Text variant="secondary" style={{ color: "#d1fae5" }}>
                 Dashboard Area
               </Text>
             </div>
@@ -32,7 +32,7 @@ export const  CustomerLayout = () => {
               {/* <Button appearance="solid" sentiment="accented" onClick={() => navigate("/customer/pairs")}>
                 New Trade
               </Button> */}
-              <Button appearance="outlined" style={{ color: "white", fontSize: 16 }} onClick={handleLogout}>
+              <Button appearance="secondary" style={{ color: "white", fontSize: 16 }} onClick={handleLogout}>
                 Logout
               </Button>
             </FlexLayout>

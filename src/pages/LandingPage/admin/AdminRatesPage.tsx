@@ -9,6 +9,7 @@ import "ag-grid-community/styles/ag-grid.css"
 import "ag-grid-community/styles/ag-theme-alpine.css"
 import { fetcher } from "../../../api/swr"
 import { apiFetch } from "../../../api/client"
+
 import {
     StackLayout,
     FlexLayout,
@@ -150,6 +151,8 @@ export const AdminRatesPage = () => {
     const [csvUploading, setCsvUploading] = useState(false)
     const [manualSuccess, setManualSuccess] = useState("")
     const [manualError, setManualError] = useState("")
+      const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ""
+  
 
     const { data: dashData, isLoading: dashLoading } = useSWR<AdminDashboardData>(
         "/api/v1/admin/dashboard/",
@@ -205,7 +208,7 @@ export const AdminRatesPage = () => {
         try {
             const formData = new FormData()
             formData.append("file", file)
-            const res = await fetch("http://localhost:8000/api/v1/admin/rates/csv/", {
+            const res = await fetch(`${BASE_URL}/api/v1/admin/rates/csv/`, {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("access_token")}`,

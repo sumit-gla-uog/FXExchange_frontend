@@ -56,7 +56,7 @@ const {
     <StackLayout gap={1} align="center">
       {/* <div className={styles.authPage} aria-hidden="true" /> */}
       <H2>FX Exchange</H2>
-      <Text styleAs="secondary">Multi-Currency Exchange Dashboard</Text>
+      <Text variant="secondary">Multi-Currency Exchange Dashboard</Text>
 
       <Card className={styles.authCard}>
         <StackLayout gap={2}>
@@ -114,13 +114,13 @@ const {
                   {isSubmitting ? "Logging in..." : "Login"}
                 </Button>
 
-                <Text styleAs="secondary" className={styles.signupRow}>
+                <Text variant="secondary" className={styles.signupRow}>
                   Don't have an account?{" "}
                   <Link onClick={() => navigate("/signup")}>Sign up</Link>
                 </Text>
 
                 <div className={styles.disclaimerBox}>
-                  <Text styleAs="secondary">{disclaimer}</Text>
+                  <Text variant="secondary">{disclaimer}</Text>
                 </div>
               </StackLayout>
             </form>

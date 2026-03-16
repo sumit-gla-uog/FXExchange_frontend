@@ -78,7 +78,7 @@ const TradeModal = ({
   }
 
   return (
-    <Dialog open onOpenChange={(_, open) => !open && onClose()} size="sm">
+    <Dialog open onOpenChange={(open) => !open && onClose()} size="sm">
       <DialogHeader header={`Trade ${pair.pair}`} />
       <DialogContent>
         <StackLayout gap={2}>
@@ -218,7 +218,7 @@ export const PairsPage = () => {
       >
         <Input
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
           placeholder="Search pairs (e.g., GBP/USD)..."
           style={{ width: "100%", borderRadius: 8, background: "white" }}
           startAdornment={

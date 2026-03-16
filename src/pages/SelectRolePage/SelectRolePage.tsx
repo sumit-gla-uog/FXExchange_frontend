@@ -33,7 +33,7 @@ export const SelectRolePage =() =>  {
         <StackLayout gap={2}>
           <div>
             <H2>Select Role</H2>
-            <Text styleAs="secondary">Choose how you want to continue.</Text>
+            <Text variant="secondary">Choose how you want to continue.</Text>
           </div>
 
           <StackLayout gap={1}>
@@ -42,7 +42,7 @@ export const SelectRolePage =() =>  {
             </Button>
 
              {isAdmin && (
-              <Button appearance="outlined" onClick={() => pick("admin")}>
+              <Button appearance="secondary" onClick={() => pick("admin")}>
                 Continue as Admin
               </Button>
             )}
