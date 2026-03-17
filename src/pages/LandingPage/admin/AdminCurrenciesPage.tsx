@@ -1,7 +1,6 @@
 import { useState, useMemo } from "react"
 import { useForm, Controller } from "react-hook-form"
 import useSWR, { mutate } from "swr"
-import { ModuleRegistry, AllCommunityModule } from "ag-grid-community"
 import { AgGridReact } from "ag-grid-react"
 import type { ColDef, ICellRendererParams } from "ag-grid-community"
 import { fetcher } from "../../../api/swr"
@@ -11,8 +10,6 @@ import { AddIcon, CloseIcon, BooleanIcon, BooleanSolidIcon, ArrowLeftIcon } from
 import { useNavigate } from "react-router-dom"
 import type { FX } from "../../../types/FX"
 import "./AdminCurrenciesPage.css"
-
-ModuleRegistry.registerModules([AllCommunityModule])
 
 export const AdminCurrenciesPage = () => {
   const navigate = useNavigate()

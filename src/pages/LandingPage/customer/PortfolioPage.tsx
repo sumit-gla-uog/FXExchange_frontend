@@ -3,7 +3,6 @@ import useSWR from "swr"
 import { useNavigate } from "react-router-dom"
 import { AgGridReact } from "ag-grid-react"
 import type { ColDef, ICellRendererParams } from "ag-grid-community"
-import { ModuleRegistry, AllCommunityModule } from "ag-grid-community"
 import {
   Card,
   FlexLayout,
@@ -14,9 +13,8 @@ import {
 } from "@salt-ds/core"
 import { fetcher } from "../../../api/swr"
 import type { FX } from "../../../types/FX"
+import { CurrencyCellRenderer, ChangeCellRenderer, makePortfolioTradeRenderer } from "../../../components/grids/CellRenderers"
 
-
-ModuleRegistry.registerModules([AllCommunityModule])
 
 // TODO: move to utils/
 const getChangePct = (
@@ -29,47 +27,6 @@ const getChangePct = (
   )
   return match ? parseFloat(match.change_pct) : null
 }
-
-// Cell renderers
-
-const CurrencyCellRenderer = (p: ICellRendererParams) => (
-  <div style={{ display: "flex", alignItems: "center", gap: 12, height: "100%" }}>
-    <span style={{ fontSize: 24, lineHeight: 1 }}>{p.data.currency.flag}</span>
-    <div>
-      <div style={{ fontWeight: 600, fontSize: 14, color: "#111827", lineHeight: 1.3 }}>
-        {p.data.currency.code}
-      </div>
-      <div style={{ fontSize: 12, color: "#6b7280" }}>
-        {p.data.currency.name}
-      </div>
-    </div>
-  </div>
-)
-
-const ChangeCellRenderer = (p: ICellRendererParams) => {
-  const pct: number | null = p.data.change_pct
-  if (pct === null) return <span style={{ color: "#9ca3af" }}>—</span>
-  const isPositive = pct >= 0
-  return (
-    <span style={{ fontWeight: 600, fontSize: 13, color: isPositive ? "#059669" : "#dc2626" }}>
-      {isPositive ? "↗ +" : "↘ "}{pct.toFixed(2)}%
-    </span>
-  )
-}
-
-const ActionCellRenderer = (navigate: (path: string) => void) =>
-  (_p: ICellRendererParams) => (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", height: "100%" }}>
-      <Button
-        appearance="solid"
-        sentiment="accented"
-        style={{ background: "#0f766e", color: "white", borderRadius: 8, fontSize: 13, padding: "5px 16px" }}
-        onClick={() => navigate("/customer/pairs")}
-      >
-        Trade
-      </Button>
-    </div>
-  )
 
 // Summary stat tile
 const StatTile = ({ label, value, sub }: { label: string; value: string; sub: string }) => (
@@ -155,7 +112,7 @@ export const PortfolioPage = () => {
       filter: false,
       headerClass: "ag-right-aligned-header",
       cellClass: "ag-right-aligned-cell",
-      cellRenderer: ActionCellRenderer(navigate),
+      cellRenderer: makePortfolioTradeRenderer(navigate),
     },
   ], [navigate])
 

@@ -2,89 +2,18 @@ import { useState, useMemo, useCallback } from "react"
 import useSWR, { mutate } from "swr"
 import { AgGridReact } from "ag-grid-react"
 import type { ColDef, ICellRendererParams } from "ag-grid-community"
-import { ModuleRegistry, AllCommunityModule } from "ag-grid-community"
 import { TabBtn } from "../../../components/ui/TabBtn"
-
-
-
-ModuleRegistry.registerModules([AllCommunityModule]) //I will move this part in seperate module.registry file
 
 import {
   Card,
   FlexLayout,
   StackLayout,
   Text,
-  Button,
   Spinner,
 } from "@salt-ds/core"
 import { fetcher } from "../../../api/swr"
-import { apiFetch } from "../../../api/client"
 import type { FX } from "../../../types/FX"
-
-
-const StatusBadge = ({ value }: { value: string }) => {
-  const colors: Record<string, { bg: string; color: string }> = {
-    open: { bg: "#fef9c3", color: "#854d0e" },
-    filled: { bg: "#dcfce7", color: "#166534" },
-    cancelled: { bg: "#fee2e2", color: "#991b1b" },
-  };
-  const style = colors[value] ?? { bg: "#f3f4f6", color: "#374151" };
-  return (
-    <span
-      style={{
-        padding: "3px 10px",
-        borderRadius: 20,
-        fontSize: 12,
-        fontWeight: 600,
-        background: style.bg,
-        color: style.color,
-        textTransform: "capitalize",
-      }}
-    >
-      {value}
-    </span>
-  )
-}
-
-
-const CancelButtonCell = (params: ICellRendererParams) => {
-  const [loading, setLoading] = useState(false);
-
-  if (params.data?.status !== "open") return null;
-
-  const handleCancel = async () => {
-    setLoading(true);
-    try {
-      await apiFetch(`/api/v1/orders/${params.data.id}/cancel/`, {
-        method: "POST",
-        auth: true,
-      });
-      mutate((key: string) => key.startsWith("/api/v1/orders/"));
-      mutate("/api/v1/dashboard/summary/");
-    } catch (e) {
-      console.error("Cancel failed", e);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  return (
-    <Button
-      appearance="bordered"
-      onClick={handleCancel}
-      disabled={loading}
-      style={{
-        borderColor: "#dc2626",
-        color: "#dc2626",
-        borderRadius: 6,
-        fontSize: 12,
-        padding: "2px 12px",
-      }}
-    >
-      {loading ? "loading..." : "Cancel"}
-    </Button>
-  )
-}
+import { StatusBadgeCellRenderer, CancelButtonCell } from "../../../components/grids/CellRenderers"
 
 
 export const OrdersPage = () => {
@@ -224,9 +153,8 @@ export const OrdersPage = () => {
         field: "status",
         flex: 1,
         minWidth: 110,
-        cellRenderer: (p: ICellRendererParams) => (
-          <StatusBadge value={p.value} />
-        ),
+        cellRenderer: StatusBadgeCellRenderer
+,
       },
       {
         headerName: "Actions",

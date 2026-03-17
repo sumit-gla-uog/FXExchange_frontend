@@ -1,8 +1,6 @@
 import { useState, useMemo } from "react"
-import { useDropzone } from "react-dropzone"
 import useSWR, { mutate } from "swr"
 import { useForm, Controller } from "react-hook-form"
-import { ModuleRegistry, AllCommunityModule } from "ag-grid-community"
 import { AgGridReact } from "ag-grid-react"
 import type { ColDef } from "ag-grid-community"
 import { fetcher } from "../../../api/swr"
@@ -15,8 +13,6 @@ import { CSVDropZone } from "../../../components/ui/CSVDropZone"
 
 import type { FX } from "../../../types/FX"
 import "./AdminRatesPage.css"
-
-ModuleRegistry.registerModules([AllCommunityModule])
 
 interface ManualRateForm { pair_id: string; rate: string }
 

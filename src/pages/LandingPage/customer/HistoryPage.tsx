@@ -1,6 +1,5 @@
 import { useState, useMemo } from "react"
 import useSWR from "swr"
-import { ModuleRegistry, AllCommunityModule } from "ag-grid-community"
 import { AgGridReact } from "ag-grid-react"
 import type { ColDef, ICellRendererParams } from "ag-grid-community"
 import "ag-grid-community/styles/ag-grid.css"
@@ -17,17 +16,13 @@ import {
 import { fetcher } from "../../../api/swr"
 import { apiFetch } from "../../../api/client"
 import { StatCard } from "../../../components/ui/StatCard"
-import { CurrencySearchBar } from "../../../components/ui/CurrencySearchBar"
 import { useIsMobile } from "../../../hooks/UseIsMobile"
 
 import type { FX } from "../../../types/FX"
 import { SearchIcon } from "@salt-ds/icons"
 
-ModuleRegistry.registerModules([AllCommunityModule])
-
 export const HistoryPage = () => {
   const [search, setSearch] = useState("")
-  const isMobile = useIsMobile()
 
   const { data: tradesData, isLoading: tradesLoading } =
     useSWR<FX.Customer.TradesResponse>("/api/v1/trades/", fetcher)

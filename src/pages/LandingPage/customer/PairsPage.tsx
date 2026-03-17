@@ -2,7 +2,6 @@ import { useState, useMemo } from "react"
 import useSWR, { mutate } from "swr"
 import { AgGridReact } from "ag-grid-react"
 import type { ColDef, ICellRendererParams } from "ag-grid-community"
-import { ModuleRegistry, AllCommunityModule } from "ag-grid-community"
 import {
   Card,
   FlexLayout,
@@ -21,8 +20,8 @@ import { apiFetch } from "../../../api/client"
 import { useNavigate } from "react-router-dom"
 import { CurrencySearchBar } from "../../../components/ui/CurrencySearchBar"
 import type { FX } from "../../../types/FX"
+import { PairCellRenderer, ChangeCellRenderer, makeTradeActionRenderer } from "../../../components/grids/CellRenderers"
 
-ModuleRegistry.registerModules([AllCommunityModule])
 
 const calcSpread = (rate: string) => (parseFloat(rate) * 0.0003).toFixed(4)
 
@@ -101,54 +100,6 @@ const TradeModal = ({ pair, onClose }: { pair: FX.Customer.Pair; onClose: () => 
   );
 };
 
-//  Action cell renderer- needs navigate + setSelectedPair 
-const makeActionRenderer = (navigate: (path: string) => void) =>
-  (params: ICellRendererParams) => (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", height: "100%" }}>
-      <Button
-        appearance="solid"
-        sentiment="accented"
-        style={{
-          background: "#0f766e",
-          color: "white",
-          borderRadius: 8,
-          padding: "5px 18px",
-          fontWeight: 600,
-          fontSize: 13,
-        }}
-        onClick={() => navigate(`/customer/pairs/${params.data.id}`)}
-      >
-        Trade
-      </Button>
-    </div>
-  );
-
-// Pair cell renderer- flag + pair code + currency name
-const PairCellRenderer = (params: ICellRendererParams) => (
-  <div style={{ display: "flex", alignItems: "center", gap: 12, height: "100%" }}>
-    <span style={{ fontSize: 22, lineHeight: 1 }}>{params.data.quote.flag}</span>
-    <div>
-      <div style={{ fontWeight: 700, fontSize: 15, color: "#111827", lineHeight: 1.3 }}>
-        {params.data.pair}
-      </div>
-      <div style={{ fontSize: 12, color: "#6b7280" }}>
-        {params.data.quote.name}
-      </div>
-    </div>
-  </div>
-);
-
-// Change cell renderer
-const ChangeCellRenderer = (params: ICellRendererParams) => {
-  const pct = parseFloat(params.data.change_pct);
-  const isPositive = pct >= 0;
-  return (
-    <span style={{ fontWeight: 600, fontSize: 14, color: isPositive ? "#059669" : "#dc2626" }}>
-      {isPositive ? "↗ +" : "↘ "}{pct.toFixed(2)}%
-    </span>
-  );
-};
-
 export const PairsPage = () => {
   const [search, setSearch] = useState("");
   const [selectedPair, setSelectedPair] = useState<FX.Customer.Pair | null>(null);
@@ -216,7 +167,7 @@ export const PairsPage = () => {
       sortable: false,
       filter: false,
       type: "rightAligned",
-      cellRenderer: makeActionRenderer(navigate),
+      cellRenderer: makeTradeActionRenderer(navigate),
     },
   ], [navigate]);
 
