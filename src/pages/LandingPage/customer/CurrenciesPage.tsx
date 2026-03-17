@@ -5,62 +5,56 @@ import { fetcher } from "../../../api/swr"
 import { CurrencyCard } from "../../../components/ui/CurrencyCard"
 import { CurrencySearchBar } from "../../../components/ui/CurrencySearchBar"
 import type { FX } from "../../../types/FX"
+import "./CurrenciesPage.css"
 
-
-// TODO: move to utils/
 const getRateInfo = (code: string, snapshot: FX.Shared.MarketSnapshot | undefined) => {
-  if (!snapshot) return null;
-  const match = snapshot.market_snapshot.find((p) => p.pair === `GBP/${code}`);
-  return match ? { rate: match.rate, change_pct: match.change_pct } : null;
+  if (!snapshot) return null
+  const match = snapshot.market_snapshot.find((p) => p.pair === `GBP/${code}`)
+  return match ? { rate: match.rate, change_pct: match.change_pct } : null
 }
 
 export const CurrenciesPage = () => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("")
 
   const { data: currenciesData, isLoading } = useSWR<FX.Shared.CurrenciesResponse>(
     `/api/v1/currencies/${search ? `?search=${search}` : ""}`, fetcher
-  );
+  )
   const { data: snapshot } = useSWR<FX.Shared.MarketSnapshot>(
     "/api/v1/dashboard/market-snapshot/", fetcher
-  );
+  )
 
-  const currencies = currenciesData?.currencies ?? [];
+  const currencies = currenciesData?.currencies ?? []
 
   return (
     <StackLayout gap={0}>
-      {/* Full search bar flush at top of page content */}
-      <div style={{ margin: "-24px -24px 0", overflow: "hidden" }}>
+      <div className="currencies-search-wrapper">
         <CurrencySearchBar
           value={search}
           onChange={setSearch}
           placeholder="Search currencies..."
-          subtitle={
-            !isLoading
-              ? `Showing ${currencies.length} ${currencies.length === 1 ? "currency" : "currencies"}`
-              : undefined
-          }
+          subtitle={!isLoading ? `Showing ${currencies.length} ${currencies.length === 1 ? "currency" : "currencies"}` : undefined}
         />
       </div>
 
-      <div style={{ padding: "24px 0 16px" }}>
+      <div className="currencies-header">
         <StackLayout gap={0}>
-          <Text style={{ fontWeight: 700, fontSize: 20, color: "#111827" }}>All Currencies</Text>
-          <Text style={{ color: "#9ca3af", fontSize: 13, marginTop: 2 }}>
+          <Text className="currencies-title">All Currencies</Text>
+          <Text className="currencies-count">
             {isLoading ? "Loading..." : `Showing ${currencies.length} ${currencies.length === 1 ? "currency" : "currencies"}`}
           </Text>
         </StackLayout>
       </div>
 
       {isLoading ? (
-        <FlexLayout justify="center" style={{ padding: 60 }}><Spinner /></FlexLayout>
+        <div className="currencies-spinner"><Spinner /></div>
       ) : currencies.length === 0 ? (
-        <Card style={{ padding: 40, textAlign: "center", border: "1px solid #e5e7eb", borderRadius: 12 }}>
-          <Text style={{ color: "#9ca3af" }}>No currencies found for "{search}"</Text>
+        <Card className="currencies-empty">
+          <Text className="currencies-empty-text">No currencies found for "{search}"</Text>
         </Card>
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(175px, 1fr))", gap: 14 }}>
+        <div className="currencies-grid">
           {currencies.map((c) => {
-            const rateInfo = getRateInfo(c.code, snapshot);
+            const rateInfo = getRateInfo(c.code, snapshot)
             return (
               <CurrencyCard
                 key={c.id}

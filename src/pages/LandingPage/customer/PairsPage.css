@@ -1,0 +1,89 @@
+
+/* Trade modal */
+.trade-modal-rate-box {
+    background: #f0fdf9;
+    border-radius: 8px;
+    padding: 12px 16px;
+    border: 1px solid #ccfbf1;
+  }
+  
+  .trade-modal-rate-label {
+    font-size: 13px;
+    color: #6b7280;
+  }
+  
+  .trade-modal-rate-value {
+    font-weight: 700;
+    color: #0f766e;
+  }
+  
+  .trade-modal-side-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .trade-modal-side-btn.buy.active   { background: #0f766e; color: white; }
+  .trade-modal-side-btn.buy.inactive { background: #f3f4f6; color: #374151; }
+  .trade-modal-side-btn.sell.active  { background: #dc2626; color: white; }
+  .trade-modal-side-btn.sell.inactive{ background: #f3f4f6; color: #374151; }
+  
+  .trade-modal-amount-label {
+    font-size: 13px;
+    color: #374151;
+  }
+  
+  .trade-modal-summary {
+    background: #f9fafb;
+    border-radius: 8px;
+    padding: 10px 14px;
+    border: 1px solid #e5e7eb;
+  }
+  
+  .trade-modal-summary-label {
+    font-size: 13px;
+    color: #6b7280;
+  }
+  
+  .trade-modal-error   { color: #dc2626; font-size: 13px; }
+  .trade-modal-success { color: #059669; font-size: 13px; }
+  
+  /* Page */
+  .pairs-search-wrapper {
+    margin: -24px -24px 0;
+    overflow: hidden;
+  }
+  
+  .pairs-count {
+    padding: 20px 0 12px;
+    color: #6b7280;
+    font-size: 14px;
+  }
+  
+  .pairs-count strong {
+    color: #111827;
+  }
+  
+  .pairs-card {
+    padding: 0;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+  }
+  
+  .pairs-spinner {
+    display: flex;
+    justify-content: center;
+    padding: 60px;
+  }
+  
+  .pairs-empty {
+    padding: 40px;
+    text-align: center;
+    color: #6b7280;
+  }

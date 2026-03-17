@@ -15,7 +15,7 @@ export const ActionCard = ({ icon, title, description, linkText, onClick }: Acti
     <StackLayout gap={2}>
       <FlexLayout align="center" gap={2}>
         <div className="icon">{icon}</div>
-        <StackLayout gap={0}>
+        <StackLayout gap={1}>
           <Text className="title">{title}</Text>
           <Text styleAs="label" className="subtitle">{description}</Text>
         </StackLayout>

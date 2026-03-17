@@ -7,7 +7,7 @@ import { AdminDashboardPage } from "./pages/LandingPage/admin/AdminDashboardPage
 import { RequireAuth } from "./auth/RequireAuth"
 import {SelectRolePage} from './pages/SelectRolePage/SelectRolePage'
 import {CustomerLayout} from "../src/pages/LandingPage/customer/CustomerLayout"
-import {DashboardPage} from "../src/pages/LandingPage/customer/Dashboard"
+import {DashboardPage} from "./pages/LandingPage/customer/DashBoard"
 import {PortfolioPage} from "./pages/LandingPage/customer/PortfolioPage"
 import {CurrenciesPage} from "./pages/LandingPage/customer/CurrenciesPage"
 import {PairsPage} from "./pages/LandingPage/customer/PairsPage"

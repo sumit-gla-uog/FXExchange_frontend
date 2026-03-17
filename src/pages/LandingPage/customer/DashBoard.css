@@ -1,0 +1,87 @@
+
+.dashboard-card {
+    padding: 20px 24px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+  }
+  
+  /* API status indicator */
+  .dashboard-status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  
+  .dashboard-status-dot.online  { background: #22c55e; }
+  .dashboard-status-dot.offline { background: #ef4444; }
+  
+  .dashboard-status-text {
+    font-weight: 600;
+    color: #111827;
+  }
+  
+  .dashboard-status-sub {
+    color: #6b7280;
+    font-size: 12px;
+  }
+  
+  /* Market snapshot */
+  .dashboard-snapshot-title {
+    font-weight: 600;
+    font-size: 17px;
+    color: #111827;
+    letter-spacing: -0.01em;
+  }
+  
+  .dashboard-snapshot-sub {
+    color: #9ca3af;
+    font-size: 12px;
+    padding-top: 8px;
+  }
+  
+  .dashboard-snapshot-view-all {
+    color: #0f766e;
+    font-weight: 600;
+  }
+  
+  .dashboard-snapshot-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    margin-top: 20px;
+  }
+  
+  /* Quick actions */
+  .dashboard-quick-actions-title {
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+  
+  .dashboard-action-btn {
+    flex: 1;
+    min-width: 160px;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    justify-content: center;
+  }
+  
+  .dashboard-action-btn.browse {
+    border: 1px solid #0f766e;
+    color: #0f766e;
+  }
+  
+  .dashboard-action-btn.pairs {
+    background: #0f766e;
+    color: white;
+  }
+  
+  .dashboard-action-btn.trade {
+    border: 1px solid #f59e0b;
+    color: #b45309;
+  }
