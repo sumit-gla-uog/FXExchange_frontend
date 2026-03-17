@@ -11,6 +11,7 @@ export default defineConfig({
   },
   test: {
     globals: true,                        // vi, describe, it, expect available globally
+    include: ["src/test/**/*.{test,spec}.{ts,tsx}"],
     environment: "jsdom",                 // DOM simulation
     setupFiles: ["./src/test/setup.ts"],  // runs before every test file
     css: false,                           // skip CSS parsing — not needed in unit tests
@@ -29,8 +30,7 @@ export default defineConfig({
         "src/App.tsx",
         "src/test/**",
         "src/lib/moduleRegistry.ts",   // side-effect only file
-        "src/api/**",                  // API layer — integration tested separately
-        "src/types/**",                // types only, no logic
+          "src/types/**",                // types only, no logic
       ],
     },
   },

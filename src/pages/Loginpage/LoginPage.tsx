@@ -89,7 +89,7 @@ const {
                       render={({ field }) => (
                         <Input
                           {...field}
-                          type={showPwd ? "text" : "password"}
+                          inputProps={{ type: showPwd ? "text" : "password" }}
                           placeholder="Enter your password"
                           endAdornment={
                             <Button

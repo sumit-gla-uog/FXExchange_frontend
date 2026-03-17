@@ -1,27 +1,22 @@
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import useSWR, { mutate } from "swr"
+import { mutate } from "swr"
 import Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 import { Card, FlexLayout, StackLayout, Text, Button, Spinner, Input, Dialog, DialogHeader, DialogContent, DialogActions } from "@salt-ds/core"
-import { fetcher } from "../../api/swr"
+import { SuccessTickIcon } from "@salt-ds/icons"
 import { apiFetch } from "../../api/client"
 import type { FX } from "../../types/FX"
+import { usePairDetail } from "../../hooks/customer/usePairDetail"
 import "./PairDetailPage.css"
-import { SuccessTickIcon } from '@salt-ds/icons';
 
 type Period = "1h" | "1d" | "1w" | "1m"
-
-interface PairLatest   { pair: FX.Customer.Pair }
-interface HistoryPoint { rate: string; recorded_at: string }
-interface PairHistory  { pair: string; period: string; history: HistoryPoint[] }
 
 interface Portfolio {
   holdings: { currency: { code: string }; amount: string; gbp_value: string | null }[]
   total_value_gbp: string
 }
 
-// Market Exchange Modal
 const MarketExchangeModal = ({ pair, portfolio, onClose }: { pair: FX.Customer.Pair; portfolio: Portfolio | undefined; onClose: () => void }) => {
   const [amount, setAmount] = useState("")
   const [loading, setLoading] = useState(false)
@@ -66,7 +61,6 @@ const MarketExchangeModal = ({ pair, portfolio, onClose }: { pair: FX.Customer.P
               </StackLayout>
             </FlexLayout>
           </div>
-
           <div className="modal-rate-box">
             <FlexLayout justify="space-between" align="center">
               <StackLayout gap={0}>
@@ -77,32 +71,26 @@ const MarketExchangeModal = ({ pair, portfolio, onClose }: { pair: FX.Customer.P
               <Button appearance="transparent" className="modal-refresh-btn" onClick={() => mutate(`/api/v1/pairs/${pair.id}/latest/`)}>Refresh</Button>
             </FlexLayout>
           </div>
-
           <StackLayout gap={0.5}>
             <Text styleAs="label" className="modal-field-label">Amount to Exchange ({pair.base.code})</Text>
             <Input value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="Enter amount" type="number" style={{ width: "100%" }} />
             <Text styleAs="label" className="modal-field-hint">Available: {pair.base.symbol}{available.toLocaleString("en-GB", { minimumFractionDigits: 2 })}</Text>
           </StackLayout>
-
           <div className="modal-estimate-box">
             <Text styleAs="label" className="modal-estimate-label">Estimated to Receive</Text>
             <Text className="modal-estimate-value">{pair.quote.symbol}{estimated} {pair.quote.code}</Text>
           </div>
-
           <div className="modal-info-box">
             <strong>Market Order:</strong> Your order will be executed immediately at the current market rate. The final rate will be confirmed at execution time.
           </div>
-
           {success ? (
             <FlexLayout direction="column" align="center" justify="center" style={{ padding: "40px 20px", textAlign: "center" }}>
-              <div className="modal-success-icon"><SuccessTickIcon/></div>
+              <div className="modal-success-icon"><SuccessTickIcon /></div>
               <Text className="modal-success-title">Transaction Successful!</Text>
               <Text className="modal-success-sub">{success}</Text>
             </FlexLayout>
           ) : (
-            <StackLayout gap={2}>
-              {error && <Text className="modal-error">{error}</Text>}
-            </StackLayout>
+            <StackLayout gap={2}>{error && <Text className="modal-error">{error}</Text>}</StackLayout>
           )}
         </StackLayout>
       </DialogContent>
@@ -118,7 +106,6 @@ const MarketExchangeModal = ({ pair, portfolio, onClose }: { pair: FX.Customer.P
   )
 }
 
-// Limit Order Modal 
 const LimitOrderModal = ({ pair, portfolio, onClose }: { pair: FX.Customer.Pair; portfolio: Portfolio | undefined; onClose: () => void }) => {
   const [amount, setAmount] = useState("")
   const [limitRate, setLimitRate] = useState("")
@@ -165,38 +152,31 @@ const LimitOrderModal = ({ pair, portfolio, onClose }: { pair: FX.Customer.Pair;
               </StackLayout>
             </FlexLayout>
           </div>
-
           <StackLayout gap={0.5}>
             <Text styleAs="label" className="modal-field-label">Amount to Exchange ({pair.base.code})</Text>
             <Input value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="Enter amount" type="number" style={{ width: "100%" }} />
             <Text styleAs="label" className="modal-field-hint">Available: {pair.base.symbol}{available.toLocaleString("en-GB", { minimumFractionDigits: 2 })}</Text>
           </StackLayout>
-
           <StackLayout gap={0.5}>
             <Text styleAs="label" className="modal-field-label">Target Rate (1 {pair.base.code} = ? {pair.quote.code})</Text>
             <Input value={limitRate} onChange={(e) => setLimitRate(e.target.value)} placeholder="Enter target rate" type="number" style={{ width: "100%" }} />
             <Text styleAs="label" className="modal-field-hint">Current market rate: {rate.toFixed(4)}</Text>
           </StackLayout>
-
           <div className="modal-estimate-box">
             <Text styleAs="label" className="modal-estimate-label">Estimated to Receive</Text>
             <Text className="modal-estimate-value">{pair.quote.symbol}{estimated} {pair.quote.code}</Text>
           </div>
-
           <div className="modal-info-box">
             <strong>Limit Order:</strong> Your order will be executed automatically when the market rate reaches your target rate. You can cancel anytime before execution.
           </div>
-
           {success ? (
             <FlexLayout direction="column" align="center" justify="center" style={{ padding: "40px 20px", textAlign: "center" }}>
-              <div className="modal-success-icon">✅</div>
+              <div className="modal-success-icon"><SuccessTickIcon/></div>
               <Text className="modal-success-title">Transaction Successful!</Text>
               <Text className="modal-success-sub">{success}</Text>
             </FlexLayout>
           ) : (
-            <StackLayout gap={2}>
-              {error && <Text className="modal-error">{error}</Text>}
-            </StackLayout>
+            <StackLayout gap={2}>{error && <Text className="modal-error">{error}</Text>}</StackLayout>
           )}
         </StackLayout>
       </DialogContent>
@@ -219,22 +199,12 @@ export const PairDetailPage = () => {
   const [showMarket, setShowMarket] = useState(false)
   const [showLimit, setShowLimit] = useState(false)
 
-  const { data: tradesData } = useSWR<{ trades: any[] }>("/api/v1/trades/", fetcher)
-  const { data: latestData, isLoading: loadingPair } = useSWR<PairLatest>(`/api/v1/pairs/${id}/latest/`, fetcher)
-  const { data: historyData, isLoading: loadingHistory } = useSWR<PairHistory>(`/api/v1/pairs/${id}/history/?period=${period}`, fetcher)
-  const { data: portfolio } = useSWR<Portfolio>("/api/v1/portfolio/", fetcher)
-
-  const pair = latestData?.pair
-
-  const pairTrades = useMemo(() => (tradesData?.trades ?? []).filter((t) => t.pair === pair?.pair), [tradesData, pair])
-  const buyCount    = pairTrades.filter((t) => t.side === "buy").length
-  const sellCount   = pairTrades.filter((t) => t.side === "sell").length
-  const totalVolume = pairTrades.reduce((sum, t) => sum + parseFloat(t.amount), 0)
-
-  const history   = historyData?.history ?? []
-  const chartData = history.map((h) => [new Date(h.recorded_at).getTime(), parseFloat(h.rate)])
-  const todayHigh = chartData.length ? Math.max(...chartData.map((d) => d[1])) : 0
-  const todayLow  = chartData.length ? Math.min(...chartData.map((d) => d[1])) : 0
+  const {
+    pair, portfolio, pairTrades,
+    buyCount, sellCount, totalVolume,
+    history, chartData, todayHigh, todayLow,
+    loadingPair, loadingHistory,
+  } = usePairDetail(id, period)
 
   const chartOptions: Highcharts.Options = {
     chart: { type: "spline", backgroundColor: "white", height: 300, style: { fontFamily: "inherit" } },

@@ -1,17 +1,15 @@
 import { useState, useMemo } from "react"
-import useSWR, { mutate } from "swr"
+import { mutate } from "swr"
 import { AgGridReact } from "ag-grid-react"
 import type { ColDef } from "ag-grid-community"
 import { Card, FlexLayout, StackLayout, Text, Input, Button, Spinner, Dialog, DialogHeader, DialogContent, DialogActions } from "@salt-ds/core"
-import { fetcher } from "../../api/swr"
 import { apiFetch } from "../../api/client"
 import { useNavigate } from "react-router-dom"
 import { CurrencySearchBar } from "../../components/ui/CurrencySearchBar"
 import type { FX } from "../../types/FX"
 import { PairCellRenderer, ChangeCellRenderer, makeTradeActionRenderer } from "../../components/grids/CellRenderers"
+import { usePairs } from "../../hooks/customer/usePairs"
 import "./PairsPage.css"
-
-const calcSpread = (rate: string) => (parseFloat(rate) * 0.0003).toFixed(4)
 
 const TradeModal = ({ pair, onClose }: { pair: FX.Customer.Pair; onClose: () => void }) => {
   const [side, setSide] = useState<"buy" | "sell">("buy")
@@ -81,23 +79,14 @@ export const PairsPage = () => {
   const [selectedPair, setSelectedPair] = useState<FX.Customer.Pair | null>(null)
   const navigate = useNavigate()
 
-  const { data, isLoading } = useSWR<FX.Customer.PairsResponse>(
-    `/api/v1/pairs/${search ? `?search=${search}` : ""}`, fetcher
-  )
-
-  const pairs = data?.pairs ?? []
-
-  const rowData = useMemo(() =>
-    pairs.map((p) => ({ ...p, rate_num: parseFloat(p.rate), spread: calcSpread(p.rate) })),
-    [pairs]
-  )
+  const { pairs, rowData, isLoading } = usePairs(search)
 
   const columnDefs = useMemo<ColDef[]>(() => [
-    { headerName: "Pair",         field: "pair",     flex: 2, minWidth: 180, sortable: true, cellRenderer: PairCellRenderer },
-    { headerName: "Current Rate", field: "rate_num", flex: 1, minWidth: 120, sortable: true, type: "rightAligned", valueFormatter: (p) => parseFloat(p.value).toFixed(4), cellStyle: () => ({ fontWeight: 600, fontSize: "15px" }) },
-    { headerName: "24h Change",   field: "change_pct", flex: 1, minWidth: 120, sortable: true, type: "rightAligned", cellRenderer: ChangeCellRenderer },
-    { headerName: "Spread",       field: "spread",   flex: 1, minWidth: 100, sortable: true, type: "rightAligned", cellStyle: () => ({ fontSize: "14px", color: "#374151" }) },
-    { headerName: "Action",       field: "id",       flex: 1, minWidth: 120, sortable: false, filter: false, type: "rightAligned", cellRenderer: makeTradeActionRenderer(navigate) },
+    { headerName: "Pair",         field: "pair",       flex: 2, minWidth: 180, sortable: true,  cellRenderer: PairCellRenderer },
+    { headerName: "Current Rate", field: "rate_num",   flex: 1, minWidth: 120, sortable: true,  type: "rightAligned", valueFormatter: (p) => parseFloat(p.value).toFixed(4), cellStyle: () => ({ fontWeight: 600, fontSize: "15px" }) },
+    { headerName: "24h Change",   field: "change_pct", flex: 1, minWidth: 120, sortable: true,  type: "rightAligned", cellRenderer: ChangeCellRenderer },
+    { headerName: "Spread",       field: "spread",     flex: 1, minWidth: 100, sortable: true,  type: "rightAligned", cellStyle: () => ({ fontSize: "14px", color: "#374151" }) },
+    { headerName: "Action",       field: "id",         flex: 1, minWidth: 120, sortable: false, filter: false, type: "rightAligned", cellRenderer: makeTradeActionRenderer(navigate) },
   ], [navigate])
 
   const defaultColDef = useMemo<ColDef>(() => ({ resizable: true, sortable: true, filter: false, suppressMovable: true }), [])
@@ -106,7 +95,13 @@ export const PairsPage = () => {
   return (
     <StackLayout gap={0}>
       <div className="pairs-search-wrapper">
-        <CurrencySearchBar value={search} onChange={setSearch} placeholder="Search pairs (e.g., GBP/USD)..." autoFocus subtitle={!isLoading ? `Showing ${pairs.length} trading ${pairs.length === 1 ? "pair" : "pairs"}` : undefined} />
+        <CurrencySearchBar
+          value={search}
+          onChange={setSearch}
+          placeholder="Search pairs (e.g., GBP/USD)..."
+          autoFocus
+          subtitle={!isLoading ? `Showing ${pairs.length} trading ${pairs.length === 1 ? "pair" : "pairs"}` : undefined}
+        />
       </div>
 
       <div className="pairs-count">
