@@ -32,41 +32,10 @@ import {
     ArrowLeftIcon,
 } from "@salt-ds/icons"
 import { useNavigate } from "react-router-dom"
+import type { FX } from "../../../types/FX"
 
 ModuleRegistry.registerModules([AllCommunityModule])
 
-interface RateRecord {
-    id: number
-    pair: string
-    pair_id: number
-    rate: string
-    source: string
-    updated_by: string
-    as_of: string
-}
-
-interface RatesResponse {
-    rates: RateRecord[]
-}
-
-interface AdminDashboardData {
-    total_currencies: number
-    total_rates: number
-    stale_rates: number
-    unavailable_rates: number
-    api_status: string
-    last_check: string | null
-    uptime_pct: string
-}
-
-interface PairsResponse {
-    pairs: { id: number; pair: string; rate: string }[]
-}
-
-interface ManualRateForm {
-    pair_id: string
-    rate: string
-}
 
 //Stat Card
 
@@ -154,18 +123,18 @@ export const AdminRatesPage = () => {
       const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ""
   
 
-    const { data: dashData, isLoading: dashLoading } = useSWR<AdminDashboardData>(
+    const { data: dashData, isLoading: dashLoading } = useSWR<FX.Admin.DashboardData>(
         "/api/v1/admin/dashboard/",
         fetcher,
         { refreshInterval: 30000 }
     )
 
-    const { data: ratesData, isLoading: ratesLoading } = useSWR<RatesResponse>(
+    const { data: ratesData, isLoading: ratesLoading } = useSWR<FX.Admin.RatesResponse>(
         "/api/v1/admin/rates/",
         fetcher
     )
 
-    const { data: pairsData } = useSWR<PairsResponse>(
+    const { data: pairsData } = useSWR<FX.Admin.AdminPairsResponse>(
         "/api/v1/pairs/",
         fetcher
     )
@@ -178,11 +147,11 @@ export const AdminRatesPage = () => {
         handleSubmit,
         reset,
         formState: { isSubmitting },
-    } = useForm<ManualRateForm>({
+    } = useForm<FX.Admin.ManualRateForm>({
         defaultValues: { pair_id: "", rate: "" },
     })
 
-    const handleManualUpdate = async (values: ManualRateForm) => {
+    const handleManualUpdate = async (values: FX.Admin.ManualRateForm) => {
         setManualError("")
         setManualSuccess("")
         try {

@@ -27,23 +27,9 @@ import {
   ArrowLeftIcon,
 } from "@salt-ds/icons"
 import { useNavigate } from "react-router-dom"
+import type { FX } from "../../../types/FX"
 
 ModuleRegistry.registerModules([AllCommunityModule])
-
-
-interface Currency {
-  id: number
-  code: string
-  name: string
-  symbol: string
-  flag: string
-  enabled: boolean
-}
-
-interface CurrenciesResponse {
-  currencies: Currency[]
-}
-
 
 export const AdminCurrenciesPage = () => {
   const navigate = useNavigate()
@@ -60,7 +46,7 @@ export const AdminCurrenciesPage = () => {
     defaultValues: { code: "", name: "", symbol: "", flag: "" },
   })
 
-  const { data, isLoading } = useSWR<CurrenciesResponse>(
+  const { data, isLoading } = useSWR<FX.Shared.CurrenciesResponse>(
     "/api/v1/admin/currencies/",
     fetcher
   )

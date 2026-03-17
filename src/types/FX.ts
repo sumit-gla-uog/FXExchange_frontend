@@ -115,7 +115,47 @@ export namespace FX {
   
     // Admin- add interfaces here as you migrate admin pages
     export namespace Admin {
-      // todo populate as admin pages get refactored
+
+      export interface DashboardData {
+        total_currencies: number
+        enabled_currencies?: number
+        total_pairs?: number
+        total_rates: number
+        stale_rates: number
+        unavailable_rates: number
+        api_status: string
+        last_check: string | null
+        uptime_pct: string
+      }
+   
+      export interface RateRecord {
+        id: number
+        pair: string
+        pair_id: number
+        rate: string
+        source: string
+        updated_by: string
+        as_of: string
+      }
+   
+      export interface RatesResponse {
+        rates: RateRecord[]
+      }
+   
+      export interface AdminPair {
+        id: number
+        pair: string
+        rate: string
+      }
+   
+      export interface AdminPairsResponse {
+        pairs: AdminPair[]
+      }
+
+      export interface ManualRateForm {
+        pair_id: string
+        rate: string
+    }
     }
   
   }

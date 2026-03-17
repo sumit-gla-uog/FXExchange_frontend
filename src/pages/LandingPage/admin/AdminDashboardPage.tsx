@@ -8,18 +8,7 @@ import {
   SuccessTickIcon,
   ArrowRightIcon,
 } from "@salt-ds/icons"
-
-interface AdminDashboardData {
-  total_currencies: number
-  enabled_currencies: number
-  total_pairs: number
-  total_rates: number
-  stale_rates: number
-  unavailable_rates: number
-  api_status: string
-  last_check: string | null
-  uptime_pct: string
-}
+import type { FX } from "../../../types/FX"
 
 // Stats Card 
 const StatCard = ({
@@ -131,7 +120,7 @@ const ActionCard = ({
 export const AdminDashboardPage = () => {
   const navigate = useNavigate()
 
-  const { data, isLoading } = useSWR<AdminDashboardData>(
+  const { data, isLoading } = useSWR<FX.Admin.DashboardData>(
     "/api/v1/admin/dashboard/",
     fetcher
   )
