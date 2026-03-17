@@ -9,6 +9,7 @@ import {
   Spinner,
 } from "@salt-ds/core"
 import { fetcher } from "../../../api/swr"
+import { CurrencyCard } from "../../../components/Ui/CurrencyCard";
 
 interface DashboardSummary {
   portfolio_value_gbp: string
@@ -63,7 +64,7 @@ const StatCard = ({
     style={{
       flex: 1,
       minWidth: 180,
-      padding: "20px 24px",
+      padding: "24px 28px",
       borderRadius: 12,
       background: "white",
       boxShadow: "0 1px 4px rgba(0,0,0,0.07)",
@@ -72,59 +73,26 @@ const StatCard = ({
       transition: "box-shadow 0.15s",
     }}
   >
-    <StackLayout gap={0.5}>
-      <Text styleAs="label" style={{ color: "#6b7280", fontSize: 13 }}>
+    <StackLayout gap={0}>
+      <Text styleAs="label" style={{ color: "#9ca3af", fontSize: 12, fontWeight: 500, letterSpacing: "0.02em" }}>
         {label}
       </Text>
       {children ?? (
         <>
-          <Text style={{ fontSize: 28, fontWeight: 700, color: "#111827" }}>
+          <Text style={{ fontSize: 32, fontWeight: 400, color: "#111827", lineHeight: 1.15, paddingTop: 8 }}>
             {value}
           </Text>
           {sub && (
-            <Text styleAs="label" style={{ color: "#6b7280", fontSize: 12 }}>
+            <Text styleAs="label" style={{ color: "#9ca3af", fontSize: 12, paddingTop: 8 }}>
               {sub}
             </Text>
           )}
         </>
       )}
     </StackLayout>
-  </Card>
-);
 
-const PairCard = ({ item }: { item: MarketPair }) => {
-  const pct = parseFloat(item.change_pct)
-  const isPositive = pct >= 0
-  const quoteCode = item.pair.split("/")[1];  // GBP/USD → USD
-  return (
-    <div
-      style={{
-        minWidth: 140,
-        padding: "20px 16px",
-        borderRadius: 12,
-        border: "1px solid #e5e7eb",
-        background: "#f8fafc",
-        textAlign: "center",
-        flex: "0 0 auto",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 6,
-      }}
-    >
-      <div style={{ fontSize: 28 }}>{item.quote_flag}</div>  {/* quote_flag */}
-      <Text style={{ fontWeight: 600, fontSize: 15, color: "#111827" }}>
-        {quoteCode}                                           {/* this will be USD not GBP, as GBP is base currency */}
-      </Text>
-      <Text style={{ fontSize: 13, color: "#374151" }}>
-        {parseFloat(item.rate).toFixed(4)}
-      </Text>
-      <Text style={{ fontSize: 12, fontWeight: 600, color: isPositive ? "#059669" : "#dc2626" }}>
-        {isPositive ? "↗ +" : "↘ "}{pct.toFixed(2)}%
-      </Text>
-    </div>
-  );
-};
+  </Card>
+)
 
 export const DashboardPage = () => {
   const navigate = useNavigate()
@@ -141,7 +109,7 @@ export const DashboardPage = () => {
 
   const { data: portfolio } = useSWR<Portfolio>("/api/v1/portfolio/", fetcher)
 
-  const { data: ordersData } = useSWR<OrdersResponse>("/api/v1/orders/?status=open",fetcher)
+  const { data: ordersData } = useSWR<OrdersResponse>("/api/v1/orders/?status=open", fetcher)
   console.log("checking Orders data:", ordersData)
 
   const gbpHolding = portfolio?.holdings.find(
@@ -217,10 +185,10 @@ export const DashboardPage = () => {
       >
         <FlexLayout justify="space-between" align="center">
           <StackLayout gap={0}>
-            <Text style={{ fontWeight: 700, fontSize: 18 }}>
+            <Text style={{ fontWeight: 600, fontSize: 17, color: "#111827", letterSpacing: "-0.01em" }}>
               Market Snapshot
             </Text>
-            <Text styleAs="label" style={{ color: "#6b7280", fontSize: 13 }}>
+            <Text style={{ color: "#9ca3af", fontSize: 12, paddingTop: 8 }}>
               Top currencies vs GBP
             </Text>
           </StackLayout>
@@ -247,9 +215,21 @@ export const DashboardPage = () => {
                 paddingBottom: 4,
               }}
             >
-              {snapshot?.market_snapshot.map((item) => (
-                <PairCard key={item.pair} item={item} />
-              ))}
+              {snapshot?.market_snapshot.map((item) => {
+                const quoteCode = item.pair.split("/")[1]
+                return (
+                  <CurrencyCard
+                    key={item.pair}
+                    variant="compact"
+                    data={{
+                      code: quoteCode,
+                      flag: item.quote_flag,
+                      rate: parseFloat(item.rate),
+                      changePct: parseFloat(item.change_pct),
+                    }}
+                  />
+                )
+              })}
             </div>
           )}
         </div>

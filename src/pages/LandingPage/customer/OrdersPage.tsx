@@ -2,10 +2,10 @@ import { useState, useMemo, useCallback } from "react";
 import useSWR, { mutate } from "swr";
 import { AgGridReact } from "ag-grid-react";
 import type { ColDef, ICellRendererParams } from "ag-grid-community";
-import "ag-grid-community/styles/ag-grid.css";
+// import "ag-grid-community/styles/ag-grid.css";
 // import "ag-grid-community/styles/ag-theme-quartz.css";
 
-import "ag-grid-community/styles/ag-theme-alpine.css";
+// import "ag-grid-community/styles/ag-theme-alpine.css";
 import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
 
 ModuleRegistry.registerModules([AllCommunityModule]); //I will move this part in seperate module.registry file
@@ -38,26 +38,26 @@ interface OrdersResponse {
 }
 
 interface Trade {
-    id: number;
-    pair: string;
-    side: "buy" | "sell";
-    amount: string;
-    rate: string;
-    total: string;
-    executed_at: string;
-  }
-  
-  interface TradesResponse {
-    trades: Trade[];
-  }
+  id: number;
+  pair: string;
+  side: "buy" | "sell";
+  amount: string;
+  rate: string;
+  total: string;
+  executed_at: string;
+}
+
+interface TradesResponse {
+  trades: Trade[];
+}
 
 type TabStatus = "all" | "open" | "filled" | "cancelled"
 
 
 const StatusBadge = ({ value }: { value: string }) => {
   const colors: Record<string, { bg: string; color: string }> = {
-    open:      { bg: "#fef9c3", color: "#854d0e" },
-    filled:    { bg: "#dcfce7", color: "#166534" },
+    open: { bg: "#fef9c3", color: "#854d0e" },
+    filled: { bg: "#dcfce7", color: "#166534" },
     cancelled: { bg: "#fee2e2", color: "#991b1b" },
   };
   const style = colors[value] ?? { bg: "#f3f4f6", color: "#374151" };
@@ -120,35 +120,35 @@ const CancelButtonCell = (params: ICellRendererParams) => {
 
 
 const TabBtn = ({
-    label,
-    count,
-    active,
-    onClick,
-  }: {
-    label: string
-    count: number
-    active: boolean
-    onClick: () => void
-  }) => (
-    <button
-      onClick={onClick}
-      style={{
-        background: "none",
-        border: "none",
-        borderRadius: 0,
-        borderBottom: active ? "2px solid #0f766e" : "2px solid transparent",
-        color: active ? "#0f766e" : "#6b7280",
-        fontWeight: active ? 700 : 500,
-        fontSize: 14,
-        padding: "10px 16px",
-        cursor: "pointer",
-        marginRight: 8,
-        transition: "all 0.15s",
-      }}
-    >
-      {label} ({count})
-    </button>
-  )
+  label,
+  count,
+  active,
+  onClick,
+}: {
+  label: string
+  count: number
+  active: boolean
+  onClick: () => void
+}) => (
+  <button
+    onClick={onClick}
+    style={{
+      background: "none",
+      border: "none",
+      borderRadius: 0,
+      borderBottom: active ? "2px solid #0f766e" : "2px solid transparent",
+      color: active ? "#0f766e" : "#6b7280",
+      fontWeight: active ? 700 : 500,
+      fontSize: 14,
+      padding: "10px 16px",
+      cursor: "pointer",
+      marginRight: 8,
+      transition: "all 0.15s",
+    }}
+  >
+    {label} ({count})
+  </button>
+)
 
 export const OrdersPage = () => {
   const [activeTab, setActiveTab] = useState<TabStatus>("all");
@@ -156,19 +156,19 @@ export const OrdersPage = () => {
     "/api/v1/orders/",
     fetcher
   );
-  
+
   const { data: tradesData, isLoading: tradesLoading } = useSWR<TradesResponse>(
     "/api/v1/trades/",
     fetcher
   );
-  
-//   const isLoading = ordersLoading || tradesLoading;
-const isLoading = !allOrdersData || !tradesData;
+
+  //   const isLoading = ordersLoading || tradesLoading;
+  const isLoading = !allOrdersData || !tradesData;
 
   const { counts, activeOrders } = useMemo(() => {
     const allOrders = allOrdersData?.orders ?? [];
     const allTrades = tradesData?.trades ?? [];
-  
+
     const normalizedTrades = allTrades.map(t => ({
       id: `m-${t.id}`,
       pair: t.pair,
@@ -181,90 +181,90 @@ const isLoading = !allOrdersData || !tradesData;
       type: "market",
       total: t.total,
     }))
-  
+
     const normalizedOrders = allOrders.map(order => ({
       ...order,
       type: "limit",
       total: (parseFloat(order.amount) * parseFloat(order.limit_rate)).toFixed(2),
     }))
-  
+
     const counts = {
-      all:       normalizedTrades.length + normalizedOrders.length,
-      open:      normalizedOrders.filter(o => o.status === "open").length,
-      filled:    normalizedOrders.filter(o => o.status === "filled").length + normalizedTrades.length,
+      all: normalizedTrades.length + normalizedOrders.length,
+      open: normalizedOrders.filter(o => o.status === "open").length,
+      filled: normalizedOrders.filter(o => o.status === "filled").length + normalizedTrades.length,
       cancelled: normalizedOrders.filter(o => o.status === "cancelled").length,
     };
-  
+
     let activeOrders;
     switch (activeTab) {
-      case "open":      activeOrders = normalizedOrders.filter(o => o.status === "open"); break;
-      case "filled":    activeOrders = [...normalizedTrades, ...normalizedOrders.filter(o => o.status === "filled")]; break;
+      case "open": activeOrders = normalizedOrders.filter(o => o.status === "open"); break;
+      case "filled": activeOrders = [...normalizedTrades, ...normalizedOrders.filter(o => o.status === "filled")]; break;
       case "cancelled": activeOrders = normalizedOrders.filter(o => o.status === "cancelled"); break;
-      default:          activeOrders = [...normalizedTrades, ...normalizedOrders];
+      default: activeOrders = [...normalizedTrades, ...normalizedOrders];
     }
-  
+
     return { counts, activeOrders };
   }, [allOrdersData, tradesData, activeTab]);
 
   console.log("activeOrders:", activeOrders);
-//   const allOrders = allOrdersData?.orders ?? [];
-// const allTrades = tradesData?.trades ?? [];
+  //   const allOrders = allOrdersData?.orders ?? [];
+  // const allTrades = tradesData?.trades ?? [];
 
-// const normalizedTrades = allTrades.map(t => ({
-//   id: `m-${t.id}`,
-//   pair: t.pair,
-//   side: t.side,
-//   amount: t.amount,
-//   limit_rate: t.rate,
-//   status: "filled" as const,
-//   created_at: t.executed_at,
-//   updated_at: t.executed_at,
-//   type: "market",
-//   total: t.total,
-// }))
+  // const normalizedTrades = allTrades.map(t => ({
+  //   id: `m-${t.id}`,
+  //   pair: t.pair,
+  //   side: t.side,
+  //   amount: t.amount,
+  //   limit_rate: t.rate,
+  //   status: "filled" as const,
+  //   created_at: t.executed_at,
+  //   updated_at: t.executed_at,
+  //   type: "market",
+  //   total: t.total,
+  // }))
 
-// const normalizedOrders = allOrders.map(o => ({
-//   ...o,
-//   type: "limit",
-//   total: (parseFloat(o.amount) * parseFloat(o.limit_rate)).toFixed(2),
-// }))
+  // const normalizedOrders = allOrders.map(o => ({
+  //   ...o,
+  //   type: "limit",
+  //   total: (parseFloat(o.amount) * parseFloat(o.limit_rate)).toFixed(2),
+  // }))
 
-// const counts = {
-//   all:       normalizedTrades.length + normalizedOrders.length,
-//   open:      normalizedOrders.filter(o => o.status === "open").length,
-//   filled:    normalizedOrders.filter(o => o.status === "filled").length + normalizedTrades.length,
-//   cancelled: normalizedOrders.filter(o => o.status === "cancelled").length,
-// }
+  // const counts = {
+  //   all:       normalizedTrades.length + normalizedOrders.length,
+  //   open:      normalizedOrders.filter(o => o.status === "open").length,
+  //   filled:    normalizedOrders.filter(o => o.status === "filled").length + normalizedTrades.length,
+  //   cancelled: normalizedOrders.filter(o => o.status === "cancelled").length,
+  // }
 
-//   const counts = {
-//     open:      openData?.orders.length ?? 0,
-//     filled:    filledData?.orders.length ?? 0,
-//     cancelled: cancelledData?.orders.length ?? 0,
-//   }
+  //   const counts = {
+  //     open:      openData?.orders.length ?? 0,
+  //     filled:    filledData?.orders.length ?? 0,
+  //     cancelled: cancelledData?.orders.length ?? 0,
+  //   }
 
-// const activeOrders = useMemo(() => {
-//     const all = [...normalizedTrades, ...normalizedOrders];
-    
-//     switch (activeTab) {
-//       case "all":       return all;
-//       case "open":      return normalizedOrders.filter(o => o.status === "open");
-//       case "filled":    return [...normalizedTrades, ...normalizedOrders.filter(o => o.status === "filled")];
-//       case "cancelled": return normalizedOrders.filter(o => o.status === "cancelled");
-//       default:          return all;
-//     }
-//   }, [activeTab, normalizedTrades, normalizedOrders]);
+  // const activeOrders = useMemo(() => {
+  //     const all = [...normalizedTrades, ...normalizedOrders];
 
-//   const activeOrders: Order[] =
-//     activeTab === "open"
-//       ? openData?.orders ?? []
-//       : activeTab === "filled"
-//       ? filledData?.orders ?? []
-//       : cancelledData?.orders ?? [];
+  //     switch (activeTab) {
+  //       case "all":       return all;
+  //       case "open":      return normalizedOrders.filter(o => o.status === "open");
+  //       case "filled":    return [...normalizedTrades, ...normalizedOrders.filter(o => o.status === "filled")];
+  //       case "cancelled": return normalizedOrders.filter(o => o.status === "cancelled");
+  //       default:          return all;
+  //     }
+  //   }, [activeTab, normalizedTrades, normalizedOrders]);
 
-//   const isLoading =
-//     (activeTab === "open" && !openData) ||
-//     (activeTab === "filled" && !filledData) ||
-//     (activeTab === "cancelled" && !cancelledData);
+  //   const activeOrders: Order[] =
+  //     activeTab === "open"
+  //       ? openData?.orders ?? []
+  //       : activeTab === "filled"
+  //       ? filledData?.orders ?? []
+  //       : cancelledData?.orders ?? [];
+
+  //   const isLoading =
+  //     (activeTab === "open" && !openData) ||
+  //     (activeTab === "filled" && !filledData) ||
+  //     (activeTab === "cancelled" && !cancelledData);
 
 
   const columnDefs = useMemo<ColDef[]>(
@@ -389,10 +389,10 @@ const isLoading = !allOrdersData || !tradesData;
         {/* Tabs */}
         {/* <div style={{ borderBottom: "1px solid #e5e7eb", marginBottom: 20 }}> */}
         <div style={{ borderBottom: "1px solid #e5e7eb" }}>
-        <TabBtn label="All"       
-        count={counts.all}       
-        active={activeTab === "all"}      
-         onClick={() => setActiveTab("all")} />
+          <TabBtn label="All"
+            count={counts.all}
+            active={activeTab === "all"}
+            onClick={() => setActiveTab("all")} />
 
           <TabBtn
             label="Pending"
@@ -420,7 +420,7 @@ const isLoading = !allOrdersData || !tradesData;
             <Spinner />
           </FlexLayout>
         ) : activeOrders.length === 0 ? (
-            <div
+          <div
             style={{
               padding: "40px 0",
               textAlign: "center",
@@ -428,9 +428,9 @@ const isLoading = !allOrdersData || !tradesData;
               fontSize: 14,
             }}
           >
-            {activeTab === "all"       && "No orders or trades yet"}
-            {activeTab === "open"      && "No pending orders"}
-            {activeTab === "filled"    && "No executed orders"}
+            {activeTab === "all" && "No orders or trades yet"}
+            {activeTab === "open" && "No pending orders"}
+            {activeTab === "filled" && "No executed orders"}
             {activeTab === "cancelled" && "No cancelled orders"}
           </div>
         ) : (
@@ -438,7 +438,7 @@ const isLoading = !allOrdersData || !tradesData;
             // className="ag-theme-quartz"
             className="ag-theme-alpine"
             style={{ width: "100%", height: Math.min(400, activeOrders.length * 58 + 50) }}
-            // style={{ width: "100%", height: 400 }} 
+          // style={{ width: "100%", height: 400 }} 
           >
             <AgGridReact
               rowData={activeOrders}
@@ -448,7 +448,7 @@ const isLoading = !allOrdersData || !tradesData;
               headerHeight={46}
               suppressMovableColumns
               suppressCellFocus
-              getRowId={(params) => String(params.data.id)} 
+              getRowId={(params) => String(params.data.id)}
             />
           </div>
         )}

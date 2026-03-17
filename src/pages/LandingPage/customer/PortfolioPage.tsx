@@ -1,5 +1,9 @@
-import useSWR from "swr";
-import { useNavigate } from "react-router-dom";
+import { useMemo } from "react"
+import useSWR from "swr"
+import { useNavigate } from "react-router-dom"
+import { AgGridReact } from "ag-grid-react"
+import type { ColDef, ICellRendererParams } from "ag-grid-community"
+import { ModuleRegistry, AllCommunityModule } from "ag-grid-community"
 import {
   Card,
   FlexLayout,
@@ -7,144 +11,231 @@ import {
   Text,
   Button,
   Spinner,
-} from "@salt-ds/core";
-import { fetcher } from "../../../api/swr";
+} from "@salt-ds/core"
+import { fetcher } from "../../../api/swr"
 
+ModuleRegistry.registerModules([AllCommunityModule])
 
 interface Holding {
   currency: {
-    code: string;
-    name: string;
-    symbol: string;
-    flag: string;
-  };
-  amount: string;
-  avg_buy_rate: string;
-  gbp_value: string | null;
+    code: string
+    name: string
+    symbol: string
+    flag: string
+  }
+  amount: string
+  avg_buy_rate: string
+  gbp_value: string | null
 }
 
 interface Portfolio {
-  holdings: Holding[];
-  total_value_gbp: string;
+  holdings: Holding[]
+  total_value_gbp: string
 }
 
 interface MarketPair {
-  pair: string;
-  rate: string;
-  change_pct: string;
+  pair: string
+  rate: string
+  change_pct: string
 }
 
 interface MarketSnapshot {
-  market_snapshot: MarketPair[];
+  market_snapshot: MarketPair[]
 }
 
-// I will move this helper method to utils later: get change_pct for a currency from market snapshot
-
+// TODO: move to utils/
 const getChangePct = (
   code: string,
   snapshot: MarketSnapshot | undefined
-): string | null => {
-  if (!snapshot) return null;
-  const match = snapshot.market_snapshot.find((p) =>
-    p.pair.startsWith(code + "/") || p.pair.endsWith("/" + code)
-  );
-  return match?.change_pct ?? null;
-};
+): number | null => {
+  if (!snapshot) return null
+  const match = snapshot.market_snapshot.find(
+    (p) => p.pair.startsWith(code + "/") || p.pair.endsWith("/" + code)
+  )
+  return match ? parseFloat(match.change_pct) : null
+}
+
+// Cell renderers
+
+const CurrencyCellRenderer = (p: ICellRendererParams) => (
+  <div style={{ display: "flex", alignItems: "center", gap: 12, height: "100%" }}>
+    <span style={{ fontSize: 24, lineHeight: 1 }}>{p.data.currency.flag}</span>
+    <div>
+      <div style={{ fontWeight: 600, fontSize: 14, color: "#111827", lineHeight: 1.3 }}>
+        {p.data.currency.code}
+      </div>
+      <div style={{ fontSize: 12, color: "#6b7280" }}>
+        {p.data.currency.name}
+      </div>
+    </div>
+  </div>
+)
+
+const ChangeCellRenderer = (p: ICellRendererParams) => {
+  const pct: number | null = p.data.change_pct
+  if (pct === null) return <span style={{ color: "#9ca3af" }}>—</span>
+  const isPositive = pct >= 0
+  return (
+    <span style={{ fontWeight: 600, fontSize: 13, color: isPositive ? "#059669" : "#dc2626" }}>
+      {isPositive ? "↗ +" : "↘ "}{pct.toFixed(2)}%
+    </span>
+  )
+}
+
+const ActionCellRenderer = (navigate: (path: string) => void) =>
+  (_p: ICellRendererParams) => (
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", height: "100%" }}>
+      <Button
+        appearance="solid"
+        sentiment="accented"
+        style={{ background: "#0f766e", color: "white", borderRadius: 8, fontSize: 13, padding: "5px 16px" }}
+        onClick={() => navigate("/customer/pairs")}
+      >
+        Trade
+      </Button>
+    </div>
+  )
+
+// Summary stat tile
+const StatTile = ({ label, value, sub }: { label: string; value: string; sub: string }) => (
+  <StackLayout gap={0} style={{ flex: 1, minWidth: 140 }}>
+    <Text style={{ fontSize: 13, color: "#9ca3af", fontWeight: 500, marginBottom: 6 }}>
+      {label}
+    </Text>
+    <Text style={{ fontSize: 36, fontWeight: 700, color: "#111827", lineHeight: 1.1 }}>
+      {value}
+    </Text>
+    <Text style={{ fontSize: 12, color: "#9ca3af", marginTop: 4 }}>
+      {sub}
+    </Text>
+  </StackLayout>
+)
 
 
 export const PortfolioPage = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const { data: portfolio, isLoading } = useSWR<Portfolio>(
-    "/api/v1/portfolio/",
-    fetcher
-  );
+  const { data: portfolio, isLoading } = useSWR<Portfolio>("/api/v1/portfolio/", fetcher)
+  const { data: snapshot } = useSWR<MarketSnapshot>("/api/v1/dashboard/market-snapshot/", fetcher)
 
-  const { data: snapshot } = useSWR<MarketSnapshot>(
-    "/api/v1/dashboard/market-snapshot/",
-    fetcher
-  );
+  const totalValue = parseFloat(portfolio?.total_value_gbp ?? "0")
+  const totalHoldings = portfolio?.holdings.length ?? 0
 
-  const totalValue = parseFloat(portfolio?.total_value_gbp ?? "0");
-  const totalHoldings = portfolio?.holdings.length ?? 0;
+  const rowData = useMemo(() =>
+    (portfolio?.holdings ?? []).map((h) => ({
+      ...h,
+      amount_num: parseFloat(h.amount),
+      gbp_value_num: h.gbp_value ? parseFloat(h.gbp_value) : 0,
+      change_pct: getChangePct(h.currency.code, snapshot),
+    })),
+    [portfolio, snapshot]
+  )
+
+  const columnDefs = useMemo<ColDef[]>(() => [
+    {
+      headerName: "Currency",
+      field: "currency.code",
+      flex: 2,
+      minWidth: 180,
+      headerClass: "ag-left-aligned-header",
+      cellRenderer: CurrencyCellRenderer,
+    },
+    {
+      headerName: "Amount",
+      field: "amount_num",
+      flex: 1,
+      minWidth: 130,
+      headerClass: "ag-right-aligned-header",
+      cellClass: "ag-right-aligned-cell",
+      valueFormatter: (p) =>
+        parseFloat(p.value).toLocaleString("en-GB", { minimumFractionDigits: 2 }),
+      cellStyle: () => ({ fontWeight: 500, fontSize: "14px" }),
+    },
+    {
+      headerName: "Value in GBP",
+      field: "gbp_value_num",
+      flex: 1,
+      minWidth: 140,
+      headerClass: "ag-right-aligned-header",
+      cellClass: "ag-right-aligned-cell",
+      valueFormatter: (p) =>
+        parseFloat(p.value).toLocaleString("en-GB", { minimumFractionDigits: 2 }),
+      cellStyle: () => ({ fontWeight: 500, fontSize: "14px" }),
+    },
+    {
+      headerName: "24h Change",
+      field: "change_pct",
+      flex: 1,
+      minWidth: 120,
+      headerClass: "ag-right-aligned-header",
+      cellClass: "ag-right-aligned-cell",
+      cellRenderer: ChangeCellRenderer,
+    },
+    {
+      headerName: "Actions",
+      field: "currency.code",
+      flex: 1,
+      minWidth: 120,
+      sortable: false,
+      filter: false,
+      headerClass: "ag-right-aligned-header",
+      cellClass: "ag-right-aligned-cell",
+      cellRenderer: ActionCellRenderer(navigate),
+    },
+  ], [navigate])
+
+  const defaultColDef = useMemo<ColDef>(() => ({
+    resizable: true,
+    sortable: true,
+    filter: false,
+    suppressMovable: true,
+  }), [])
+
+  const gridHeight = Math.min(520, rowData.length * 62 + 50)
 
   return (
     <StackLayout gap={3}>
-      {/* Portfolio Summary */}
-      <Card
-        style={{
-          padding: "24px 28px",
-          borderRadius: 12,
-          border: "1px solid #e5e7eb",
-          background: "white",
-          boxShadow: "0 1px 4px rgba(0,0,0,0.07)",
-        }}
-      >
-        <Text style={{ fontWeight: 700, fontSize: 18, marginBottom: 20 }}>
+
+      <Card style={{
+        padding: "28px 32px",
+        borderRadius: 12,
+        border: "1px solid #e5e7eb",
+        background: "white",
+        boxShadow: "0 1px 4px rgba(0,0,0,0.07)",
+      }}>
+        <Text style={{ fontWeight: 700, fontSize: 18, color: "#111827", marginBottom: 24 }}>
           Portfolio Summary
         </Text>
 
-        <FlexLayout gap={6} wrap>
-          {/* Total Value */}
-          <StackLayout gap={0.5}>
-            <Text styleAs="label" style={{ color: "#6b7280", fontSize: 13 }}>
-              Total Value
-            </Text>
-            <Text style={{ fontSize: 32, fontWeight: 700, color: "#111827" }}>
-              {isLoading
-                ? "..."
-                : totalValue.toLocaleString("en-GB", {
-                    minimumFractionDigits: 2,
-                  })}
-            </Text>
-            <Text styleAs="label" style={{ color: "#6b7280", fontSize: 12 }}>
-              GBP
-            </Text>
-          </StackLayout>
-
-          <div style={{ width: 1, background: "#e5e7eb", alignSelf: "stretch" }} />
-
-          {/* Total Holdings */}
-          <StackLayout gap={0.5}>
-            <Text styleAs="label" style={{ color: "#6b7280", fontSize: 13 }}>
-              Total Holdings
-            </Text>
-            <Text style={{ fontSize: 32, fontWeight: 700, color: "#111827" }}>
-              {isLoading ? "..." : totalHoldings}
-            </Text>
-            <Text styleAs="label" style={{ color: "#6b7280", fontSize: 12 }}>
-              Currencies
-            </Text>
-          </StackLayout>
-
-          <div style={{ width: 1, background: "#e5e7eb", alignSelf: "stretch" }} />
-
-          {/* Base Currency */}
-          <StackLayout gap={0.5}>
-            <Text styleAs="label" style={{ color: "#6b7280", fontSize: 13 }}>
-              Base Currency
-            </Text>
-            <Text style={{ fontSize: 32, fontWeight: 700, color: "#111827" }}>
-              GBP
-            </Text>
-            <Text styleAs="label" style={{ color: "#6b7280", fontSize: 12 }}>
-              Primary
-            </Text>
-          </StackLayout>
+        <FlexLayout gap={0} wrap>
+          <StatTile
+            label="Total Value"
+            value={isLoading ? "..." : totalValue.toLocaleString("en-GB", { minimumFractionDigits: 2 })}
+            sub="GBP"
+          />
+          <div style={{ width: 1, background: "#e5e7eb", alignSelf: "stretch", margin: "0 32px" }} />
+          <StatTile
+            label="Total Holdings"
+            value={isLoading ? "..." : String(totalHoldings)}
+            sub="Currencies"
+          />
+          <div style={{ width: 1, background: "#e5e7eb", alignSelf: "stretch", margin: "0 32px" }} />
+          <StatTile
+            label="Base Currency"
+            value="GBP"
+            sub="Primary"
+          />
         </FlexLayout>
       </Card>
 
-      {/* my holdings table*/}
-      <Card
-        style={{
-          padding: "24px 28px",
-          borderRadius: 12,
-          border: "1px solid #e5e7eb",
-          background: "white",
-          boxShadow: "0 1px 4px rgba(0,0,0,0.07)",
-        }}
-      >
-        <Text style={{ fontWeight: 700, fontSize: 18, marginBottom: 20 }}>
+      <Card style={{
+        padding: "24px 28px",
+        borderRadius: 12,
+        border: "1px solid #e5e7eb",
+        background: "white",
+        boxShadow: "0 1px 4px rgba(0,0,0,0.07)",
+      }}>
+        <Text style={{ fontWeight: 700, fontSize: 18, color: "#111827", marginBottom: 20 }}>
           Your Holdings
         </Text>
 
@@ -152,151 +243,27 @@ export const PortfolioPage = () => {
           <FlexLayout justify="center" style={{ padding: 40 }}>
             <Spinner />
           </FlexLayout>
+        ) : rowData.length === 0 ? (
+          <div style={{ padding: "40px 0", textAlign: "center" }}>
+            <Text style={{ color: "#9ca3af" }}>No holdings yet</Text>
+          </div>
         ) : (
-          <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
-              {/* Header */}
-              <thead>
-                <tr
-                  style={{
-                    background: "#f9fafb",
-                    borderBottom: "1px solid #e5e7eb",
-                  }}
-                >
-                  {["Currency", "Amount", "Value in GBP", "24h Change", "Actions"].map(
-                    (col) => (
-                      <th
-                        key={col}
-                        style={{
-                          padding: "12px 16px",
-                          textAlign: col === "Currency" ? "left" : "right",
-                          fontSize: 13,
-                          fontWeight: 700,
-                          color: "#374151",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {col}
-                      </th>
-                    )
-                  )}
-                </tr>
-              </thead>
-
-              {/* Rows */}
-              <tbody>
-                {(portfolio?.holdings ?? []).map((h) => {
-                  const changePct = getChangePct(h.currency.code, snapshot);
-                  const pct = changePct ? parseFloat(changePct) : null;
-                  const isPositive = pct !== null && pct >= 0;
-
-                  return (
-                    <tr
-                      key={h.currency.code}
-                      style={{
-                        borderBottom: "1px solid #f3f4f6",
-                        transition: "background 0.15s",
-                      }}
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.background = "#f9fafb")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.background = "transparent")
-                      }
-                    >
-                      {/* Currency */}
-                      <td style={{ padding: "16px" }}>
-                        <FlexLayout align="center" gap={1.5}>
-                          <span style={{ fontSize: 24 }}>{h.currency.flag}</span>
-                          <StackLayout gap={0}>
-                            <Text style={{ fontWeight: 600, fontSize: 14 }}>
-                              {h.currency.code}
-                            </Text>
-                            <Text
-                              styleAs="label"
-                              style={{ color: "#6b7280", fontSize: 12 }}
-                            >
-                              {h.currency.name}
-                            </Text>
-                          </StackLayout>
-                        </FlexLayout>
-                      </td>
-
-                      {/* Amount */}
-                      <td
-                        style={{
-                          padding: "16px",
-                          textAlign: "right",
-                          fontSize: 14,
-                          fontWeight: 500,
-                        }}
-                      >
-                        {parseFloat(h.amount).toLocaleString("en-GB", {
-                          minimumFractionDigits: 2,
-                        })}
-                      </td>
-
-                      {/* GBP Value */}
-                      <td
-                        style={{
-                          padding: "16px",
-                          textAlign: "right",
-                          fontSize: 14,
-                          fontWeight: 500,
-                        }}
-                      >
-                        {h.gbp_value
-                          ? parseFloat(h.gbp_value).toLocaleString("en-GB", {
-                              minimumFractionDigits: 2,
-                            })
-                          : "0.00"}
-                      </td>
-
-                      {/* 24h Change */}
-                      <td
-                        style={{
-                          padding: "16px",
-                          textAlign: "right",
-                          fontSize: 13,
-                          fontWeight: 600,
-                          color:
-                            pct === null
-                              ? "#9ca3af"
-                              : isPositive
-                              ? "#059669"
-                              : "#dc2626",
-                        }}
-                      >
-                        {pct === null
-                          ? "—"
-                          : `${isPositive ? "↗ +" : "↘ "}${pct.toFixed(2)}%`}
-                      </td>
-
-                      {/* Actions */}
-                      <td style={{ padding: "16px", textAlign: "right" }}>
-                        <Button
-                          appearance="solid"
-                          sentiment="accented"
-                          style={{
-                            background: "#0f766e",
-                            color: "white",
-                            borderRadius: 8,
-                            fontSize: 13,
-                            padding: "6px 16px",
-                          }}
-                          onClick={() => navigate("/customer/pairs")}
-                        >
-                          Trade
-                        </Button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+          <div className="ag-theme-alpine" style={{ width: "100%", height: gridHeight }}>
+            <AgGridReact
+              rowData={rowData}
+              columnDefs={columnDefs}
+              defaultColDef={defaultColDef}
+              rowHeight={62}
+              headerHeight={46}
+              suppressCellFocus
+              suppressMovableColumns
+              getRowId={(p) => p.data.currency.code}
+              animateRows
+            />
           </div>
         )}
       </Card>
+
     </StackLayout>
   )
 }
