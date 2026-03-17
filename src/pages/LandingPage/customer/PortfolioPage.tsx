@@ -13,40 +13,15 @@ import {
   Spinner,
 } from "@salt-ds/core"
 import { fetcher } from "../../../api/swr"
+import type { FX } from "../../../types/FX"
+
 
 ModuleRegistry.registerModules([AllCommunityModule])
-
-interface Holding {
-  currency: {
-    code: string
-    name: string
-    symbol: string
-    flag: string
-  }
-  amount: string
-  avg_buy_rate: string
-  gbp_value: string | null
-}
-
-interface Portfolio {
-  holdings: Holding[]
-  total_value_gbp: string
-}
-
-interface MarketPair {
-  pair: string
-  rate: string
-  change_pct: string
-}
-
-interface MarketSnapshot {
-  market_snapshot: MarketPair[]
-}
 
 // TODO: move to utils/
 const getChangePct = (
   code: string,
-  snapshot: MarketSnapshot | undefined
+  snapshot: FX.Shared.MarketSnapshot | undefined
 ): number | null => {
   if (!snapshot) return null
   const match = snapshot.market_snapshot.find(
@@ -115,8 +90,8 @@ const StatTile = ({ label, value, sub }: { label: string; value: string; sub: st
 export const PortfolioPage = () => {
   const navigate = useNavigate()
 
-  const { data: portfolio, isLoading } = useSWR<Portfolio>("/api/v1/portfolio/", fetcher)
-  const { data: snapshot } = useSWR<MarketSnapshot>("/api/v1/dashboard/market-snapshot/", fetcher)
+  const { data: portfolio, isLoading } = useSWR<FX.Customer.Portfolio>("/api/v1/portfolio/", fetcher)
+  const { data: snapshot } = useSWR<FX.Shared.MarketSnapshot>("/api/v1/dashboard/market-snapshot/", fetcher)
 
   const totalValue = parseFloat(portfolio?.total_value_gbp ?? "0")
   const totalHoldings = portfolio?.holdings.length ?? 0

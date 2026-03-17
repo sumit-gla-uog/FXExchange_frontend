@@ -4,21 +4,11 @@ import { FlexLayout, StackLayout, Text, Spinner, Card } from "@salt-ds/core"
 import { fetcher } from "../../../api/swr"
 import { CurrencyCard } from "../../../components/Ui/CurrencyCard"
 import { CurrencySearchBar } from "../../../components/Ui/CurrencySearchBar"
+import type { FX } from "../../../types/FX"
 
-interface Currency {
-  id: number
-  code: string
-  name: string
-  symbol: string
-  flag: string
-  enabled: boolean
-}
-interface CurrenciesResponse { currencies: Currency[] }
-interface MarketPair { pair: string; rate: string; change_pct: string }
-interface MarketSnapshot { market_snapshot: MarketPair[] }
 
 // TODO: move to utils/
-const getRateInfo = (code: string, snapshot: MarketSnapshot | undefined) => {
+const getRateInfo = (code: string, snapshot: FX.Shared.MarketSnapshot | undefined) => {
   if (!snapshot) return null;
   const match = snapshot.market_snapshot.find((p) => p.pair === `GBP/${code}`);
   return match ? { rate: match.rate, change_pct: match.change_pct } : null;
@@ -27,10 +17,10 @@ const getRateInfo = (code: string, snapshot: MarketSnapshot | undefined) => {
 export const CurrenciesPage = () => {
   const [search, setSearch] = useState("");
 
-  const { data: currenciesData, isLoading } = useSWR<CurrenciesResponse>(
+  const { data: currenciesData, isLoading } = useSWR<FX.Shared.CurrenciesResponse>(
     `/api/v1/currencies/${search ? `?search=${search}` : ""}`, fetcher
   );
-  const { data: snapshot } = useSWR<MarketSnapshot>(
+  const { data: snapshot } = useSWR<FX.Shared.MarketSnapshot>(
     "/api/v1/dashboard/market-snapshot/", fetcher
   );
 

@@ -9,42 +9,9 @@ import {
   Spinner,
 } from "@salt-ds/core"
 import { fetcher } from "../../../api/swr"
-import { CurrencyCard } from "../../../components/Ui/CurrencyCard";
+import { CurrencyCard } from "../../../components/Ui/CurrencyCard"
+import type { FX } from "../../../types/FX"
 
-interface DashboardSummary {
-  portfolio_value_gbp: string
-  num_currencies: number
-  change_24h_pct: string
-  change_24h_gbp: string
-}
-
-interface MarketPair {
-  pair: string
-  base_flag: string
-  quote_flag: string
-  rate: string
-  change_pct: string
-}
-
-interface MarketSnapshot {
-  market_snapshot: MarketPair[]
-}
-
-interface PortfolioHolding {
-  currency: { code: string; name: string; symbol: string; flag: string }
-  amount: string
-  avg_buy_rate: string
-  gbp_value: string | null
-}
-
-interface Portfolio {
-  holdings: PortfolioHolding[]
-  total_value_gbp: string
-}
-
-interface OrdersResponse {
-  orders: { id: number; status: string }[];
-}
 
 const StatCard = ({
   label,
@@ -98,18 +65,18 @@ export const DashboardPage = () => {
   const navigate = useNavigate()
 
   const { data: summary, isLoading: loadingSummary, error: summaryError } =
-    useSWR<DashboardSummary>("/api/v1/dashboard/summary/", fetcher)
+    useSWR<FX.Customer.DashboardSummary>("/api/v1/dashboard/summary/", fetcher)
   const isApiOnline = !summaryError
 
   console.log("summary", summary)
   const { data: snapshot, isLoading: loadingSnapshot, error: snapshotError } =
-    useSWR<MarketSnapshot>("/api/v1/dashboard/market-snapshot/", fetcher)
+    useSWR<FX.Customer.DashboardMarketSnapshot>("/api/v1/dashboard/market-snapshot/", fetcher)
 
   console.log("snapshot error:", snapshotError)
 
-  const { data: portfolio } = useSWR<Portfolio>("/api/v1/portfolio/", fetcher)
+  const { data: portfolio } = useSWR<FX.Customer.Portfolio>("/api/v1/portfolio/", fetcher)
 
-  const { data: ordersData } = useSWR<OrdersResponse>("/api/v1/orders/?status=open", fetcher)
+  const { data: ordersData } = useSWR<FX.Customer.OrdersResponse>("/api/v1/orders/?status=open", fetcher)
   console.log("checking Orders data:", ordersData)
 
   const gbpHolding = portfolio?.holdings.find(

@@ -3,8 +3,6 @@ import useSWR, { mutate } from "swr"
 import { AgGridReact } from "ag-grid-react"
 import type { ColDef, ICellRendererParams } from "ag-grid-community"
 import { ModuleRegistry, AllCommunityModule } from "ag-grid-community"
-// import "ag-grid-community/styles/ag-grid.css"
-// import "ag-grid-community/styles/ag-theme-alpine.css"
 import {
   Card,
   FlexLayout,
@@ -22,22 +20,13 @@ import { fetcher } from "../../../api/swr"
 import { apiFetch } from "../../../api/client"
 import { useNavigate } from "react-router-dom"
 import { CurrencySearchBar } from "../../../components/Ui/CurrencySearchBar"
+import type { FX } from "../../../types/FX"
 
 ModuleRegistry.registerModules([AllCommunityModule])
 
-interface Pair {
-  id: number
-  pair: string
-  base: { code: string; name: string; symbol: string; flag: string }
-  quote: { code: string; name: string; symbol: string; flag: string }
-  rate: string
-  change_pct: string
-}
-interface PairsResponse { pairs: Pair[] }
-
 const calcSpread = (rate: string) => (parseFloat(rate) * 0.0003).toFixed(4)
 
-const TradeModal = ({ pair, onClose }: { pair: Pair; onClose: () => void }) => {
+const TradeModal = ({ pair, onClose }: { pair: FX.Customer.Pair; onClose: () => void }) => {
   const [side, setSide] = useState<"buy" | "sell">("buy")
   const [amount, setAmount] = useState("")
   const [loading, setLoading] = useState(false)
@@ -162,10 +151,10 @@ const ChangeCellRenderer = (params: ICellRendererParams) => {
 
 export const PairsPage = () => {
   const [search, setSearch] = useState("");
-  const [selectedPair, setSelectedPair] = useState<Pair | null>(null);
+  const [selectedPair, setSelectedPair] = useState<FX.Customer.Pair | null>(null);
   const navigate = useNavigate();
 
-  const { data, isLoading } = useSWR<PairsResponse>(
+  const { data, isLoading } = useSWR<FX.Customer.PairsResponse>(
     `/api/v1/pairs/${search ? `?search=${search}` : ""}`,
     fetcher
   );

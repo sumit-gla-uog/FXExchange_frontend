@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import useSWR from "swr";
+import { useState, useMemo } from "react"
+import useSWR from "swr"
 import { ModuleRegistry, AllCommunityModule } from "ag-grid-community"
 import { AgGridReact } from "ag-grid-react"
 import type { ColDef, ICellRendererParams } from "ag-grid-community"
@@ -16,38 +16,9 @@ import {
 } from "@salt-ds/core"
 import { fetcher } from "../../../api/swr"
 import { apiFetch } from "../../../api/client"
+import type { FX } from "../../../types/FX"
 
 ModuleRegistry.registerModules([AllCommunityModule])
-
-interface Trade {
-  id: number
-  pair: string
-  side: "buy" | "sell"
-  amount: string
-  rate: string
-  total: string
-  executed_at: string
-}
-
-interface TradesResponse {
-  trades: Trade[]
-}
-
-interface Order {
-  id: number
-  pair: string
-  side: "buy" | "sell"
-  amount: string
-  limit_rate: string
-  status: "open" | "filled" | "cancelled"
-  created_at: string
-  updated_at: string
-}
-
-interface OrdersResponse {
-  orders: Order[]
-}
-
 
 const StatCard = ({
   label,
@@ -90,10 +61,10 @@ export const HistoryPage = () => {
   const [search, setSearch] = useState("")
 
   const { data: tradesData, isLoading: tradesLoading } =
-    useSWR<TradesResponse>("/api/v1/trades/", fetcher)
+    useSWR<FX.Customer.TradesResponse>("/api/v1/trades/", fetcher)
 
   const { data: allOrdersData, isLoading: ordersLoading } =
-    useSWR<OrdersResponse>("/api/v1/orders/", fetcher)
+    useSWR<FX.Customer.OrdersResponse>("/api/v1/orders/", fetcher)
 
   const isLoading = tradesLoading || ordersLoading
 

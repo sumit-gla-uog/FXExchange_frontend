@@ -1,14 +1,12 @@
-import { useState, useMemo, useCallback } from "react";
-import useSWR, { mutate } from "swr";
-import { AgGridReact } from "ag-grid-react";
-import type { ColDef, ICellRendererParams } from "ag-grid-community";
-// import "ag-grid-community/styles/ag-grid.css";
-// import "ag-grid-community/styles/ag-theme-quartz.css";
+import { useState, useMemo, useCallback } from "react"
+import useSWR, { mutate } from "swr"
+import { AgGridReact } from "ag-grid-react"
+import type { ColDef, ICellRendererParams } from "ag-grid-community"
+import { ModuleRegistry, AllCommunityModule } from "ag-grid-community"
 
-// import "ag-grid-community/styles/ag-theme-alpine.css";
-import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
 
-ModuleRegistry.registerModules([AllCommunityModule]); //I will move this part in seperate module.registry file
+
+ModuleRegistry.registerModules([AllCommunityModule]) //I will move this part in seperate module.registry file
 
 import {
   Card,
@@ -17,41 +15,10 @@ import {
   Text,
   Button,
   Spinner,
-} from "@salt-ds/core";
-import { fetcher } from "../../../api/swr";
-import { apiFetch } from "../../../api/client";
-
-
-interface Order {
-  id: number;
-  pair: string;
-  side: "buy" | "sell";
-  amount: string;
-  limit_rate: string;
-  status: "open" | "filled" | "cancelled";
-  created_at: string;
-  updated_at: string;
-}
-
-interface OrdersResponse {
-  orders: Order[];
-}
-
-interface Trade {
-  id: number;
-  pair: string;
-  side: "buy" | "sell";
-  amount: string;
-  rate: string;
-  total: string;
-  executed_at: string;
-}
-
-interface TradesResponse {
-  trades: Trade[];
-}
-
-type TabStatus = "all" | "open" | "filled" | "cancelled"
+} from "@salt-ds/core"
+import { fetcher } from "../../../api/swr"
+import { apiFetch } from "../../../api/client"
+import type { FX } from "../../../types/FX"
 
 
 const StatusBadge = ({ value }: { value: string }) => {
@@ -151,13 +118,13 @@ const TabBtn = ({
 )
 
 export const OrdersPage = () => {
-  const [activeTab, setActiveTab] = useState<TabStatus>("all");
-  const { data: allOrdersData, isLoading: ordersLoading } = useSWR<OrdersResponse>(
+  const [activeTab, setActiveTab] = useState<FX.Customer.TabStatus>("all");
+  const { data: allOrdersData, isLoading: ordersLoading } = useSWR<FX.Customer.OrdersResponse>(
     "/api/v1/orders/",
     fetcher
   );
 
-  const { data: tradesData, isLoading: tradesLoading } = useSWR<TradesResponse>(
+  const { data: tradesData, isLoading: tradesLoading } = useSWR<FX.Customer.TradesResponse>(
     "/api/v1/trades/",
     fetcher
   );
@@ -207,64 +174,6 @@ export const OrdersPage = () => {
   }, [allOrdersData, tradesData, activeTab]);
 
   console.log("activeOrders:", activeOrders);
-  //   const allOrders = allOrdersData?.orders ?? [];
-  // const allTrades = tradesData?.trades ?? [];
-
-  // const normalizedTrades = allTrades.map(t => ({
-  //   id: `m-${t.id}`,
-  //   pair: t.pair,
-  //   side: t.side,
-  //   amount: t.amount,
-  //   limit_rate: t.rate,
-  //   status: "filled" as const,
-  //   created_at: t.executed_at,
-  //   updated_at: t.executed_at,
-  //   type: "market",
-  //   total: t.total,
-  // }))
-
-  // const normalizedOrders = allOrders.map(o => ({
-  //   ...o,
-  //   type: "limit",
-  //   total: (parseFloat(o.amount) * parseFloat(o.limit_rate)).toFixed(2),
-  // }))
-
-  // const counts = {
-  //   all:       normalizedTrades.length + normalizedOrders.length,
-  //   open:      normalizedOrders.filter(o => o.status === "open").length,
-  //   filled:    normalizedOrders.filter(o => o.status === "filled").length + normalizedTrades.length,
-  //   cancelled: normalizedOrders.filter(o => o.status === "cancelled").length,
-  // }
-
-  //   const counts = {
-  //     open:      openData?.orders.length ?? 0,
-  //     filled:    filledData?.orders.length ?? 0,
-  //     cancelled: cancelledData?.orders.length ?? 0,
-  //   }
-
-  // const activeOrders = useMemo(() => {
-  //     const all = [...normalizedTrades, ...normalizedOrders];
-
-  //     switch (activeTab) {
-  //       case "all":       return all;
-  //       case "open":      return normalizedOrders.filter(o => o.status === "open");
-  //       case "filled":    return [...normalizedTrades, ...normalizedOrders.filter(o => o.status === "filled")];
-  //       case "cancelled": return normalizedOrders.filter(o => o.status === "cancelled");
-  //       default:          return all;
-  //     }
-  //   }, [activeTab, normalizedTrades, normalizedOrders]);
-
-  //   const activeOrders: Order[] =
-  //     activeTab === "open"
-  //       ? openData?.orders ?? []
-  //       : activeTab === "filled"
-  //       ? filledData?.orders ?? []
-  //       : cancelledData?.orders ?? [];
-
-  //   const isLoading =
-  //     (activeTab === "open" && !openData) ||
-  //     (activeTab === "filled" && !filledData) ||
-  //     (activeTab === "cancelled" && !cancelledData);
 
 
   const columnDefs = useMemo<ColDef[]>(
