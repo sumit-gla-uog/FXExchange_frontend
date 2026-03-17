@@ -1,17 +1,14 @@
 import { useNavigate } from "react-router-dom"
-import useSWR from "swr"
-import { fetcher } from "../../../api/swr"
 import { StackLayout, FlexLayout, Text, Card, Spinner } from "@salt-ds/core"
 import { DatabaseIcon, TriangleUpIcon, SuccessTickIcon } from "@salt-ds/icons"
-import type { FX } from "../../../types/FX"
 import { StatCard } from "../../../components/ui/StatCard"
 import { ActionCard } from "../../../components/ui/ActionCard"
+import { useAdminDashboard } from "../../../hooks/admin/useAdminDashboard"
 import "./AdminDashboardPage.css"
-
 
 export const AdminDashboardPage = () => {
   const navigate = useNavigate()
-  const { data, isLoading } = useSWR<FX.Admin.DashboardData>("/api/v1/admin/dashboard/", fetcher)
+  const { data, isLoading } = useAdminDashboard()
 
   return (
     <div>
@@ -21,15 +18,15 @@ export const AdminDashboardPage = () => {
       ) : (
         <StackLayout gap={3}>
           <FlexLayout gap={2} wrap>
-            <StatCard label="Total Currencies" value={data?.total_currencies ?? 0} sub={`${data?.enabled_currencies ?? 0} enabled`} subColor="#059669" />
-            <StatCard label="Exchange Rates" value={data?.total_rates ?? 0} sub={`${data?.total_rates ?? 0} OK`} subColor="#059669" />
-            <StatCard label="Stale Rates" value={data?.stale_rates ?? 0} sub="Need attention" subColor={data?.stale_rates ? "#f59e0b" : "#6b7280"} />
-            <StatCard label="Unavailable" value={data?.unavailable_rates ?? 0} sub="Manual update needed" subColor={data?.unavailable_rates ? "#dc2626" : "#6b7280"} />
+            <StatCard label="Total Currencies" value={data?.total_currencies ?? 0} sub={`${data?.enabled_currencies ?? 0} enabled`}  subColor="#059669" />
+            <StatCard label="Exchange Rates"   value={data?.total_rates ?? 0}       sub={`${data?.total_rates ?? 0} OK`}               subColor="#059669" />
+            <StatCard label="Stale Rates"      value={data?.stale_rates ?? 0}       sub="Need attention"                               subColor={data?.stale_rates ? "#f59e0b" : "#6b7280"} />
+            <StatCard label="Unavailable"      value={data?.unavailable_rates ?? 0} sub="Manual update needed"                         subColor={data?.unavailable_rates ? "#dc2626" : "#6b7280"} />
           </FlexLayout>
 
           <FlexLayout gap={2} wrap>
-            <ActionCard icon={<DatabaseIcon size={2} />} title="Currency Management" description="Add, edit, and manage supported currencies" linkText="Manage Currencies" onClick={() => navigate("/admin/currencies")} />
-            <ActionCard icon={<TriangleUpIcon size={2} />} title="Rate Management" description="Monitor API health and update rates manually" linkText="Manage Rates" onClick={() => navigate("/admin/rates")} />
+            <ActionCard icon={<DatabaseIcon size={2} />}   title="Currency Management" description="Add, edit, and manage supported currencies"   linkText="Manage Currencies" onClick={() => navigate("/admin/currencies")} />
+            <ActionCard icon={<TriangleUpIcon size={2} />} title="Rate Management"     description="Monitor API health and update rates manually" linkText="Manage Rates"     onClick={() => navigate("/admin/rates")} />
           </FlexLayout>
 
           <Card className="dashboard-info-card">
