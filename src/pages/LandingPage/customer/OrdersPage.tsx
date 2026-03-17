@@ -3,6 +3,7 @@ import useSWR, { mutate } from "swr"
 import { AgGridReact } from "ag-grid-react"
 import type { ColDef, ICellRendererParams } from "ag-grid-community"
 import { ModuleRegistry, AllCommunityModule } from "ag-grid-community"
+import { TabBtn } from "../../../components/ui/TabBtn"
 
 
 
@@ -86,48 +87,17 @@ const CancelButtonCell = (params: ICellRendererParams) => {
 }
 
 
-const TabBtn = ({
-  label,
-  count,
-  active,
-  onClick,
-}: {
-  label: string
-  count: number
-  active: boolean
-  onClick: () => void
-}) => (
-  <button
-    onClick={onClick}
-    style={{
-      background: "none",
-      border: "none",
-      borderRadius: 0,
-      borderBottom: active ? "2px solid #0f766e" : "2px solid transparent",
-      color: active ? "#0f766e" : "#6b7280",
-      fontWeight: active ? 700 : 500,
-      fontSize: 14,
-      padding: "10px 16px",
-      cursor: "pointer",
-      marginRight: 8,
-      transition: "all 0.15s",
-    }}
-  >
-    {label} ({count})
-  </button>
-)
-
 export const OrdersPage = () => {
   const [activeTab, setActiveTab] = useState<FX.Customer.TabStatus>("all");
   const { data: allOrdersData, isLoading: ordersLoading } = useSWR<FX.Customer.OrdersResponse>(
     "/api/v1/orders/",
     fetcher
-  );
+  )
 
   const { data: tradesData, isLoading: tradesLoading } = useSWR<FX.Customer.TradesResponse>(
     "/api/v1/trades/",
     fetcher
-  );
+  )
 
   //   const isLoading = ordersLoading || tradesLoading;
   const isLoading = !allOrdersData || !tradesData;
@@ -297,7 +267,8 @@ export const OrdersPage = () => {
 
         {/* Tabs */}
         {/* <div style={{ borderBottom: "1px solid #e5e7eb", marginBottom: 20 }}> */}
-        <div style={{ borderBottom: "1px solid #e5e7eb" }}>
+        {/* <div style={{ borderBottom: "1px solid #e5e7eb" }}> */}
+        <div className="tab-bar">
           <TabBtn label="All"
             count={counts.all}
             active={activeTab === "all"}

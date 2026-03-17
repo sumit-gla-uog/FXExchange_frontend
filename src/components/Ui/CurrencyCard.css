@@ -1,0 +1,132 @@
+/* Compact variant */
+
+.currency-card-compact {
+    min-width: 130px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    border: 1.5px solid #e5e7eb;
+    background: #f8fafc;
+    text-align: center;
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    cursor: default;
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+  }
+  
+  .currency-card-compact.clickable {
+    cursor: pointer;
+  }
+  
+  .currency-card-compact.hovered {
+    border-color: #0f766e;
+    background: #f0fdfa;
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.10);
+  }
+  
+  .currency-card-compact .flag {
+    font-size: 32px;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+  
+  .currency-card-compact .code {
+    font-weight: 700;
+    font-size: 14px;
+    color: #111827;
+    letter-spacing: 0.01em;
+  }
+  
+  .currency-card-compact .rate {
+    font-size: 13px;
+    color: #6b7280;
+  }
+  
+  .currency-card-compact .change {
+    font-size: 12px;
+    font-weight: 600;
+  }
+  
+  /* Full variant  */
+  
+  .currency-card-full {
+    padding: 28px 20px 24px;
+    border-radius: 14px;
+    border: 1.5px solid #e5e7eb;
+    background: white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    cursor: default;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .currency-card-full.clickable {
+    cursor: pointer;
+  }
+  
+  .currency-card-full.hovered {
+    border-color: #0f766e;
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.10), 0 4px 16px rgba(0, 0, 0, 0.07);
+  }
+  
+  .currency-card-full .flag {
+    font-size: 42px;
+    line-height: 1;
+    margin-bottom: 14px;
+  }
+  
+  .currency-card-full .code {
+    font-weight: 700;
+    font-size: 18px;
+    color: #111827;
+    letter-spacing: -0.01em;
+  }
+  
+  .currency-card-full .name {
+    font-size: 13px;
+    color: #9ca3af;
+    margin-top: 3px;
+  }
+  
+  .currency-card-full .divider {
+    width: 100%;
+    height: 1px;
+    background: #f3f4f6;
+    margin: 14px 0 12px;
+  }
+  
+  .currency-card-full .base-label {
+    color: #0f766e;
+    font-weight: 600;
+    font-size: 13px;
+  }
+  
+  .currency-card-full .rate-label {
+    font-size: 13px;
+    color: #6b7280;
+  }
+  
+  .currency-card-full .rate-value {
+    color: #111827;
+    font-weight: 600;
+  }
+  
+  .currency-card-full .change {
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+  
+  .currency-card-full .no-rate {
+    font-size: 12px;
+    color: #d1d5db;
+  }
+  
+  .change.positive { color: #059669; }
+  .change.negative { color: #dc2626; }

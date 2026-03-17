@@ -2,8 +2,8 @@ import { useState } from "react"
 import useSWR from "swr"
 import { FlexLayout, StackLayout, Text, Spinner, Card } from "@salt-ds/core"
 import { fetcher } from "../../../api/swr"
-import { CurrencyCard } from "../../../components/Ui/CurrencyCard"
-import { CurrencySearchBar } from "../../../components/Ui/CurrencySearchBar"
+import { CurrencyCard } from "../../../components/ui/CurrencyCard"
+import { CurrencySearchBar } from "../../../components/ui/CurrencySearchBar"
 import type { FX } from "../../../types/FX"
 
 

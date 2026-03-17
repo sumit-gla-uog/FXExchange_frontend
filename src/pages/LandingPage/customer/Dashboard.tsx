@@ -9,57 +9,10 @@ import {
   Spinner,
 } from "@salt-ds/core"
 import { fetcher } from "../../../api/swr"
-import { CurrencyCard } from "../../../components/Ui/CurrencyCard"
+import { CurrencyCard } from "../../../components/ui/CurrencyCard"
+import { StatCard } from "../../../components/ui/StatCard"
 import type { FX } from "../../../types/FX"
 
-
-const StatCard = ({
-  label,
-  value,
-  sub,
-  onClick,
-  children,
-}: {
-  label: string
-  value?: string
-  sub?: string
-  onClick?: () => void
-  children?: React.ReactNode
-}) => (
-  <Card
-    onClick={onClick}
-    style={{
-      flex: 1,
-      minWidth: 180,
-      padding: "24px 28px",
-      borderRadius: 12,
-      background: "white",
-      boxShadow: "0 1px 4px rgba(0,0,0,0.07)",
-      border: "1px solid #e5e7eb",
-      cursor: onClick ? "pointer" : "default",
-      transition: "box-shadow 0.15s",
-    }}
-  >
-    <StackLayout gap={0}>
-      <Text styleAs="label" style={{ color: "#9ca3af", fontSize: 12, fontWeight: 500, letterSpacing: "0.02em" }}>
-        {label}
-      </Text>
-      {children ?? (
-        <>
-          <Text style={{ fontSize: 32, fontWeight: 400, color: "#111827", lineHeight: 1.15, paddingTop: 8 }}>
-            {value}
-          </Text>
-          {sub && (
-            <Text styleAs="label" style={{ color: "#9ca3af", fontSize: 12, paddingTop: 8 }}>
-              {sub}
-            </Text>
-          )}
-        </>
-      )}
-    </StackLayout>
-
-  </Card>
-)
 
 export const DashboardPage = () => {
   const navigate = useNavigate()

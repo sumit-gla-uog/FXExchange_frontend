@@ -22,65 +22,21 @@
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
   }
   
-  .dashboard-stat-card__label {
+  .dashboard-stat-card_label {
     color: #6b7280;
     font-size: 13px;
   }
   
-  .dashboard-stat-card__value {
+  .dashboard-stat-card_value {
     font-size: 20px;
     font-weight: 800;
     color: #111827;
     line-height: 1.1;
   }
   
-  .dashboard-stat-card__sub {
+  .dashboard-stat-card_sub {
     font-size: 12px;
     font-weight: 600;
-  }
-  
-  /* Action card */
-  .dashboard-action-card {
-    flex: 1 1 260px;
-    min-width: 0;
-    padding: 28px 32px;
-    border-radius: 12px;
-    border: 1px solid #e5e7eb;
-    background: white;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-  }
-  
-  .dashboard-action-card__icon {
-    width: 52px;
-    height: 52px;
-    border-radius: 12px;
-    background: #f0fdf9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #0f766e;
-  }
-  
-  .dashboard-action-card__title {
-    font-weight: 700;
-    font-size: 16px;
-    color: #111827;
-  }
-  
-  .dashboard-action-card__subtitle {
-    color: #6b7280;
-    font-size: 13px;
-  }
-  
-  .dashboard-action-card__link {
-    background: none;
-    border: none;
-    color: #0f766e;
-    font-weight: 600;
-    font-size: 12px;
-    cursor: pointer;
-    padding: 0;
-    text-align: left;
   }
   
   /* Info card */

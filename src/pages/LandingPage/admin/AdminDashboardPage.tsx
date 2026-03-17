@@ -2,40 +2,12 @@ import { useNavigate } from "react-router-dom"
 import useSWR from "swr"
 import { fetcher } from "../../../api/swr"
 import { StackLayout, FlexLayout, Text, Card, Spinner } from "@salt-ds/core"
-import { DatabaseIcon, TriangleUpIcon, SuccessTickIcon, ArrowRightIcon } from "@salt-ds/icons"
+import { DatabaseIcon, TriangleUpIcon, SuccessTickIcon } from "@salt-ds/icons"
 import type { FX } from "../../../types/FX"
+import { StatCard } from "../../../components/ui/StatCard"
+import { ActionCard } from "../../../components/ui/ActionCard"
 import "./AdminDashboardPage.css"
 
-const StatCard = ({ label, value, sub, subColor }: {
-  label: string; value: string | number; sub?: string; subColor?: string
-}) => (
-  <Card className="dashboard-stat-card">
-    <StackLayout gap={1}>
-      <Text styleAs="label" className="dashboard-stat-card__label">{label}</Text>
-      <Text className="dashboard-stat-card__value">{value}</Text>
-      {sub && <Text styleAs="label" className="dashboard-stat-card__sub" style={{ color: subColor ?? "#6b7280" }}>{sub}</Text>}
-    </StackLayout>
-  </Card>
-)
-
-const ActionCard = ({ icon, title, description, linkText, onClick }: {
-  icon: React.ReactNode; title: string; description: string; linkText: string; onClick: () => void
-}) => (
-  <Card className="dashboard-action-card">
-    <StackLayout gap={2}>
-      <FlexLayout align="center" gap={2}>
-        <div className="dashboard-action-card__icon">{icon}</div>
-        <StackLayout gap={2}>
-          <Text className="dashboard-action-card__title">{title}</Text>
-          <Text styleAs="label" className="dashboard-action-card__subtitle">{description}</Text>
-        </StackLayout>
-      </FlexLayout>
-      <button className="dashboard-action-card__link" onClick={onClick}>
-        {linkText} <ArrowRightIcon />
-      </button>
-    </StackLayout>
-  </Card>
-)
 
 export const AdminDashboardPage = () => {
   const navigate = useNavigate()

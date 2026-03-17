@@ -64,19 +64,19 @@
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
   }
   
-  .rates-stat-card__label {
+  .rates-stat-card_label {
     color: #6b7280;
     font-size: 13px;
   }
   
-  .rates-stat-card__value {
+  .rates-stat-card_value {
     font-size: 32px;
     font-weight: 800;
     color: #111827;
     line-height: 1.1;
   }
   
-  .rates-stat-card__sub {
+  .rates-stat-card_sub {
     font-size: 12px;
     font-weight: 600;
   }
@@ -181,7 +181,7 @@
     font-size: 13px;
   }
   
-  /* AG Grid cell — code bold */
+  /* AG Grid cell, code bold */
   .rates-cell-code {
     font-weight: 700;
     color: #111827;

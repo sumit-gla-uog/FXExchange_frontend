@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import { FlexLayout, Text, Button } from "@salt-ds/core"
 import { CustomerSidebar } from "./CustomerSidebar"
 import { logout } from "../../../api/auth"
+import { useIsMobile } from "../../../hooks/UseIsMobile"
 
 const PAGE_META: Record<string, { title: string; subtitle: string }> = {
   "/customer/dashboard": { title: "Dashboard", subtitle: "Overview of your account" },
@@ -18,15 +19,16 @@ const DEFAULT_META = { title: "Customer", subtitle: "Dashboard Area" }
 
 export const CustomerLayout = () => {
   const [collapsed, setCollapsed] = useState(false)
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+  // const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+  const isMobile = useIsMobile()
   const navigate = useNavigate()
   const location = useLocation()
 
-  useEffect(() => {
-    const handler = () => setIsMobile(window.innerWidth < 768)
-    window.addEventListener("resize", handler)
-    return () => window.removeEventListener("resize", handler)
-  }, [])
+  // useEffect(() => {
+  //   const handler = () => setIsMobile(window.innerWidth < 768)
+  //   window.addEventListener("resize", handler)
+  //   return () => window.removeEventListener("resize", handler)
+  // }, [])
 
   const handleLogout = () => { logout(); navigate("/login", { replace: true }) }
 

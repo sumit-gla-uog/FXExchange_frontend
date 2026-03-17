@@ -19,7 +19,7 @@ import {
 import { fetcher } from "../../../api/swr"
 import { apiFetch } from "../../../api/client"
 import { useNavigate } from "react-router-dom"
-import { CurrencySearchBar } from "../../../components/Ui/CurrencySearchBar"
+import { CurrencySearchBar } from "../../../components/ui/CurrencySearchBar"
 import type { FX } from "../../../types/FX"
 
 ModuleRegistry.registerModules([AllCommunityModule])

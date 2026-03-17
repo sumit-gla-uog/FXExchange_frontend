@@ -10,6 +10,9 @@ import { apiFetch } from "../../../api/client"
 import { StackLayout, FlexLayout, Text, Card, Button, Input, Spinner, FormField, FormFieldLabel, Option, Dropdown } from "@salt-ds/core"
 import { UploadIcon, EditIcon, SuccessTickIcon, ErrorIcon, RefreshIcon, ArrowLeftIcon } from "@salt-ds/icons"
 import { useNavigate } from "react-router-dom"
+import { StatCard } from "../../../components/ui/StatCard"
+import { CSVDropZone } from "../../../components/ui/CSVDropZone"
+
 import type { FX } from "../../../types/FX"
 import "./AdminRatesPage.css"
 
@@ -17,38 +20,6 @@ ModuleRegistry.registerModules([AllCommunityModule])
 
 interface ManualRateForm { pair_id: string; rate: string }
 
-const StatCard = ({ label, value, sub, subColor }: { label: string; value: string | number; sub: string; subColor?: string }) => (
-    <Card className="rates-stat-card">
-        <StackLayout gap={1}>
-            <Text styleAs="label" className="rates-stat-card__label">{label}</Text>
-            <Text className="rates-stat-card__value">{value}</Text>
-            <Text styleAs="label" className="rates-stat-card__sub" style={{ color: subColor ?? "#6b7280" }}>{sub}</Text>
-        </StackLayout>
-    </Card>
-)
-
-const CsvDropzone = ({ onUpload }: { onUpload: (file: File) => void }) => {
-    const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({
-        accept: { "text/csv": [".csv"] }, maxFiles: 1,
-        onDrop: (files) => files[0] && onUpload(files[0]),
-    })
-    return (
-        <div {...getRootProps()} style={{ border: `2px dashed ${isDragActive ? "#0f766e" : "#d1d5db"}`, borderRadius: 10, padding: "32px 20px", textAlign: "center", cursor: "pointer", background: isDragActive ? "#f0fdf9" : "#fafafa", transition: "all 0.2s" }}>
-            <input {...getInputProps()} />
-            <UploadIcon size={2} style={{ color: "#0f766e", marginBottom: 8 }} />
-            {acceptedFiles.length > 0 ? (
-                <Text style={{ color: "#059669", fontWeight: 600, fontSize: 14 }}>{acceptedFiles[0].name} ready to upload</Text>
-            ) : isDragActive ? (
-                <Text style={{ color: "#0f766e", fontSize: 14 }}>Drop CSV here...</Text>
-            ) : (
-                <>
-                    <Text style={{ fontWeight: 600, fontSize: 14, color: "#374151" }}>Drag & drop CSV file here</Text>
-                    <Text styleAs="label" style={{ color: "#9ca3af", fontSize: 12, marginTop: 4 }}>or click to browse — format: pair_code, rate</Text>
-                </>
-            )}
-        </div>
-    )
-}
 
 export const AdminRatesPage = () => {
     const navigate = useNavigate()
@@ -175,7 +146,7 @@ export const AdminRatesPage = () => {
                     <StackLayout gap={2}>
                         <Text className="rates-method-card__title">Upload CSV File</Text>
                         <Text styleAs="label" className="rates-method-card__subtitle">CSV format: <code>pair_code,rate</code> — e.g., GBP/USD,1.2850</Text>
-                        <CsvDropzone onUpload={handleCsvUpload} />
+                        <CSVDropZone onUpload={handleCsvUpload} />
                         {csvUploading && <FlexLayout align="center" gap={1}><Spinner size="small" /><Text>Uploading...</Text></FlexLayout>}
                         {csvResult && (
                             <div style={{ padding: "12px 16px", borderRadius: 8, background: csvResult.errors.length ? "#fef2f2" : "#f0fdf4", border: `1px solid ${csvResult.errors.length ? "#fecaca" : "#bbf7d0"}` }}>

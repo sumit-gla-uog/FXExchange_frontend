@@ -16,49 +16,18 @@ import {
 } from "@salt-ds/core"
 import { fetcher } from "../../../api/swr"
 import { apiFetch } from "../../../api/client"
+import { StatCard } from "../../../components/ui/StatCard"
+import { CurrencySearchBar } from "../../../components/ui/CurrencySearchBar"
+import { useIsMobile } from "../../../hooks/UseIsMobile"
+
 import type { FX } from "../../../types/FX"
+import { SearchIcon } from "@salt-ds/icons"
 
 ModuleRegistry.registerModules([AllCommunityModule])
 
-const StatCard = ({
-  label,
-  value,
-  sub,
-}: {
-  label: string
-  value: string | number
-  sub?: string
-}) => (
-  <Card
-    style={{
-      flex: 1,
-      minWidth: 180,
-      padding: "20px 24px",
-      borderRadius: 12,
-      border: "1px solid #e5e7eb",
-      background: "white",
-      boxShadow: "0 1px 4px rgba(0,0,0,0.07)",
-    }}
-  >
-    <StackLayout gap={0.5}>
-      <Text styleAs="label" style={{ color: "#6b7280", fontSize: 13 }}>
-        {label}
-      </Text>
-      <Text style={{ fontSize: 28, fontWeight: 700, color: "#111827" }}>
-        {value}
-      </Text>
-      {sub && (
-        <Text styleAs="label" style={{ color: "#6b7280", fontSize: 12 }}>
-          {sub}
-        </Text>
-      )}
-    </StackLayout>
-  </Card>
-)
-
-
 export const HistoryPage = () => {
   const [search, setSearch] = useState("")
+  const isMobile = useIsMobile()
 
   const { data: tradesData, isLoading: tradesLoading } =
     useSWR<FX.Customer.TradesResponse>("/api/v1/trades/", fetcher)
@@ -127,8 +96,8 @@ export const HistoryPage = () => {
     // Search filter
     const filteredRows = search
       ? allRows.filter((r) =>
-          r.pair.toLowerCase().includes(search.toLowerCase())
-        )
+        r.pair.toLowerCase().includes(search.toLowerCase())
+      )
       : allRows
 
     return {
@@ -236,9 +205,9 @@ export const HistoryPage = () => {
         minWidth: 110,
         cellRenderer: (p: ICellRendererParams) => {
           const colors: Record<string, { bg: string; color: string }> = {
-            Executed:  { bg: "#dcfce7", color: "#166534" },
-            Filled:    { bg: "#dcfce7", color: "#166534" },
-            Open:      { bg: "#fef9c3", color: "#854d0e" },
+            Executed: { bg: "#dcfce7", color: "#166534" },
+            Filled: { bg: "#dcfce7", color: "#166534" },
+            Open: { bg: "#fef9c3", color: "#854d0e" },
             Cancelled: { bg: "#fee2e2", color: "#991b1b" },
           };
           const s = colors[p.value] ?? { bg: "#f3f4f6", color: "#374151" };
@@ -305,8 +274,8 @@ export const HistoryPage = () => {
             isLoading
               ? "..."
               : stats.totalVolumeGBP.toLocaleString("en-GB", {
-                  minimumFractionDigits: 2,
-                })
+                minimumFractionDigits: 2,
+              })
           }
           sub="GBP"
         />
@@ -326,27 +295,30 @@ export const HistoryPage = () => {
         }}
       >
 
-        <FlexLayout justify="space-between" align="center" style={{ marginBottom: 20 }}>
-          <Text style={{ fontWeight: 700, fontSize: 18 }}>All Trades</Text>
-          <FlexLayout gap={1} align="center">
-            <Input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by pair..."
-              style={{ borderRadius: 8, width: 200 }}
-              startAdornment={
-                <span style={{ color: "#6b7280", paddingLeft: 4 }}>🔍</span>
-              }
-            />
-            <Button
-              appearance="bordered"
-              onClick={handleExport}
-              style={{ borderRadius: 8, fontWeight: 600 }}
-            >
-               Export
-            </Button>
-          </FlexLayout>
-        </FlexLayout>
+<StackLayout gap={1} style={{ marginBottom: 20 }}>
+<FlexLayout align="center" justify="space-between" gap={1}>
+  <Text style={{ fontWeight: 700, fontSize: 18 }}>All Trades</Text>
+  <Button
+      appearance="bordered"
+      onClick={handleExport}
+      style={{ borderRadius: 8, fontWeight: 600, flexShrink: 0 }}
+    >
+      Export
+    </Button>
+    </FlexLayout>
+  <FlexLayout align="center" justify="space-between" gap={1}>
+    <Input
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+      placeholder="Search by pair..."
+      style={{ flex: 1, borderRadius: 8 }}
+      startAdornment={
+        <span style={{ color: "#9ca3af", paddingLeft: 4 }}><SearchIcon/></span>
+      }
+    />
+   
+  </FlexLayout>
+</StackLayout>
 
         {isLoading ? (
           <FlexLayout justify="center" style={{ padding: 60 }}>
