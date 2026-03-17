@@ -50,5 +50,5 @@ export const SelectRolePage =() =>  {
         </StackLayout>
       </Card>
     </div>
-  );
+  )
 }

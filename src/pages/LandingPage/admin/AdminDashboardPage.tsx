@@ -35,8 +35,8 @@ const StatCard = ({
 }) => (
   <Card
     style={{
-      flex: 1,
-      minWidth: 200,
+      flex: "1 1 160px",
+      minWidth: 0,
       padding: "24px 28px",
       borderRadius: 12,
       border: "1px solid #e5e7eb",
@@ -76,7 +76,8 @@ const ActionCard = ({
 }) => (
   <Card
     style={{
-      flex: 1,
+      flex: "1 1 260px",
+      minWidth: 0,
       padding: "28px 32px",
       borderRadius: 12,
       border: "1px solid #e5e7eb",

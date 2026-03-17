@@ -332,7 +332,6 @@ export const AdminRatesPage = () => {
                         <StackLayout gap={0}>
                             <Text styleAs="label" style={{ color: "#6b7280", fontSize: 13 }}>Status</Text>
                             <FlexLayout align="center" gap={1}>
-                                <SuccessTickIcon size={1} style={{ color: "#059669" }} />
                                 <Text style={{ fontWeight: 700, color: "#059669", fontSize: 15 }}>Operational</Text>
                             </FlexLayout>
                         </StackLayout>
@@ -382,11 +381,12 @@ export const AdminRatesPage = () => {
                 </Text>
 
                 {/* Method selector */}
-                <FlexLayout gap={2} style={{ marginBottom: 24 }}>
+                <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 24 }}>
                     <Card
                         onClick={() => setActiveMethod(activeMethod === "csv" ? null : "csv")}
                         style={{
-                            flex: 1,
+                            flex: "1 1 220px",
+                            minWidth: 0,
                             padding: "16px 20px",
                             borderRadius: 10,
                             border: `1px solid ${activeMethod === "csv" ? "#0f766e" : "#e5e7eb"}`,
@@ -399,6 +399,7 @@ export const AdminRatesPage = () => {
                                 width: 40, height: 40, borderRadius: 8,
                                 background: "#e0f2f1", display: "flex",
                                 alignItems: "center", justifyContent: "center", color: "#0f766e",
+                                flexShrink: 0,
                             }}>
                                 <UploadIcon size={2} />
                             </div>
@@ -412,7 +413,8 @@ export const AdminRatesPage = () => {
                     <Card
                         onClick={() => setActiveMethod(activeMethod === "manual" ? null : "manual")}
                         style={{
-                            flex: 1,
+                            flex: "1 1 220px",
+                            minWidth: 0,
                             padding: "16px 20px",
                             borderRadius: 10,
                             border: `1px solid ${activeMethod === "manual" ? "#0f766e" : "#e5e7eb"}`,
@@ -425,6 +427,7 @@ export const AdminRatesPage = () => {
                                 width: 40, height: 40, borderRadius: 8,
                                 background: "#dbeafe", display: "flex",
                                 alignItems: "center", justifyContent: "center", color: "#1d4ed8",
+                                flexShrink: 0,
                             }}>
                                 <EditIcon size={2} />
                             </div>
@@ -434,7 +437,7 @@ export const AdminRatesPage = () => {
                             </StackLayout>
                         </FlexLayout>
                     </Card>
-                </FlexLayout>
+                </div>
 
                 {/* CSV Upload panel */}
                 {activeMethod === "csv" && (

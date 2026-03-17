@@ -217,7 +217,7 @@ export const AdminCurrenciesPage = () => {
                 <ArrowLeftIcon size={1} />
                 Back to Dashboard
             </button>
-      <FlexLayout justify="space-between" align="center">
+      <FlexLayout justify="space-between" align="center" wrap style={{ gap: 12 }}>
         <StackLayout gap={0}>
           <Text style={{ fontWeight: 700, fontSize: 22, color: "#111827" }}>
             Currency Management
@@ -229,7 +229,7 @@ export const AdminCurrenciesPage = () => {
         <Button
           appearance="solid"
           onClick={() => { setShowForm(!showForm); setError(""); setSuccess("") }}
-          style={{ background: "#0f766e", color: "white", borderRadius: 8, fontWeight: 600 }}
+          style={{ background: "#0f766e", color: "white", borderRadius: 8, fontWeight: 600, whiteSpace: "nowrap", flexShrink: 0 }}
         >
           <AddIcon size={1} />
           Add Currency
