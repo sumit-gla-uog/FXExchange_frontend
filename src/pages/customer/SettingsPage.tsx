@@ -1,4 +1,4 @@
-import { Card, H3, Text } from "@salt-ds/core";
+import { Card, H3, Text } from "@salt-ds/core"
 
 export const SettingsPage = () => {
   return (

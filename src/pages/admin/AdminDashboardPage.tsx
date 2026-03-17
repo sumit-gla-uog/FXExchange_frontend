@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom"
 import { StackLayout, FlexLayout, Text, Card, Spinner } from "@salt-ds/core"
 import { DatabaseIcon, TriangleUpIcon, SuccessTickIcon } from "@salt-ds/icons"
-import { StatCard } from "../../../components/ui/StatCard"
-import { ActionCard } from "../../../components/ui/ActionCard"
-import { useAdminDashboard } from "../../../hooks/admin/useAdminDashboard"
+import { StatCard } from "../../components/ui/StatCard"
+import { ActionCard } from "../../components/ui/ActionCard"
+import { useAdminDashboard } from "../../hooks/admin/useAdminDashboard"
 import "./AdminDashboardPage.css"
 
 export const AdminDashboardPage = () => {

@@ -3,9 +3,9 @@ import { AgGridReact } from "ag-grid-react"
 import type { ColDef, ICellRendererParams } from "ag-grid-community"
 import { Card, FlexLayout, StackLayout, Text, Button, Spinner, Input } from "@salt-ds/core"
 import { SearchIcon } from "@salt-ds/icons"
-import { StatCard } from "../../../components/ui/StatCard"
-import { StatusBadgeCellRenderer } from "../../../components/grids/CellRenderers"
-import { useHistory } from "../../../hooks/customer/useHistory"
+import { StatCard } from "../../components/ui/StatCard"
+import { StatusBadgeCellRenderer } from "../../components/grids/CellRenderers"
+import { useHistory } from "../../hooks/customer/useHistory"
 import "./HistoryPage.css"
 
 export const HistoryPage = () => {

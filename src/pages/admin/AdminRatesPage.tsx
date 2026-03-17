@@ -5,9 +5,9 @@ import type { ColDef } from "ag-grid-community"
 import { StackLayout, FlexLayout, Text, Card, Button, Spinner, FormField, FormFieldLabel, Option, Dropdown, Input } from "@salt-ds/core"
 import { UploadIcon, EditIcon, SuccessTickIcon, ErrorIcon, RefreshIcon, ArrowLeftIcon } from "@salt-ds/icons"
 import { useNavigate } from "react-router-dom"
-import { StatCard } from "../../../components/ui/StatCard"
-import { CSVDropZone } from "../../../components/ui/CSVDropZone"
-import { useAdminRates } from "../../../hooks/admin/useAdminRates"
+import { StatCard } from "../../components/ui/StatCard"
+import { CSVDropZone } from "../../components/ui/CSVDropZone"
+import { useAdminRates } from "../../hooks/admin/useAdminRates"
 import "./AdminRatesPage.css"
 
 interface ManualRateForm { pair_id: string; rate: string }

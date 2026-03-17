@@ -2,8 +2,8 @@ import { Outlet, useNavigate, useLocation } from "react-router-dom"
 import { useState } from "react"
 import { FlexLayout, Text, Button } from "@salt-ds/core"
 import { CustomerSidebar } from "./CustomerSidebar"
-import { logout } from "../../../api/auth"
-import { useIsMobile } from "../../../hooks/UseIsMobile"
+import { logout } from "../../api/auth"
+import { useIsMobile } from "../../hooks/UseIsMobile"
 import "./CustomerLayout.css"
 
 const PAGE_META: Record<string, { title: string; subtitle: string }> = {

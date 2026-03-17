@@ -3,8 +3,8 @@ import { AgGridReact } from "ag-grid-react"
 import type { ColDef } from "ag-grid-community"
 import { useMemo } from "react"
 import { Card, FlexLayout, StackLayout, Text, Spinner } from "@salt-ds/core"
-import { CurrencyCellRenderer, ChangeCellRenderer, makePortfolioTradeRenderer } from "../../../components/grids/CellRenderers"
-import { usePortfolio } from "../../../hooks/customer/usePortfolio"
+import { CurrencyCellRenderer, ChangeCellRenderer, makePortfolioTradeRenderer } from "../../components/grids/CellRenderers"
+import { usePortfolio } from "../../hooks/customer/usePortfolio"
 import "./PortfolioPage.css"
 
 const StatTile = ({ label, value, sub }: { label: string; value: string; sub: string }) => (
@@ -20,11 +20,11 @@ export const PortfolioPage = () => {
   const { rowData, totalValue, totalHoldings, isLoading } = usePortfolio()
 
   const columnDefs = useMemo<ColDef[]>(() => [
-    { headerName: "Currency",     field: "currency.code", flex: 2, minWidth: 180, headerClass: "ag-left-aligned-header",  cellRenderer: CurrencyCellRenderer },
-    { headerName: "Amount",       field: "amount_num",    flex: 1, minWidth: 130, headerClass: "ag-right-aligned-header", cellClass: "ag-right-aligned-cell", valueFormatter: (p) => parseFloat(p.value).toLocaleString("en-GB", { minimumFractionDigits: 2 }), cellStyle: () => ({ fontWeight: 500, fontSize: "14px" }) },
+    { headerName: "Currency", field: "currency.code", flex: 2, minWidth: 180, headerClass: "ag-left-aligned-header",  cellRenderer: CurrencyCellRenderer },
+    { headerName: "Amount", field: "amount_num", flex: 1, minWidth: 130, headerClass: "ag-right-aligned-header", cellClass: "ag-right-aligned-cell", valueFormatter: (p) => parseFloat(p.value).toLocaleString("en-GB", { minimumFractionDigits: 2 }), cellStyle: () => ({ fontWeight: 500, fontSize: "14px" }) },
     { headerName: "Value in GBP", field: "gbp_value_num", flex: 1, minWidth: 140, headerClass: "ag-right-aligned-header", cellClass: "ag-right-aligned-cell", valueFormatter: (p) => parseFloat(p.value).toLocaleString("en-GB", { minimumFractionDigits: 2 }), cellStyle: () => ({ fontWeight: 500, fontSize: "14px" }) },
-    { headerName: "24h Change",   field: "change_pct",    flex: 1, minWidth: 120, headerClass: "ag-right-aligned-header", cellClass: "ag-right-aligned-cell", cellRenderer: ChangeCellRenderer },
-    { headerName: "Actions",      field: "currency.code", flex: 1, minWidth: 120, sortable: false, filter: false, headerClass: "ag-right-aligned-header", cellClass: "ag-right-aligned-cell", cellRenderer: makePortfolioTradeRenderer(navigate) },
+    { headerName: "24h Change", field: "change_pct",    flex: 1, minWidth: 120, headerClass: "ag-right-aligned-header", cellClass: "ag-right-aligned-cell", cellRenderer: ChangeCellRenderer },
+    { headerName: "Actions", field: "currency.code", flex: 1, minWidth: 120, sortable: false, filter: false, headerClass: "ag-right-aligned-header", cellClass: "ag-right-aligned-cell", cellRenderer: makePortfolioTradeRenderer(navigate) },
   ], [navigate])
 
   const defaultColDef = useMemo<ColDef>(() => ({ resizable: true, sortable: true, filter: false, suppressMovable: true }), [])

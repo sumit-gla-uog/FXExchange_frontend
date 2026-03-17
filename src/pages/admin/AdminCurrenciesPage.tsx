@@ -5,7 +5,7 @@ import type { ColDef, ICellRendererParams } from "ag-grid-community"
 import { StackLayout, FlexLayout, Text, Card, Button, Input, Spinner, FormField, FormFieldLabel } from "@salt-ds/core"
 import { AddIcon, CloseIcon, BooleanIcon, BooleanSolidIcon, ArrowLeftIcon } from "@salt-ds/icons"
 import { useNavigate } from "react-router-dom"
-import { useAdminCurrencies } from "../../../hooks/admin/useAdminCurrencies"
+import { useAdminCurrencies } from "../../hooks/admin/useAdminCurrencies"
 import "./AdminCurrenciesPage.css"
 
 export const AdminCurrenciesPage = () => {

@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom"
 import { Card, FlexLayout, StackLayout, Text, Button, Spinner } from "@salt-ds/core"
-import { CurrencyCard } from "../../../components/ui/CurrencyCard"
-import { StatCard } from "../../../components/ui/StatCard"
-import { useDashboard } from "../../../hooks/customer/useDashboard"
+import { CurrencyCard } from "../../components/ui/CurrencyCard"
+import { StatCard } from "../../components/ui/StatCard"
+import { useDashboard } from "../../hooks/customer/useDashboard"
 import "./Dashboard.css"
 
 export const DashboardPage = () => {

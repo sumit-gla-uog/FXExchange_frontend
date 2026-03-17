@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest"
 import { renderHook, act } from "@testing-library/react"
-import { useAdminCurrencies } from "../../../src/hooks/admin/useAdminCurrencies"
+import { useAdminCurrencies } from "../../../hooks/admin/useAdminCurrencies"
 
 vi.mock("swr", () => ({
   default: vi.fn(),
@@ -16,7 +16,7 @@ vi.mock("@/api/client", () => ({
 }))
 
 import useSWR, { mutate } from "swr"
-import { apiFetch } from "../../../src/api/client"
+import { apiFetch } from "../../../api/client"
 
 const mockUseSWR    = vi.mocked(useSWR)
 const mockMutate    = vi.mocked(mutate)

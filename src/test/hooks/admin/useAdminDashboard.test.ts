@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest"
 import { renderHook } from "@testing-library/react"
-import { useAdminDashboard } from "../../../src/hooks/admin/useAdminDashboard"
+import { useAdminDashboard } from "../../../hooks/admin/useAdminDashboard"
 
 vi.mock("swr", () => ({
   default: vi.fn(),

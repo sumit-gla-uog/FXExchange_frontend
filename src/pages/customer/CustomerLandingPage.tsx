@@ -2,7 +2,7 @@ import { useMemo } from "react"
 import { useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { Card, StackLayout, FlexLayout, Button, Text, H2, H3, FormField, FormFieldLabel, FormFieldHelperText, Input, Divider } from "@salt-ds/core"
-import { logout } from "../../../api/auth"
+import { logout } from "../../api/auth"
 import "./CustomerLandingPage.css"
 
 type QuickConvertForm = {

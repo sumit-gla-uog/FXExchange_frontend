@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { FlexLayout, StackLayout, Text, Spinner, Card } from "@salt-ds/core"
-import { CurrencyCard } from "../../../components/ui/CurrencyCard"
-import { CurrencySearchBar } from "../../../components/ui/CurrencySearchBar"
-import { useCurrencies } from "../../../hooks/customer/useCurrencies"
+import { CurrencyCard } from "../../components/ui/CurrencyCard"
+import { CurrencySearchBar } from "../../components/ui/CurrencySearchBar"
+import { useCurrencies } from "../../hooks/customer/useCurrencies"
 import "./CurrenciesPage.css"
 
 export const CurrenciesPage = () => {

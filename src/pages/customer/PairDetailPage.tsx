@@ -4,9 +4,9 @@ import useSWR, { mutate } from "swr"
 import Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 import { Card, FlexLayout, StackLayout, Text, Button, Spinner, Input, Dialog, DialogHeader, DialogContent, DialogActions } from "@salt-ds/core"
-import { fetcher } from "../../../api/swr"
-import { apiFetch } from "../../../api/client"
-import type { FX } from "../../../types/FX"
+import { fetcher } from "../../api/swr"
+import { apiFetch } from "../../api/client"
+import type { FX } from "../../types/FX"
 import "./PairDetailPage.css"
 import { SuccessTickIcon } from '@salt-ds/icons';
 
