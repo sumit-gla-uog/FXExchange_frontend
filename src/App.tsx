@@ -17,6 +17,9 @@ import {SettingsPage} from "./pages/customer/SettingsPage"
 import { PairDetailPage } from "./pages/customer/PairDetailPage"
 import { AdminCurrenciesPage } from "./pages/admin/AdminCurrenciesPage";
 import { AdminRatesPage } from "./pages/admin/AdminRatesPage";
+import { SignupPage } from "./pages/SignupPage"
+
+
 
 
 export default function App() {
@@ -24,6 +27,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<LoginPage />} />
+     <Route path="/signup" element={<SignupPage />} />
       <Route path="/select-role" element={
         <RequireAuth>
         <SelectRolePage />
