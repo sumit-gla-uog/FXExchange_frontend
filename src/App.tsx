@@ -1,5 +1,5 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import { LoginPage } from "./pages/Loginpage/LoginPage";
+import { Routes, Route, Navigate } from "react-router-dom"
+import { LoginPage } from "./pages/Loginpage/LoginPage"
 // import { CustomerLandingPage } from "./pages/LandingPage/customer/CustomerLandingPage"
 import { AdminLandingPage } from "./pages/admin/AdminLandingPage"
 import { AdminDashboardPage } from "./pages/admin/AdminDashboardPage"
@@ -15,16 +15,10 @@ import {OrdersPage} from "./pages/customer/OrdersPage"
 import {HistoryPage} from "./pages/customer/HistoryPage"
 import {SettingsPage} from "./pages/customer/SettingsPage"
 import { PairDetailPage } from "./pages/customer/PairDetailPage"
-import { AdminCurrenciesPage } from "./pages/admin/AdminCurrenciesPage";
-import { AdminRatesPage } from "./pages/admin/AdminRatesPage";
+import { AdminCurrenciesPage } from "./pages/admin/AdminCurrenciesPage"
+import { AdminRatesPage } from "./pages/admin/AdminRatesPage"
 import { SignupPage } from "./pages/SignupPage"
 import { DepositPage } from "./pages/customer/DepositPage"
-
-
-
-
-
-
 
 export default function App() {
   return (
