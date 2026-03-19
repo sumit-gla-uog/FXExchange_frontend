@@ -4,7 +4,6 @@
     background: #f6f7f9;
   }
   
-  /* Top bar */
   .landing-topbar {
     background: #0f766e;
     padding: 16px 20px;
@@ -27,19 +26,16 @@
   .landing-topbar .base-value {
     color: white;
   }
-  
-  /* Content */
+
   .landing-content {
     padding: 20px;
   }
   
-  /* Summary cards */
   .landing-summary-card {
     flex: 1 1 240px;
     padding: 16px;
   }
   
-  /* Market snapshot */
   .landing-market-card {
     padding: 16px;
   }
@@ -62,7 +58,6 @@
     margin-top: 6px;
   }
   
-  /* Quick convert */
   .landing-convert-card {
     padding: 16px;
   }
