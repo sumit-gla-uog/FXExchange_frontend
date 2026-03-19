@@ -241,20 +241,20 @@ export const PairDetailPage = () => {
 
       <Card className="pair-detail-card">
         <FlexLayout justify="space-between" align="flex-start" wrap>
-          <StackLayout gap={0.5}>
+          <StackLayout gap={2}>
             <Text styleAs="label" className="pair-detail-rate-label">Current Rate</Text>
             <Text className="pair-detail-rate-value">{parseFloat(pair.rate).toFixed(4)}</Text>
             <Text styleAs="label" className="pair-detail-rate-sub">1 {pair.base.code} = {parseFloat(pair.rate).toFixed(4)} {pair.quote.code}</Text>
           </StackLayout>
           <FlexLayout gap={4}>
-            <StackLayout gap={0}>
+            <StackLayout gap={2}>
               <FlexLayout align="center" gap={0.5}>
                 <Text className="pair-detail-high-arrow">↗</Text>
                 <Text styleAs="label" className="pair-detail-high-label">Today High</Text>
               </FlexLayout>
               <Text className="pair-detail-stat-value">{todayHigh.toFixed(4)}</Text>
             </StackLayout>
-            <StackLayout gap={0}>
+            <StackLayout gap={2}>
               <FlexLayout align="center" gap={0.5}>
                 <Text className="pair-detail-low-arrow">↘</Text>
                 <Text styleAs="label" className="pair-detail-low-label">Today Low</Text>
@@ -284,18 +284,20 @@ export const PairDetailPage = () => {
       </Card>
 
       <Card className="pair-detail-card">
+      <StackLayout gap={2}>
         <Text className="pair-detail-activity-title">Market Activity</Text>
-        <Text styleAs="label" className="pair-detail-activity-disclaimer">^ Buy/Sell counts are based on your personal trade history.</Text>
+        <Text styleAs="label" className="pair-detail-activity-disclaimer"> Buy/Sell counts are based on your personal trade history.</Text>
+        </StackLayout>
         <FlexLayout gap={6}>
-          <StackLayout gap={0}>
+          <StackLayout gap={2}>
             <Text styleAs="label" className="pair-detail-activity-label">Buy Count</Text>
             <Text className="pair-detail-buy-count">{buyCount}</Text>
           </StackLayout>
-          <StackLayout gap={0}>
+          <StackLayout gap={2}>
             <Text styleAs="label" className="pair-detail-activity-label">Sell Count</Text>
             <Text className="pair-detail-sell-count">{sellCount}</Text>
           </StackLayout>
-          <StackLayout gap={0}>
+          <StackLayout gap={2}>
             <Text styleAs="label" className="pair-detail-activity-label">Total Volume</Text>
             <Text className="pair-detail-volume">{totalVolume.toLocaleString("en-GB", { minimumFractionDigits: 0 })}</Text>
           </StackLayout>

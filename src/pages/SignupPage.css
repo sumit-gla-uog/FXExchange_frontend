@@ -1,0 +1,23 @@
+.signup-submit-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 8px;
+    border: none;
+    background: #0f766e;
+    color: white;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.15s;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  
+  .signup-submit-btn:hover:not(:disabled) {
+    background: #0d6460;
+  }
+  
+  .signup-submit-btn:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+  }

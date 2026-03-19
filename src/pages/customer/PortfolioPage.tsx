@@ -36,9 +36,9 @@ export const PortfolioPage = () => {
         <Text className="portfolio-summary-title">Portfolio Summary</Text>
         <FlexLayout gap={0} wrap>
           <StatTile label="Total Value"    value={isLoading ? "..." : totalValue.toLocaleString("en-GB", { minimumFractionDigits: 2 })} sub="GBP" />
-          <div className="stat-tile-divider" />
+          {/* <div className="stat-tile-divider" /> */}
           <StatTile label="Total Holdings" value={isLoading ? "..." : String(totalHoldings)} sub="Currencies" />
-          <div className="stat-tile-divider" />
+          {/* <div className="stat-tile-divider" /> */}
           <StatTile label="Base Currency"  value="GBP" sub="Primary" />
         </FlexLayout>
       </Card>

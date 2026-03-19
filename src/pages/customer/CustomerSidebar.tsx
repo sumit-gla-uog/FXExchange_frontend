@@ -2,6 +2,8 @@ import { useMemo } from "react"
 import { NavLink, useLocation } from "react-router-dom"
 import { StackLayout, FlexLayout, Text, Button } from "@salt-ds/core"
 import { BuildReportIcon, CurrencyExchangeIcon, HistoryIcon, HomeIcon, NoteIcon, SettingsIcon, SwapIcon } from "@salt-ds/icons"
+import { CreditCardIcon } from "@salt-ds/icons"
+
 import "./CustomerSidebar.css"
 
 type Item = { label: string; to: string; icon: React.ReactNode; disabled?: boolean }
@@ -20,11 +22,13 @@ export const CustomerSidebar = ({
   const items: Item[] = useMemo(() => [
     { label: "Dashboard",  to: "/customer/dashboard",  icon: <HomeIcon /> },
     { label: "Portfolio",  to: "/customer/portfolio",  icon: <BuildReportIcon /> },
+    { label: "Deposit", to: "/customer/deposit", icon: <CreditCardIcon /> },
     { label: "Currencies", to: "/customer/currencies", icon: <CurrencyExchangeIcon /> },
     { label: "Pairs",      to: "/customer/pairs",      icon: <SwapIcon /> },
     { label: "Orders",     to: "/customer/orders",     icon: <NoteIcon /> },
     { label: "History",    to: "/customer/history",    icon: <HistoryIcon /> },
-    { label: "Settings",   to: "/customer/settings",   icon: <SettingsIcon />, disabled: true },
+    
+    // { label: "Settings",   to: "/customer/settings",   icon: <SettingsIcon />, disabled: true },
   ], [])
 
   if (isMobile) {

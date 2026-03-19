@@ -18,6 +18,10 @@ import { PairDetailPage } from "./pages/customer/PairDetailPage"
 import { AdminCurrenciesPage } from "./pages/admin/AdminCurrenciesPage";
 import { AdminRatesPage } from "./pages/admin/AdminRatesPage";
 import { SignupPage } from "./pages/SignupPage"
+import { DepositPage } from "./pages/customer/DepositPage"
+
+
+
 
 
 
@@ -64,6 +68,7 @@ export default function App() {
    <Route path="pairs/:id" element={<PairDetailPage />} />
   <Route path="orders" element={<OrdersPage />} />
   <Route path="history" element={<HistoryPage />} />
+  <Route path="deposit" element={<DepositPage />} />
   <Route path="settings" element={<SettingsPage />} /> 
 </Route>
     </Routes>

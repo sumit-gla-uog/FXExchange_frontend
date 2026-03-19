@@ -2,75 +2,139 @@ import { describe, it, expect, vi, beforeEach } from "vitest"
 import { render, screen, fireEvent } from "@testing-library/react"
 import { SelectRolePage } from "../../pages/SelectRolePage/SelectRolePage"
 
-vi.mock("swr", () => ({ default: vi.fn() }))
-vi.mock("@/api/swr", () => ({ fetcher: vi.fn() }))
-vi.mock("@/api/client", () => ({ getAccessToken: vi.fn().mockReturnValue("mock-token") }))
-vi.mock("react-router-dom", () => ({ useNavigate: () => mockNavigate }))
+vi.mock("../../hooks/useSelectRole", () => ({ useSelectRole: vi.fn() }))
 
-import useSWR from "swr"
-const mockUseSWR = vi.mocked(useSWR)
-const mockNavigate = vi.fn()
+import { useSelectRole } from "../../hooks/useSelectRole"
+const mockUseSelectRole = vi.mocked(useSelectRole)
+
+const mockPick = vi.fn()
+
+const defaultHook = {
+  username: "sumit",
+  isAdmin: false,
+  isLoading: false,
+  pick: mockPick,
+}
 
 describe("SelectRolePage", () => {
 
-  beforeEach(() => { vi.clearAllMocks() })
-
-  it("shows loading when fetching user", () => {
-    mockUseSWR.mockReturnValue({ data: undefined, isLoading: true } as any)
-    render(<SelectRolePage />)
-    expect(screen.getByText("Loading...")).toBeInTheDocument()
+  beforeEach(() => {
+    vi.clearAllMocks()
+    mockUseSelectRole.mockReturnValue(defaultHook)
   })
 
-  it("renders Select Role heading", () => {
-    mockUseSWR.mockReturnValue({ data: { user: { role: "customer" } }, isLoading: false } as any)
-    render(<SelectRolePage />)
-    expect(screen.getByText("Select Role")).toBeInTheDocument()
+  describe("loading state", () => {
+    it("shows loading when fetching", () => {
+      mockUseSelectRole.mockReturnValue({ ...defaultHook, isLoading: true })
+      render(<SelectRolePage />)
+      expect(screen.getByText("Loading...")).toBeInTheDocument()
+    })
   })
 
-  it("renders Continue as Customer button for all users", () => {
-    mockUseSWR.mockReturnValue({ data: { user: { role: "customer" } }, isLoading: false } as any)
-    render(<SelectRolePage />)
-    expect(screen.getByText("Continue as Customer")).toBeInTheDocument()
+  describe("rendering", () => {
+    it("renders FX Exchange heading", () => {
+      render(<SelectRolePage />)
+      expect(screen.getByText("FX Exchange")).toBeInTheDocument()
+    })
+
+    it("renders currency exchange icon logo", () => {
+      const { container } = render(<SelectRolePage />)
+      expect(container.querySelector(".select-role-logo")).toBeInTheDocument()
+    })
+
+    it("renders welcome back text", () => {
+      render(<SelectRolePage />)
+      expect(screen.getByText("Welcome back,")).toBeInTheDocument()
+    })
+
+    it("renders username", () => {
+      render(<SelectRolePage />)
+      expect(screen.getByText("sumit")).toBeInTheDocument()
+    })
+
+    it("renders Select Role label", () => {
+      render(<SelectRolePage />)
+      expect(screen.getByText("Select Role")).toBeInTheDocument()
+    })
+
+    it("renders Customer option", () => {
+      render(<SelectRolePage />)
+      expect(screen.getByText("Customer")).toBeInTheDocument()
+    })
+
+    it("renders Customer description", () => {
+      render(<SelectRolePage />)
+      expect(screen.getByText("View balances and exchange currencies")).toBeInTheDocument()
+    })
+
+    it("does not render Administrator option for customer role", () => {
+      render(<SelectRolePage />)
+      expect(screen.queryByText("Administrator")).not.toBeInTheDocument()
+    })
+
+    it("renders Administrator option for admin role", () => {
+      mockUseSelectRole.mockReturnValue({ ...defaultHook, isAdmin: true })
+      render(<SelectRolePage />)
+      expect(screen.getByText("Administrator")).toBeInTheDocument()
+    })
+
+    it("renders disclaimer text", () => {
+      render(<SelectRolePage />)
+      expect(screen.getByText(/simulated trading platform/)).toBeInTheDocument()
+    })
   })
 
-  it("does not render Continue as Admin for customer role", () => {
-    mockUseSWR.mockReturnValue({ data: { user: { role: "customer" } }, isLoading: false } as any)
-    render(<SelectRolePage />)
-    expect(screen.queryByText("Continue as Admin")).not.toBeInTheDocument()
+  describe("role selection", () => {
+    it("Customer is selected by default", () => {
+      render(<SelectRolePage />)
+      const customerOption = screen.getByText("Customer").closest(".select-role-option")
+      expect(customerOption).toHaveClass("active")
+    })
+
+    it("Continue button shows Customer by default", () => {
+      render(<SelectRolePage />)
+      expect(screen.getByText("Continue as Customer")).toBeInTheDocument()
+    })
+
+    it("selecting Admin updates button text", () => {
+      mockUseSelectRole.mockReturnValue({ ...defaultHook, isAdmin: true })
+      render(<SelectRolePage />)
+      fireEvent.click(screen.getByText("Administrator").closest(".select-role-option")!)
+      expect(screen.getByText("Continue as Administrator")).toBeInTheDocument()
+    })
+
+    it("clicking Customer option makes it active", () => {
+      mockUseSelectRole.mockReturnValue({ ...defaultHook, isAdmin: true })
+      render(<SelectRolePage />)
+      fireEvent.click(screen.getByText("Administrator").closest(".select-role-option")!)
+      fireEvent.click(screen.getByText("Customer").closest(".select-role-option")!)
+      const customerOption = screen.getByText("Customer").closest(".select-role-option")
+      expect(customerOption).toHaveClass("active")
+    })
+
+    it("clicking Admin option makes it active", () => {
+      mockUseSelectRole.mockReturnValue({ ...defaultHook, isAdmin: true })
+      render(<SelectRolePage />)
+      fireEvent.click(screen.getByText("Administrator").closest(".select-role-option")!)
+      const adminOption = screen.getByText("Administrator").closest(".select-role-option")
+      expect(adminOption).toHaveClass("active")
+    })
   })
 
-  it("renders Continue as Admin button for admin role", () => {
-    mockUseSWR.mockReturnValue({ data: { user: { role: "admin" } }, isLoading: false } as any)
-    render(<SelectRolePage />)
-    expect(screen.getByText("Continue as Admin")).toBeInTheDocument()
-  })
+  describe("continue button", () => {
+    it("calls pick with customer when Customer selected", () => {
+      render(<SelectRolePage />)
+      fireEvent.click(screen.getByText("Continue as Customer"))
+      expect(mockPick).toHaveBeenCalledWith("customer")
+    })
 
-  it("navigates to /customer on Continue as Customer click", () => {
-    mockUseSWR.mockReturnValue({ data: { user: { role: "customer" } }, isLoading: false } as any)
-    render(<SelectRolePage />)
-    fireEvent.click(screen.getByText("Continue as Customer"))
-    expect(mockNavigate).toHaveBeenCalledWith("/customer", { replace: true })
-  })
-
-  it("navigates to /admin on Continue as Admin click", () => {
-    mockUseSWR.mockReturnValue({ data: { user: { role: "admin" } }, isLoading: false } as any)
-    render(<SelectRolePage />)
-    fireEvent.click(screen.getByText("Continue as Admin"))
-    expect(mockNavigate).toHaveBeenCalledWith("/admin", { replace: true })
-  })
-
-  it("stores active_role in localStorage on customer selection", () => {
-    mockUseSWR.mockReturnValue({ data: { user: { role: "customer" } }, isLoading: false } as any)
-    render(<SelectRolePage />)
-    fireEvent.click(screen.getByText("Continue as Customer"))
-    expect(localStorage.getItem("active_role")).toBe("customer")
-  })
-
-  it("stores active_role in localStorage on admin selection", () => {
-    mockUseSWR.mockReturnValue({ data: { user: { role: "admin" } }, isLoading: false } as any)
-    render(<SelectRolePage />)
-    fireEvent.click(screen.getByText("Continue as Admin"))
-    expect(localStorage.getItem("active_role")).toBe("admin")
+    it("calls pick with admin when Admin selected", () => {
+      mockUseSelectRole.mockReturnValue({ ...defaultHook, isAdmin: true })
+      render(<SelectRolePage />)
+      fireEvent.click(screen.getByText("Administrator").closest(".select-role-option")!)
+      fireEvent.click(screen.getByText("Continue as Administrator"))
+      expect(mockPick).toHaveBeenCalledWith("admin")
+    })
   })
 
 })

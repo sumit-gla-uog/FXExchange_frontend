@@ -4,12 +4,14 @@ import { useForm, Controller } from "react-hook-form"
 import { Card, StackLayout, Button, Text, H2, H3, FormField, FormFieldLabel, FormFieldHelperText, Input, Link } from "@salt-ds/core"
 import { useSignup } from "../hooks/useSignup"
 import styles from "./Loginpage/LoginPage.module.css"
+import "./SignupPage.css"
 
 type SignupForm = {
   username: string
   email: string
   password: string
   confirmPassword: string
+  role: "customer" | "admin"
 }
 
 export const SignupPage = () => {
@@ -25,7 +27,7 @@ export const SignupPage = () => {
     watch,
     formState: { errors },
   } = useForm<SignupForm>({
-    defaultValues: { username: "", email: "", password: "", confirmPassword: "" },
+    defaultValues: { username: "", email: "", password: "", confirmPassword: "", role: "customer" },
   })
 
   const onSubmit = async (data: SignupForm) => {
@@ -34,7 +36,7 @@ export const SignupPage = () => {
         username: data.username,
         email: data.email,
         password: data.password,
-        role: "customer",
+        role: data.role,
       })
       setSuccess(true)
       setTimeout(() => navigate("/login"), 1500)
@@ -133,13 +135,51 @@ export const SignupPage = () => {
                     {errors.confirmPassword && <FormFieldHelperText>{errors.confirmPassword.message}</FormFieldHelperText>}
                   </FormField>
 
+                  <FormField>
+                    <FormFieldLabel>Account Type</FormFieldLabel>
+                    <Controller name="role" control={control}
+                      render={({ field }) => (
+                        <div style={{ display: "flex", gap: 8 }}>
+                          <button
+                            type="button"
+                            onClick={() => field.onChange("customer")}
+                            style={{
+                              flex: 1, padding: "10px 0", borderRadius: 8, cursor: "pointer",
+                              border: `1px solid ${field.value === "customer" ? "#0f766e" : "#e5e7eb"}`,
+                              background: field.value === "customer" ? "#0f766e" : "#f9fafb",
+                              color: field.value === "customer" ? "white" : "#374151",
+                              fontWeight: field.value === "customer" ? 600 : 500,
+                              fontSize: 14,
+                            }}
+                          >
+                            Customer
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => field.onChange("admin")}
+                            style={{
+                              flex: 1, padding: "10px 0", borderRadius: 8, cursor: "pointer",
+                              border: `1px solid ${field.value === "admin" ? "#0f766e" : "#e5e7eb"}`,
+                              background: field.value === "admin" ? "#0f766e" : "#f9fafb",
+                              color: field.value === "admin" ? "white" : "#374151",
+                              fontWeight: field.value === "admin" ? 600 : 500,
+                              fontSize: 14,
+                            }}
+                          >
+                            Admin
+                          </button>
+                        </div>
+                      )}
+                    />
+                  </FormField>
+
                   {serverError && (
                     <Text style={{ color: "#dc2626", fontSize: 13 }}>{serverError}</Text>
                   )}
 
-                  <Button type="submit" appearance="solid" sentiment="accented" disabled={isLoading}>
+                  <button type="submit" className="signup-submit-btn" disabled={isLoading}>
                     {isLoading ? "Creating account..." : "Sign Up"}
-                  </Button>
+                  </button>
 
                   <Text variant="secondary" style={{ textAlign: "center" }}>
                     Already have an account?{" "}
