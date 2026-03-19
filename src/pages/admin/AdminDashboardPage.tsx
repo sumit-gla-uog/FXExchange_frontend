@@ -19,9 +19,9 @@ export const AdminDashboardPage = () => {
         <StackLayout gap={3}>
           <FlexLayout gap={2} wrap>
             <StatCard label="Total Currencies" value={data?.total_currencies ?? 0} sub={`${data?.enabled_currencies ?? 0} enabled`}  subColor="#059669" />
-            <StatCard label="Exchange Rates"   value={data?.total_rates ?? 0}       sub={`${data?.total_rates ?? 0} OK`}               subColor="#059669" />
-            <StatCard label="Stale Rates"      value={data?.stale_rates ?? 0}       sub="Need attention"                               subColor={data?.stale_rates ? "#f59e0b" : "#6b7280"} />
-            <StatCard label="Unavailable"      value={data?.unavailable_rates ?? 0} sub="Manual update needed"                         subColor={data?.unavailable_rates ? "#dc2626" : "#6b7280"} />
+            <StatCard label="Exchange Rates"   value={data?.total_rates ?? 0}       sub={`${data?.total_rates ?? 0} OK`}  subColor="#059669" />
+            <StatCard label="Stale Rates"      value={data?.stale_rates ?? 0}       sub="Need attention" subColor={data?.stale_rates ? "#f59e0b" : "#6b7280"} />
+            <StatCard label="Unavailable"      value={data?.unavailable_rates ?? 0} sub="Manual update needed" subColor={data?.unavailable_rates ? "#dc2626" : "#6b7280"} />
           </FlexLayout>
 
           <FlexLayout gap={2} wrap>
