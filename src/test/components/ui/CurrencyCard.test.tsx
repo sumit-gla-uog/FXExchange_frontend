@@ -3,10 +3,16 @@ import { render, screen, fireEvent } from "@testing-library/react"
 import { CurrencyCard } from "../../../components/ui/CurrencyCard"
 import type { CurrencyCardData } from "../../../components/ui/CurrencyCard"
 
+// Mock CurrencyFlag so tests don't depend on @salt-ds/countries
+vi.mock("../../../components/ui/CurrencyFlag", () => ({
+  CurrencyFlag: ({ code }: { code: string }) => (
+    <span data-testid="currency-flag">{code}</span>
+  ),
+}))
+
 const baseData: CurrencyCardData = {
   code: "USD",
   name: "US Dollar",
-  flag: "usd",
   rate: 1.2850,
   changePct: 0.45,
 }
@@ -16,12 +22,14 @@ describe("CurrencyCard", () => {
   describe("compact variant", () => {
     it("renders currency code", () => {
       render(<CurrencyCard variant="compact" data={baseData} />)
-      expect(screen.getByText("USD")).toBeInTheDocument()
+      const codeEl = screen.getAllByText("USD")
+      expect(codeEl.length).toBeGreaterThan(0)
     })
 
-    it("renders flag", () => {
+    it("renders flag via CurrencyFlag component", () => {
       render(<CurrencyCard variant="compact" data={baseData} />)
-      expect(screen.getByText("usd")).toBeInTheDocument()
+      expect(screen.getByTestId("currency-flag")).toBeInTheDocument()
+      expect(screen.getByTestId("currency-flag")).toHaveTextContent("USD")
     })
 
     it("renders formatted rate", () => {
@@ -62,7 +70,7 @@ describe("CurrencyCard", () => {
     it("calls onClick when clicked", () => {
       const handleClick = vi.fn()
       render(<CurrencyCard variant="compact" data={baseData} onClick={handleClick} />)
-      fireEvent.click(screen.getByText("USD"))
+      fireEvent.click(screen.getAllByText("USD")[0])
       expect(handleClick).toHaveBeenCalledTimes(1)
     })
   })
@@ -70,7 +78,14 @@ describe("CurrencyCard", () => {
   describe("full variant", () => {
     it("renders currency code", () => {
       render(<CurrencyCard variant="full" data={baseData} />)
-      expect(screen.getByText("USD")).toBeInTheDocument()
+      const codeEl = screen.getAllByText("USD")
+      expect(codeEl.length).toBeGreaterThan(0)
+    })
+
+    it("renders flag via CurrencyFlag component", () => {
+      render(<CurrencyCard variant="full" data={baseData} />)
+      expect(screen.getByTestId("currency-flag")).toBeInTheDocument()
+      expect(screen.getByTestId("currency-flag")).toHaveTextContent("USD")
     })
 
     it("renders currency name", () => {

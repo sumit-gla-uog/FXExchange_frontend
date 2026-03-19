@@ -86,11 +86,6 @@ describe("HistoryPage", () => {
       expect(screen.getByText("All Trades")).toBeInTheDocument()
     })
 
-    it("renders Export button", () => {
-      render(<HistoryPage />)
-      expect(screen.getByText("Export")).toBeInTheDocument()
-    })
-
     it("renders search input", () => {
       render(<HistoryPage />)
       expect(screen.getByPlaceholderText("Search by pair...")).toBeInTheDocument()
@@ -120,14 +115,6 @@ describe("HistoryPage", () => {
       render(<HistoryPage />)
       fireEvent.change(screen.getByPlaceholderText("Search by pair..."), { target: { value: "xyz" } })
       expect(screen.getByText(/No trades found/)).toBeInTheDocument()
-    })
-  })
-
-  describe("export", () => {
-    it("calls handleExport when Export button clicked", () => {
-      render(<HistoryPage />)
-      fireEvent.click(screen.getByText("Export"))
-      expect(defaultHook.handleExport).toHaveBeenCalledTimes(1)
     })
   })
 

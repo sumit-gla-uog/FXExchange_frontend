@@ -55,7 +55,7 @@ export const DashboardPage = () => {
                 <CurrencyCard
                   key={item.pair}
                   variant="compact"
-                  data={{ code: quoteCode, flag: item.quote_flag, rate: parseFloat(item.rate), changePct: parseFloat(item.change_pct) }}
+                  data={{ code: quoteCode, rate: parseFloat(item.rate), changePct: parseFloat(item.change_pct) }}
                 />
               )
             })

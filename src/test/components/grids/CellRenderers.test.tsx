@@ -12,7 +12,14 @@ import {
 } from "../../../components/grids/CellRenderers"
 import type { ICellRendererParams } from "ag-grid-community"
 
-// Mock apiFetch and mutate 
+// Mock CurrencyFlag so tests don't depend on @salt-ds/countries
+vi.mock("../../../components/ui/CurrencyFlag", () => ({
+  CurrencyFlag: ({ code }: { code: string }) => (
+    <span data-testid="currency-flag">{code}</span>
+  ),
+}))
+
+// Mock apiFetch and mutate
 vi.mock("../../../api/client", () => ({
   apiFetch: vi.fn().mockResolvedValue({}),
 }))
@@ -22,7 +29,7 @@ vi.mock("swr", async (importOriginal) => {
   return { ...actual, mutate: vi.fn() }
 })
 
-//  Helper to build minimal ICellRendererParams 
+// Helper to build minimal ICellRendererParams
 const makeParams = (overrides: Record<string, any> = {}): ICellRendererParams => ({
   value: overrides.value ?? "test",
   data: overrides.data ?? {},
@@ -40,36 +47,39 @@ const makeParams = (overrides: Record<string, any> = {}): ICellRendererParams =>
   ...overrides,
 }) as unknown as ICellRendererParams
 
-//  CurrencyCellRenderer
+// CurrencyCellRenderer
 describe("CurrencyCellRenderer", () => {
-  it("renders currency flag", () => {
-    render(<CurrencyCellRenderer {...makeParams({ data: { currency: { flag: "usd", code: "USD", name: "US Dollar" } } })} />)
-    expect(screen.getByText("usd")).toBeInTheDocument()
+  it("renders currency flag via CurrencyFlag component", () => {
+    render(<CurrencyCellRenderer {...makeParams({ data: { currency: { code: "USD", name: "US Dollar" } } })} />)
+    expect(screen.getByTestId("currency-flag")).toBeInTheDocument()
+    expect(screen.getByTestId("currency-flag")).toHaveTextContent("USD")
   })
 
   it("renders currency code", () => {
-    render(<CurrencyCellRenderer {...makeParams({ data: { currency: { flag: "usd", code: "USD", name: "US Dollar" } } })} />)
-    expect(screen.getByText("USD")).toBeInTheDocument()
+    const { container } = render(<CurrencyCellRenderer {...makeParams({ data: { currency: { code: "USD", name: "US Dollar" } } })} />)
+    const codeEl = container.querySelector(".code")
+    expect(codeEl).toHaveTextContent("USD")
   })
 
   it("renders currency name", () => {
-    render(<CurrencyCellRenderer {...makeParams({ data: { currency: { flag: "usd", code: "USD", name: "US Dollar" } } })} />)
+    render(<CurrencyCellRenderer {...makeParams({ data: { currency: { code: "USD", name: "US Dollar" } } })} />)
     expect(screen.getByText("US Dollar")).toBeInTheDocument()
   })
 
   it("applies cell-currency class", () => {
-    const { container } = render(<CurrencyCellRenderer {...makeParams({ data: { currency: { flag: "usd", code: "USD", name: "US Dollar" } } })} />)
+    const { container } = render(<CurrencyCellRenderer {...makeParams({ data: { currency: { code: "USD", name: "US Dollar" } } })} />)
     expect(container.firstChild).toHaveClass("cell-currency")
   })
 })
 
 // PairCellRenderer
 describe("PairCellRenderer", () => {
-  const pairData = { pair: "GBP/USD", quote: { flag: "usd", name: "US Dollar" } }
+  const pairData = { pair: "GBP/USD", quote: { code: "USD", name: "US Dollar" } }
 
-  it("renders quote flag", () => {
+  it("renders quote flag via CurrencyFlag component", () => {
     render(<PairCellRenderer {...makeParams({ data: pairData })} />)
-    expect(screen.getByText("usd")).toBeInTheDocument()
+    expect(screen.getByTestId("currency-flag")).toBeInTheDocument()
+    expect(screen.getByTestId("currency-flag")).toHaveTextContent("USD")
   })
 
   it("renders pair string", () => {
@@ -121,7 +131,7 @@ describe("ChangeCellRenderer", () => {
   })
 })
 
-// StatusBadge 
+// StatusBadge
 describe("StatusBadge", () => {
   it("renders the value", () => {
     render(<StatusBadge value="open" />)
@@ -188,7 +198,7 @@ describe("CancelButtonCell", () => {
 
   it("shows loading state while cancelling", async () => {
     const { apiFetch } = await import("../../../api/client")
-    vi.mocked(apiFetch).mockImplementation(() => new Promise(() => {})) // never resolves
+    vi.mocked(apiFetch).mockImplementation(() => new Promise(() => {}))
     render(<CancelButtonCell {...makeParams({ data: { id: 1, status: "open" } })} />)
     fireEvent.click(screen.getByText("Cancel"))
     expect(screen.getByText("...")).toBeInTheDocument()

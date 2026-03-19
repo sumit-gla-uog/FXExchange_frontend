@@ -36,6 +36,7 @@
 .deposit-preset-btn {
   min-width: 80px;
   font-weight: 600 !important;
+  border-radius: 20px !important;
 }
 
 /* Bank section */
@@ -60,7 +61,6 @@
   font-size: 15px;
 }
 
-
 .deposit-info-box {
   background: #eff6ff;
   border: 1px solid #bfdbfe;
@@ -76,7 +76,7 @@
 .deposit-submit-btn {
   width: 100%;
   padding: 14px;
-  border-radius: 8px;
+  border-radius: 24px;
   border: none;
   background: #0f766e;
   color: white;
@@ -104,6 +104,7 @@
 
 .deposit-success-icon {
   font-size: 52px;
+  color: #059669;
 }
 
 .deposit-success-title {
@@ -123,6 +124,28 @@
   color: #0f766e;
   background: #f0fdf9;
   padding: 10px 24px;
-  border-radius: 8px;
+  border-radius: 20px;
   border: 1px solid #99f6e4;
+}
+
+.deposit-success button,
+.deposit-success [class*="Button"] {
+  border-radius: 24px !important;
+  background: #0f766e !important;
+  color: white !important;
+}
+
+.deposit-preset-btn {
+  min-width: 80px;
+  font-weight: 600 !important;
+  border-radius: 20px !important;
+  border-color: #0f766e !important;
+  color: #0f766e !important;
+}
+
+.deposit-preset-btn.active,
+.deposit-preset-btn[class*="solid"] {
+  background: #0f766e !important;
+  color: white !important;
+  border-color: #0f766e !important;
 }

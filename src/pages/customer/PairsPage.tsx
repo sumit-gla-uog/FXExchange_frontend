@@ -11,7 +11,7 @@ import { PairCellRenderer, ChangeCellRenderer, makeTradeActionRenderer } from ".
 import { usePairs } from "../../hooks/customer/usePairs"
 import "./PairsPage.css"
 
-const TradeModal = ({ pair, onClose }: { pair: FX.Customer.Pair; onClose: () => void }) => {
+export const TradeModal = ({ pair, onClose }: { pair: FX.Customer.Pair; onClose: () => void }) => {
   const [side, setSide] = useState<"buy" | "sell">("buy")
   const [amount, setAmount] = useState("")
   const [loading, setLoading] = useState(false)

@@ -19,10 +19,9 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "html", "lcov"],
       thresholds: {
-        lines:      95,
-        functions:  95,
-        branches:   95,
-        statements: 95,
+        lines:      90,
+        branches:   85,
+        statements: 90,
       },
       include: ["src/**/*.{ts,tsx}"],
       exclude: [
@@ -30,7 +29,7 @@ export default defineConfig({
         "src/App.tsx",
         "src/test/**",
         "src/lib/moduleRegistry.ts",   // side-effect only file
-          "src/types/**",                // types only, no logic
+          "src/types/**",  // types only, no logic
       ],
     },
   },

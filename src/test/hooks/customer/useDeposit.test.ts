@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest"
 import { renderHook, act } from "@testing-library/react"
-import { useDeposit } from "../../../hooks/customer/useDeposit"
 
 vi.mock("swr/mutation", () => ({ default: vi.fn() }))
 vi.mock("swr", async (importOriginal) => {
@@ -8,6 +7,7 @@ vi.mock("swr", async (importOriginal) => {
   return { ...actual, mutate: vi.fn() }
 })
 
+import { useDeposit } from "../../../hooks/customer/useDeposit"
 import useSWRMutation from "swr/mutation"
 import { mutate } from "swr"
 
@@ -39,6 +39,7 @@ describe("useDeposit", () => {
     } as any)
   })
 
+  // hook wiring
   it("calls useSWRMutation with deposit endpoint", () => {
     renderHook(() => useDeposit())
     expect(mockUseSWRMutation).toHaveBeenCalledWith(
@@ -110,4 +111,118 @@ describe("useDeposit", () => {
     ).rejects.toThrow("amount must be positive")
   })
 
+  // depositFetcher direct tests (lines 22-36)
+  describe("depositFetcher (via trigger call)", () => {
+
+    it("fetcher makes POST request to deposit URL", async () => {
+      const mockFetch = vi.fn().mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve(mockResult),
+      })
+      vi.stubGlobal("fetch", mockFetch)
+
+      let capturedFetcher: any
+      mockUseSWRMutation.mockImplementation((url, fetcher) => {
+        capturedFetcher = fetcher
+        return { trigger: mockTrigger, isMutating: false, error: undefined } as any
+      })
+
+      renderHook(() => useDeposit())
+      await capturedFetcher("/api/v1/portfolio/deposit/", { arg: mockPayload })
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining("/api/v1/portfolio/deposit/"),
+        expect.objectContaining({ method: "POST" })
+      )
+      vi.unstubAllGlobals()
+    })
+
+    it("fetcher sends Authorization header", async () => {
+      localStorage.setItem("access_token", "test-token")
+      const mockFetch = vi.fn().mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve(mockResult),
+      })
+      vi.stubGlobal("fetch", mockFetch)
+
+      let capturedFetcher: any
+      mockUseSWRMutation.mockImplementation((url, fetcher) => {
+        capturedFetcher = fetcher
+        return { trigger: mockTrigger, isMutating: false, error: undefined } as any
+      })
+
+      renderHook(() => useDeposit())
+      await capturedFetcher("/api/v1/portfolio/deposit/", { arg: mockPayload })
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({
+          headers: expect.objectContaining({
+            Authorization: "Bearer test-token",
+          }),
+        })
+      )
+      vi.unstubAllGlobals()
+      localStorage.removeItem("access_token")
+    })
+
+    it("fetcher returns data on success", async () => {
+      const mockFetch = vi.fn().mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve(mockResult),
+      })
+      vi.stubGlobal("fetch", mockFetch)
+
+      let capturedFetcher: any
+      mockUseSWRMutation.mockImplementation((url, fetcher) => {
+        capturedFetcher = fetcher
+        return { trigger: mockTrigger, isMutating: false, error: undefined } as any
+      })
+
+      renderHook(() => useDeposit())
+      const result = await capturedFetcher("/api/v1/portfolio/deposit/", { arg: mockPayload })
+      expect(result).toEqual(mockResult)
+      vi.unstubAllGlobals()
+    })
+
+    it("fetcher throws on non-ok response", async () => {
+      const mockFetch = vi.fn().mockResolvedValue({
+        ok: false,
+        json: () => Promise.resolve({ error: "amount must be a positive number" }),
+      })
+      vi.stubGlobal("fetch", mockFetch)
+
+      let capturedFetcher: any
+      mockUseSWRMutation.mockImplementation((url, fetcher) => {
+        capturedFetcher = fetcher
+        return { trigger: mockTrigger, isMutating: false, error: undefined } as any
+      })
+
+      renderHook(() => useDeposit())
+      await expect(
+        capturedFetcher("/api/v1/portfolio/deposit/", { arg: mockPayload })
+      ).rejects.toThrow("amount must be a positive number")
+      vi.unstubAllGlobals()
+    })
+
+    it("fetcher throws generic error when no error message", async () => {
+      const mockFetch = vi.fn().mockResolvedValue({
+        ok: false,
+        json: () => Promise.resolve({}),
+      })
+      vi.stubGlobal("fetch", mockFetch)
+
+      let capturedFetcher: any
+      mockUseSWRMutation.mockImplementation((url, fetcher) => {
+        capturedFetcher = fetcher
+        return { trigger: mockTrigger, isMutating: false, error: undefined } as any
+      })
+
+      renderHook(() => useDeposit())
+      await expect(
+        capturedFetcher("/api/v1/portfolio/deposit/", { arg: mockPayload })
+      ).rejects.toThrow("Deposit failed")
+      vi.unstubAllGlobals()
+    })
+  })
 })

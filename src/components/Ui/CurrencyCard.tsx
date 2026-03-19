@@ -1,11 +1,11 @@
 import { useState } from "react"
 import { StackLayout, Text } from "@salt-ds/core"
+import { CurrencyFlag } from "../../components/ui/CurrencyFlag"
 import "./CurrencyCard.css"
 
 export interface CurrencyCardData {
   code: string
   name?: string
-  flag: string
   rate: number | null
   changePct: number | null
   isBase?: boolean
@@ -19,7 +19,7 @@ interface CurrencyCardProps {
 
 export const CurrencyCard = ({ data, variant = "full", onClick }: CurrencyCardProps) => {
   const [hovered, setHovered] = useState(false)
-  const { code, name, flag, rate, changePct, isBase } = data
+  const { code, name, rate, changePct, isBase } = data
   const isPositive = changePct !== null && changePct >= 0
   const changeClass = `change ${isPositive ? "positive" : "negative"}`
 
@@ -35,7 +35,7 @@ export const CurrencyCard = ({ data, variant = "full", onClick }: CurrencyCardPr
           hovered ? "hovered" : "",
         ].filter(Boolean).join(" ")}
       >
-        <div className="flag">{flag}</div>
+        <div className="flag"><CurrencyFlag code={code} size={1.5} /></div>
         <Text className="code">{code}</Text>
         <Text className="rate">{rate !== null ? rate.toFixed(4) : "—"}</Text>
         {changePct !== null && (
@@ -58,7 +58,7 @@ export const CurrencyCard = ({ data, variant = "full", onClick }: CurrencyCardPr
         hovered ? "hovered" : "",
       ].filter(Boolean).join(" ")}
     >
-      <div className="flag">{flag}</div>
+      <div className="flag"><CurrencyFlag code={code} size={2} /></div>
       <Text className="code">{code}</Text>
       {name && <Text className="name">{name}</Text>}
       <div className="divider" />

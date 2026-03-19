@@ -39,7 +39,7 @@ export const HistoryPage = () => {
         <StackLayout gap={1} className="history-header">
           <FlexLayout align="center" justify="space-between" gap={1}>
             <Text className="history-title">All Trades</Text>
-            <Button appearance="bordered" onClick={handleExport} className="history-export-btn">Export</Button>
+            {/* <Button appearance="bordered" onClick={handleExport} className="history-export-btn">Export</Button> */}
           </FlexLayout>
           <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search by pair..." className="history-search" startAdornment={<span className="history-search-icon"><SearchIcon /></span>} />
         </StackLayout>

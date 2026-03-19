@@ -8,6 +8,7 @@ import { SuccessTickIcon } from "@salt-ds/icons"
 import { apiFetch } from "../../api/client"
 import type { FX } from "../../types/FX"
 import { usePairDetail } from "../../hooks/customer/usePairDetail"
+import { CurrencyFlag } from "../../components/ui/CurrencyFlag"
 import "./PairDetailPage.css"
 
 type Period = "1h" | "1d" | "1w" | "1m"
@@ -48,13 +49,13 @@ const MarketExchangeModal = ({ pair, portfolio, onClose }: { pair: FX.Customer.P
         <StackLayout gap={2}>
           <div className="modal-pair-display">
             <FlexLayout align="center" gap={1.5}>
-              <span className="modal-pair-flag">{pair.base.flag}</span>
+              <CurrencyFlag code={pair.base.code} size={1.5} />
               <StackLayout gap={0}>
                 <Text className="modal-pair-code">{pair.base.code}</Text>
                 <Text styleAs="label" className="modal-pair-name">{pair.base.name}</Text>
               </StackLayout>
               <Text className="modal-pair-arrow">→</Text>
-              <span className="modal-pair-flag">{pair.quote.flag}</span>
+              <CurrencyFlag code={pair.quote.code} size={1.5} />
               <StackLayout gap={0}>
                 <Text className="modal-pair-code">{pair.quote.code}</Text>
                 <Text styleAs="label" className="modal-pair-name">{pair.quote.name}</Text>
@@ -96,7 +97,7 @@ const MarketExchangeModal = ({ pair, portfolio, onClose }: { pair: FX.Customer.P
       </DialogContent>
       {!success && (
         <DialogActions>
-          <Button appearance="bordered" onClick={onClose}>Cancel</Button>
+          <Button appearance="bordered" className="modal-cancel-btn" onClick={onClose}>Cancel</Button>
           <Button appearance="solid" className="modal-execute-btn" onClick={handleExecute} disabled={loading || !!success || parsedAmount <= 0}>
             {loading ? "Processing..." : "Execute Market Order"}
           </Button>
@@ -139,13 +140,13 @@ const LimitOrderModal = ({ pair, portfolio, onClose }: { pair: FX.Customer.Pair;
         <StackLayout gap={2}>
           <div className="modal-pair-display">
             <FlexLayout align="center" gap={1.5}>
-              <span className="modal-pair-flag">{pair.base.flag}</span>
+              <CurrencyFlag code={pair.base.code} size={1.5} />
               <StackLayout gap={0}>
                 <Text className="modal-pair-code">{pair.base.code}</Text>
                 <Text styleAs="label" className="modal-pair-name">{pair.base.name}</Text>
               </StackLayout>
               <Text className="modal-pair-arrow">→</Text>
-              <span className="modal-pair-flag">{pair.quote.flag}</span>
+              <CurrencyFlag code={pair.quote.code} size={1.5} />
               <StackLayout gap={0}>
                 <Text className="modal-pair-code">{pair.quote.code}</Text>
                 <Text styleAs="label" className="modal-pair-name">{pair.quote.name}</Text>
@@ -182,7 +183,7 @@ const LimitOrderModal = ({ pair, portfolio, onClose }: { pair: FX.Customer.Pair;
       </DialogContent>
       {!success && (
         <DialogActions>
-          <Button appearance="bordered" onClick={onClose}>Cancel</Button>
+          <Button appearance="bordered" className="modal-execute-btn" onClick={onClose}>Cancel</Button>
           <Button appearance="solid" className="modal-execute-btn" onClick={handlePlace} disabled={loading || !!success || parsedAmount <= 0 || parsedRate <= 0}>
             {loading ? "Placing..." : "Place Limit Order"}
           </Button>

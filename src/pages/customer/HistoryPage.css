@@ -1,46 +1,47 @@
+@import "../../../src/styles/ag-grid-overrides.css";
 
 .history-card {
-    padding: 24px 28px;
-    border-radius: 12px;
-    border: 1px solid #e5e7eb;
-    background: white;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
-  }
-  
-  .history-header {
-    margin-bottom: 20px;
-  }
-  
-  .history-title {
-    font-weight: 700;
-    font-size: 18px;
-  }
-  
-  .history-export-btn {
-    border-radius: 8px;
-    font-weight: 600;
-    flex-shrink: 0;
-  }
-  
-  .history-search {
-    flex: 1;
-    border-radius: 8px;
-  }
-  
-  .history-search-icon {
-    color: #9ca3af;
-    padding-left: 4px;
-  }
-  
-  .history-spinner {
-    display: flex;
-    justify-content: center;
-    padding: 60px;
-  }
-  
-  .history-empty {
-    padding: 40px 0;
-    text-align: center;
-    color: #9ca3af;
-    font-size: 14px;
-  }
+  padding: 24px 28px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+}
+
+.history-header {
+  margin-bottom: 20px;
+}
+
+.history-title {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.history-export-btn {
+  border-radius: 20px !important;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.history-search {
+  flex: 1;
+  border-radius: 8px;
+}
+
+.history-search-icon {
+  color: #9ca3af;
+  padding-left: 4px;
+}
+
+.history-spinner {
+  display: flex;
+  justify-content: center;
+  padding: 60px;
+}
+
+.history-empty {
+  padding: 40px 0;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 14px;
+}

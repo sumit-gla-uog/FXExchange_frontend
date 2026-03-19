@@ -3,12 +3,13 @@ import { Button } from "@salt-ds/core"
 import type { ICellRendererParams } from "ag-grid-community"
 import { mutate } from "swr"
 import { apiFetch } from "../../api/client"
+import { CurrencyFlag } from "../ui/CurrencyFlag"
 import "./CellRenderers.css"
 
-// Currency cell, flag + code + name
+// Currency cell , flag + code + name
 export const CurrencyCellRenderer = (p: ICellRendererParams) => (
   <div className="cell-currency">
-    <span className="flag">{p.data.currency.flag}</span>
+    <span className="flag"><CurrencyFlag code={p.data.currency.code} size={1.2} /></span>
     <div>
       <div className="code">{p.data.currency.code}</div>
       <div className="name">{p.data.currency.name}</div>
@@ -16,10 +17,10 @@ export const CurrencyCellRenderer = (p: ICellRendererParams) => (
   </div>
 )
 
-// Pair cell, flag + pair string + quote name 
+// Pair cell , flag + pair string + quote name
 export const PairCellRenderer = (p: ICellRendererParams) => (
   <div className="cell-pair">
-    <span className="flag">{p.data.quote.flag}</span>
+    <span className="flag"><CurrencyFlag code={p.data.quote.code} size={1.2} /></span>
     <div>
       <div className="code">{p.data.pair}</div>
       <div className="name">{p.data.quote.name}</div>
@@ -39,7 +40,7 @@ export const ChangeCellRenderer = (p: ICellRendererParams) => {
   )
 }
 
-// Status badge 
+// Status badge
 const STATUS_COLORS: Record<string, { bg: string; color: string }> = {
   open:      { bg: "#fef9c3", color: "#854d0e" },
   filled:    { bg: "#dcfce7", color: "#166534" },
@@ -66,7 +67,7 @@ export const StatusBadgeCellRenderer = (p: ICellRendererParams) => (
   <StatusBadge value={String(p.value)} />
 )
 
-//Cancel button — only for open orders
+// Cancel button , only for open orders
 export const CancelButtonCell = (params: ICellRendererParams) => {
   const [loading, setLoading] = useState(false)
   if (params.data?.status !== "open") return null
@@ -94,7 +95,7 @@ export const CancelButtonCell = (params: ICellRendererParams) => {
   )
 }
 
-// Trade action, navigates to pair detail
+// Trade action ,navigates to pair detail
 export const makeTradeActionRenderer = (navigate: (path: string) => void) =>
   (params: ICellRendererParams) => (
     <div className="cell-action">
@@ -109,7 +110,7 @@ export const makeTradeActionRenderer = (navigate: (path: string) => void) =>
     </div>
   )
 
-// Portfolio trade action, navigates to pairs list
+// Portfolio trade action , navigates to pairs list
 export const makePortfolioTradeRenderer = (navigate: (path: string) => void) =>
   (_p: ICellRendererParams) => (
     <div className="cell-action">
