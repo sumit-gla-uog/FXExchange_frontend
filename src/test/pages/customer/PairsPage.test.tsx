@@ -73,11 +73,6 @@ describe("PairsPage", () => {
       expect(screen.getByTestId("search-bar")).toBeInTheDocument()
     })
 
-    it("renders pairs count", () => {
-      render(<PairsPage />)
-      expect(document.querySelector(".pairs-count")?.textContent).toContain("2")
-    })
-
     it("renders ag grid when pairs available", () => {
       render(<PairsPage />)
       expect(screen.getByTestId("ag-grid")).toBeInTheDocument()

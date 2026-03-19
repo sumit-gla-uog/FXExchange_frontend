@@ -1,4 +1,6 @@
 
+@import "../../../src/styles/ag-grid-overrides.css";
+
 .orders-card {
     padding: 24px 28px;
     border-radius: 12px;

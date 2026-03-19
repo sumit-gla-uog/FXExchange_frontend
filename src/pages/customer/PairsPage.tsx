@@ -104,10 +104,6 @@ export const PairsPage = () => {
         />
       </div>
 
-      <div className="pairs-count">
-        Showing <strong>{pairs.length}</strong> trading pairs
-      </div>
-
       <Card className="pairs-card">
         {isLoading ? (
           <div className="pairs-spinner"><Spinner /></div>
