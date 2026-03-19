@@ -1,0 +1,46 @@
+.action-card {
+    flex: 1 1 260px;
+    min-width: 0;
+    padding: 28px 32px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  }
+  
+  .action-card .icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: #f0fdf9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0f766e;
+    flex-shrink: 0;
+  }
+  
+  .action-card .title {
+    font-weight: 700;
+    font-size: 16px;
+    color: #111827;
+  }
+  
+  .action-card .subtitle {
+    color: #6b7280;
+    font-size: 13px;
+  }
+  
+  .action-card .link {
+    background: none;
+    border: none;
+    color: #0f766e;
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 0;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }

@@ -1,0 +1,128 @@
+.deposit-card {
+  padding: 28px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+}
+
+.deposit-welcome {
+  margin-bottom: 24px;
+}
+
+.deposit-welcome-text {
+  font-size: 20px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.deposit-welcome-name {
+  font-weight: 700;
+  color: #0f766e;
+}
+
+.deposit-subtitle {
+  color: #6b7280;
+  font-size: 13px;
+  margin-top: 4px;
+  display: block;
+}
+
+.deposit-field-label {
+  color: #374151;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.deposit-preset-btn {
+  min-width: 80px;
+  font-weight: 600 !important;
+}
+
+/* Bank section */
+.deposit-bank-section {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 18px;
+}
+
+.deposit-bank-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: #374151;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.deposit-currency-symbol {
+  font-weight: 600;
+  color: #0f766e;
+  font-size: 15px;
+}
+
+
+.deposit-info-box {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+.deposit-error {
+  color: #dc2626;
+  font-size: 13px;
+}
+
+.deposit-submit-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 8px;
+  border: none;
+  background: #0f766e;
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.15s;
+  letter-spacing: 0.3px;
+}
+
+.deposit-submit-btn:hover:not(:disabled) {
+  background: #0d6460;
+}
+
+.deposit-submit-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.deposit-success {
+  align-items: center;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.deposit-success-icon {
+  font-size: 52px;
+}
+
+.deposit-success-title {
+  font-weight: 700;
+  font-size: 22px;
+  color: #059669;
+}
+
+.deposit-success-sub {
+  color: #374151;
+  font-size: 15px;
+}
+
+.deposit-success-balance {
+  font-weight: 600;
+  font-size: 16px;
+  color: #0f766e;
+  background: #f0fdf9;
+  padding: 10px 24px;
+  border-radius: 8px;
+  border: 1px solid #99f6e4;
+}

@@ -1,0 +1,188 @@
+.rates-back-btn {
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 0;
+    margin-bottom: 8px;
+  }
+  
+  .rates-page-title {
+    font-weight: 500;
+    font-size: 22px;
+    color: #111827;
+  }
+  
+  .rates-page-subtitle {
+    color: #6b7280;
+    font-size: 13px;
+  }
+  
+  /* Cards */
+  .rates-card {
+    padding: 24px 28px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  }
+  
+  .rates-card--compact {
+    padding: 20px 24px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  }
+  
+  .rates-section-title {
+    font-weight: 700;
+    font-size: 16px;
+    color: #111827;
+    margin-bottom: 16px;
+  }
+  
+  .rates-section-subtitle {
+    color: #6b7280;
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  
+  /* Stat card */
+  .rates-stat-card {
+    flex: 1 1 160px;
+    min-width: 0;
+    padding: 20px 24px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  }
+  
+  .rates-stat-card_label {
+    color: #6b7280;
+    font-size: 13px;
+  }
+  
+  .rates-stat-card_value {
+    font-size: 32px;
+    font-weight: 800;
+    color: #111827;
+    line-height: 1.1;
+  }
+  
+  .rates-stat-card_sub {
+    font-size: 12px;
+    font-weight: 600;
+  }
+  
+  /* Method selector */
+  .rates-method-cards {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  
+  .rates-method-card {
+    flex: 1 1 220px;
+    min-width: 0;
+    padding: 16px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  
+  .rates-method-card__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  
+  .rates-method-card_icon--csv {
+    background: #e0f2f1;
+    color: #0f766e;
+  }
+  
+  .rates-method-card__icon--manual {
+    background: #dbeafe;
+    color: #1d4ed8;
+  }
+  
+  .rates-method-card__title {
+    font-weight: 600;
+    font-size: 14px;
+  }
+  
+  .rates-method-card__subtitle {
+    color: #6b7280;
+    font-size: 12px;
+  }
+  
+  /* Form */
+  .rates-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  
+  @media (max-width: 600px) {
+    .rates-form-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .rates-form-error {
+    color: #dc2626;
+    font-size: 11px;
+  }
+  
+  .rates-form-feedback--error {
+    color: #dc2626;
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+  
+  .rates-form-feedback--success {
+    color: #059669;
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+  
+  .rates-form-btn--cancel {
+    border-radius: 8px;
+  }
+  
+  .rates-form-btn--submit {
+    background: #0f766e;
+    color: white;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+  
+  /* AG Grid */
+  .rates-spinner {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+  }
+  
+  .rates-empty {
+    color: #9ca3af;
+    font-size: 13px;
+  }
+  
+  /* AG Grid cell, code bold */
+  .rates-cell-code {
+    font-weight: 700;
+    color: #111827;
+  }

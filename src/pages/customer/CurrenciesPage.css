@@ -1,0 +1,44 @@
+
+.currencies-search-wrapper {
+    margin: -24px -24px 0;
+    overflow: hidden;
+  }
+  
+  .currencies-header {
+    padding: 24px 0 16px;
+  }
+  
+  .currencies-title {
+    font-weight: 700;
+    font-size: 20px;
+    color: #111827;
+  }
+  
+  .currencies-count {
+    color: #9ca3af;
+    font-size: 13px;
+    margin-top: 2px;
+  }
+  
+  .currencies-spinner {
+    display: flex;
+    justify-content: center;
+    padding: 60px;
+  }
+  
+  .currencies-empty {
+    padding: 40px;
+    text-align: center;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+  }
+  
+  .currencies-empty-text {
+    color: #9ca3af;
+  }
+  
+  .currencies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+    gap: 14px;
+  }

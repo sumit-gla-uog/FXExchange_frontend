@@ -1,0 +1,60 @@
+.dashboard-page-title {
+    font-weight: 700;
+    font-size: 22px;
+    color: #111827;
+    margin-bottom: 24px;
+  }
+  
+  .dashboard-spinner {
+    display: flex;
+    justify-content: center;
+    padding: 80px;
+  }
+  
+  /* Stat card */
+  .dashboard-stat-card {
+    flex: 1 1 160px;
+    min-width: 0;
+    padding: 24px 28px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  }
+  
+  .dashboard-stat-card_label {
+    color: #6b7280;
+    font-size: 13px;
+  }
+  
+  .dashboard-stat-card_value {
+    font-size: 20px;
+    font-weight: 800;
+    color: #111827;
+    line-height: 1.1;
+  }
+  
+  .dashboard-stat-card_sub {
+    font-size: 12px;
+    font-weight: 600;
+  }
+  
+  /* Info card */
+  .dashboard-info-card {
+    padding: 24px 28px;
+    border-radius: 12px;
+    border: 1px solid #dbeafe;
+    background: #eff6ff;
+  }
+  
+  .dashboard-info-card__title {
+    font-weight: 700;
+    font-size: 16px;
+    color: #1e40af;
+    margin-bottom: 12px;
+  }
+  
+  .dashboard-info-card__item {
+    color: #1d4ed8;
+    font-size: 13px;
+  }
