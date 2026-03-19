@@ -1,51 +1,78 @@
 .authPage {
-    min-height: 100vh;
-    display: grid;
-    place-items: center;
-    padding: 32px 16px;
-    background: #eef7f8; 
-    width:100%;
-  }
-  
-  .authCard{
-    width: min(520px, 92vw);
-    padding: 28px;
-    border-radius: 12px;
-  }
-  
-  .authLogo {
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
-    background: #1f9d8a;
-    position: relative;
-  }
-  .authLogo::after {
-    content: "₹";
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    color: white;
-    font-weight: 700;
-  }
-  
-  .pwdWrap {
-    position: relative;
-  }
-  .pwdToggle {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  
-  .signupRow{ text-align:center; }
-  
-  .disclaimerBox {
-    margin-top: 10px;
-    padding: 12px;
-    border-radius: 10px;
-    background: #fff7e6;
-    border: 1px solid #ffd28a;
-  }
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 32px 16px;
+  background: #eef7f8;
+  width: 100%;
+}
+
+.authCard {
+  width: min(520px, 92vw);
+  padding: 28px;
+  border-radius: 12px;
+}
+
+.authLogoWrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: #0f766e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(15, 118, 110, 0.3);
+}
+
+.authLogoIcon {
+  color: white !important;
+}
+
+.authTitle {
+  margin: 4px 0 0 0 !important;
+  color: #111827;
+}
+
+.authSubtitle {
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.pwdWrap {
+  position: relative;
+}
+
+.signupRow {
+  text-align: center;
+}
+
+.loginBtn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 8px;
+  border: none;
+  background: #0f766e;
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.15s;
+  letter-spacing: 0.3px;
+}
+
+.loginBtn:hover:not(:disabled) {
+  background: #0d6460;
+}
+
+.loginBtn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.disclaimerBox {
+  margin-top: 4px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #fff7e6;
+  border: 1px solid #ffd28a;
+}

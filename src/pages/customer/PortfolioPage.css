@@ -1,0 +1,74 @@
+
+.stat-tile {
+    flex: 1;
+    min-width: 140px;
+  }
+  
+  .stat-tile .label {
+    font-size: 13px;
+    color: #9ca3af;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  
+  .stat-tile .value {
+    font-size: 36px;
+    font-weight: 500;
+    color: #111827;
+    line-height: 1.1;
+  }
+  
+  .stat-tile .sub {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-top: 4px;
+  }
+  
+  .stat-tile-divider {
+    width: 1px;
+    background: #e5e7eb;
+    align-self: stretch;
+    margin: 0 32px;
+  }
+  
+  .portfolio-summary-card {
+    padding: 28px 32px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+  }
+  
+  .portfolio-summary-title {
+    font-weight: 700;
+    font-size: 18px;
+    color: #111827;
+    margin-bottom: 24px;
+  }
+  
+  .portfolio-holdings-card {
+    padding: 24px 28px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+  }
+  
+  .portfolio-holdings-title {
+    font-weight: 700;
+    font-size: 18px;
+    color: #111827;
+    margin-bottom: 20px;
+  }
+  
+  .portfolio-spinner {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+  }
+  
+  .portfolio-empty {
+    padding: 40px 0;
+    text-align: center;
+    color: #9ca3af;
+  }

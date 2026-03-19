@@ -1,0 +1,75 @@
+
+.landing-page {
+    min-height: 100vh;
+    background: #f6f7f9;
+  }
+  
+  .landing-topbar {
+    background: #0f766e;
+    padding: 16px 20px;
+  }
+  
+  .landing-topbar .title {
+    color: white;
+    margin: 0;
+  }
+  
+  .landing-topbar .subtitle {
+    color: #d1fae5;
+  }
+  
+  .landing-topbar .base-label {
+    color: #d1fae5;
+    text-align: right;
+  }
+  
+  .landing-topbar .base-value {
+    color: white;
+  }
+
+  .landing-content {
+    padding: 20px;
+  }
+  
+  .landing-summary-card {
+    flex: 1 1 240px;
+    padding: 16px;
+  }
+  
+  .landing-market-card {
+    padding: 16px;
+  }
+  
+  .landing-market-item {
+    padding: 12px;
+    flex: 1 1 160px;
+    background: #fafafa;
+    border-color: #e5e7eb;
+  }
+  
+  .landing-market-item .code {
+    font-weight: 700;
+  }
+  
+  .landing-market-item .change.up   { color: #16a34a; }
+  .landing-market-item .change.down { color: #dc2626; }
+  
+  .landing-market-item .rate {
+    margin-top: 6px;
+  }
+  
+  .landing-convert-card {
+    padding: 16px;
+  }
+  
+  .landing-convert-title {
+    margin-top: 0;
+  }
+  
+  .landing-convert-form {
+    margin-top: 12px;
+  }
+  
+  .landing-convert-field-amount { flex: 1 1 180px; }
+  .landing-convert-field-from   { flex: 1 1 140px; }
+  .landing-convert-field-to     { flex: 1 1 140px; }

@@ -1,0 +1,211 @@
+
+.pair-detail-back-btn {
+    color: #374151;
+    font-weight: 600;
+  }
+  
+  .pair-detail-last-updated {
+    color: #9ca3af;
+    font-size: 13px;
+  }
+  
+  .pair-detail-market-btn {
+    background: #0f766e;
+    color: white;
+    font-weight: 600;
+  }
+  
+  .pair-detail-limit-btn {
+    border-color: #0f766e;
+    color: #0f766e;
+    font-weight: 600;
+  }
+  
+  .pair-detail-card {
+    padding: 24px 28px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+  }
+  
+  .pair-detail-rate-label {
+    color: #6b7280;
+    font-size: 13px;
+  }
+  
+  .pair-detail-rate-value {
+    font-size: 30px;
+    font-weight: 500;
+    color: #111827;
+  }
+  
+  .pair-detail-rate-sub {
+    color: #6b7280;
+    font-size: 13px;
+  }
+  
+  .pair-detail-high-label { color: #6b7280; font-size: 13px; }
+  .pair-detail-low-label  { color: #6b7280; font-size: 13px; }
+  .pair-detail-high-arrow { color: #059669; font-size: 13px; }
+  .pair-detail-low-arrow  { color: #dc2626; font-size: 13px; }
+  
+  .pair-detail-stat-value {
+    font-weight: 500;
+    font-size: 20px;
+  }
+  
+  .pair-detail-period-btn {
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    color: #374151;
+    font-weight: 500;
+    font-size: 13px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+  
+  .pair-detail-period-btn.active {
+    background: #111827;
+    color: white;
+    font-weight: 700;
+  }
+  
+  .pair-detail-chart-title {
+    font-weight: 700;
+    font-size: 18px;
+  }
+  
+  .pair-detail-chart-spinner {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+  }
+  
+  .pair-detail-chart-empty {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+    color: #9ca3af;
+  }
+  
+
+  .pair-detail-activity-title {
+    font-weight: 700;
+    font-size: 18px;
+  }
+  
+  .pair-detail-activity-disclaimer {
+    color: #f59e0b;
+    font-size: 12px;
+    margin-bottom: 20px;
+    display: block;
+  }
+  
+  .pair-detail-activity-label { color: #6b7280; font-size: 13px; }
+  
+  .pair-detail-buy-count   { font-size: 24px; font-weight: 700; color: #059669; }
+  .pair-detail-sell-count  { font-size: 24px; font-weight: 700; color: #dc2626; }
+  .pair-detail-volume      { font-size: 24px; font-weight: 700; color: #111827; }
+  
+  .pair-detail-trades-title {
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+  
+  .pair-detail-trades-empty {
+    color: #9ca3af;
+    font-size: 13px;
+  }
+  
+  .pair-detail-trades-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  
+  .pair-detail-trades-table th {
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 700;
+    color: #374151;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f9fafb;
+  }
+  
+  .pair-detail-trades-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  
+  .pair-detail-trades-table .side-buy  { font-weight: 600; color: #059669; }
+  .pair-detail-trades-table .side-sell { font-weight: 600; color: #dc2626; }
+  .pair-detail-trades-table .muted     { color: #6b7280; }
+  
+
+  .pair-detail-disclaimer {
+    padding: 14px 18px;
+    background: #fefce8;
+    border-radius: 10px;
+    border: 1px solid #fef08a;
+    font-size: 13px;
+    color: #854d0e;
+  }
+  
+  .modal-pair-display {
+    background: #f9fafb;
+    border-radius: 10px;
+    padding: 14px 16px;
+    border: 1px solid #e5e7eb;
+  }
+  
+  .modal-pair-flag   { font-size: 24px; }
+  .modal-pair-code   { font-weight: 700; }
+  .modal-pair-name   { color: #6b7280; font-size: 12px; }
+  .modal-pair-arrow  { color: #6b7280; margin: 0 8px; }
+  
+  .modal-rate-box {
+    background: #f0fdf9;
+    border-radius: 10px;
+    padding: 14px 16px;
+    border: 1px solid #ccfbf1;
+  }
+  
+  .modal-rate-label    { color: #6b7280; font-size: 12px; }
+  .modal-rate-value    { font-weight: 500; font-size: 14px; color: #0f766e; }
+  .modal-rate-time     { color: #9ca3af; font-size: 11px; }
+  .modal-refresh-btn   { color: #0f766e; font-size: 12px; }
+  
+  .modal-field-label   { font-size: 13px; }
+  .modal-field-hint    { color: #6b7280; font-size: 12px; }
+  
+  .modal-estimate-box {
+    background: #f9fafb;
+    border-radius: 8px;
+    padding: 12px 16px;
+    border: 1px solid #e5e7eb;
+  }
+  
+  .modal-estimate-label { color: #6b7280; font-size: 12px; }
+  .modal-estimate-value { font-weight: 700; font-size: 20px; color: #111827; }
+  
+  .modal-info-box {
+    background: #eff6ff;
+    border-radius: 8px;
+    padding: 10px 14px;
+    border: 1px solid #bfdbfe;
+    font-size: 12px;
+    color: #1d4ed8;
+  }
+  
+  .modal-error   { color: #dc2626; font-size: 13px; }
+  .modal-success-icon  { font-size: 48px; margin-bottom: 16px; }
+  .modal-success-title { font-weight: 700; font-size: 18px; color: #059669; margin-bottom: 8px; }
+  .modal-success-sub   { color: #6b7280; font-size: 14px; }
+  
+  .modal-execute-btn {
+    background: #0f766e;
+    color: white;
+  }

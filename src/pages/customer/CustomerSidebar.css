@@ -1,0 +1,101 @@
+
+/* Mobile bottom tab bar*/
+
+.sidebar-mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    background: white;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    height: 64px;
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  .sidebar-mobile-nav .tab-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    gap: 2px;
+    background: transparent;
+    border-top: 2px solid transparent;
+    transition: background 0.15s;
+  }
+  
+  .sidebar-mobile-nav .tab-item.active {
+    background: #f0fdf4;
+    border-top-color: #0f766e;
+  }
+  
+  .sidebar-mobile-nav .tab-icon {
+    font-size: 20px;
+  }
+  
+  .sidebar-mobile-nav .tab-label {
+    font-size: 10px;
+    font-weight: 500;
+    color: #6b7280;
+    letter-spacing: 0.2px;
+  }
+  
+  .sidebar-mobile-nav .tab-item.active .tab-label {
+    font-weight: 700;
+    color: #0f766e;
+  }
+  
+  /* Desktop sidebar  */
+  
+  .sidebar-desktop {
+    transition: width 180ms ease;
+    background: white;
+    border-right: 1px solid #e5e7eb;
+    min-height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidebar-desktop .header {
+    border-bottom: 1px solid #f3f4f6;
+  }
+  
+  .sidebar-desktop .logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: #0f766e;
+    display: grid;
+    place-items: center;
+    color: white;
+    font-weight: 800;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  
+  .sidebar-desktop .brand {
+    font-weight: 700;
+    font-size: 15px;
+  }
+  
+  .sidebar-desktop .toggle-btn {
+    min-width: 36px;
+    padding: 6px 8px;
+    font-size: 18px;
+  }
+  
+  .sidebar-desktop nav {
+    padding: 12px 8px;
+    flex: 1;
+  }
+  
+  .sidebar-desktop .nav-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+  }
