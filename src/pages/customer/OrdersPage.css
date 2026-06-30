@@ -1,29 +1,30 @@
-
 @import "../../../src/styles/ag-grid-overrides.css";
 
 .orders-card {
-    padding: 24px 28px;
-    border-radius: 12px;
-    border: 1px solid #e5e7eb;
-    background: white;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
-  }
-  
-  .orders-title {
-    font-weight: 700;
-    font-size: 18px;
-    margin-bottom: 16px;
-  }
-  
-  .orders-spinner {
-    display: flex;
-    justify-content: center;
-    padding: 60px;
-  }
-  
-  .orders-empty {
-    padding: 40px 0;
-    text-align: center;
-    color: #9ca3af;
-    font-size: 14px;
-  }
+  padding: 0;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+}
+
+.orders-title {
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 16px;
+  padding: 24px 28px 0;
+}
+
+.orders-spinner {
+  display: flex;
+  justify-content: center;
+  padding: 60px;
+}
+
+.orders-empty {
+  padding: 40px 0;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 14px;
+}

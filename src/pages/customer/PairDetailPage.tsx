@@ -310,7 +310,7 @@ export const PairDetailPage = () => {
         {pairTrades.length === 0 ? (
           <Text className="pair-detail-trades-empty">No trades yet for this pair.</Text>
         ) : (
-          <div className="pair-detail-trades-wrapper">
+          <div className="pair-detail-trades-table-wrapper">
           <table className="pair-detail-trades-table">
             <thead>
               <tr>{["ID", "Type", "Amount", "Rate", "Total", "Timestamp"].map((h) => <th key={h}>{h}</th>)}</tr>

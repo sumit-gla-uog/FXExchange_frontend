@@ -280,3 +280,9 @@
   font-weight: 600;
   text-transform: capitalize;
 }
+@media (max-width: 600px) {
+  .pair-detail-trades-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}

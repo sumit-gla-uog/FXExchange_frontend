@@ -21,7 +21,7 @@ export const CurrenciesPage = () => {
       </div>
 
       <div className="currencies-header">
-        <StackLayout gap={0}>
+        <StackLayout gap={1}>
           <Text className="currencies-title">All Currencies</Text>
           <Text className="currencies-count">
             {isLoading ? "Loading..." : `Showing ${currencies.length} ${currencies.length === 1 ? "currency" : "currencies"}`}

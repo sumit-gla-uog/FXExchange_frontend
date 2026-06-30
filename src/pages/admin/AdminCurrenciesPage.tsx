@@ -69,7 +69,7 @@ export const AdminCurrenciesPage = () => {
 
       <div className="currencies-header">
         <StackLayout gap={0}>
-          <Text className="currencies-header__title">Currency Management</Text>
+          <Text className="currencies-header_title">Currency Management</Text>
           <Text styleAs="label" className="currencies-header__subtitle">Manage supported currencies for FX exchange</Text>
         </StackLayout>
         <Button appearance="solid" className="currencies-header__btn" onClick={() => { setShowForm(!showForm); setError(""); setSuccess("") }}>

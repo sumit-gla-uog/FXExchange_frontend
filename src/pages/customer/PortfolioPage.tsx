@@ -36,11 +36,11 @@ export const PortfolioPage = () => {
         <Text className="portfolio-summary-title">Portfolio Summary</Text>
         <FlexLayout gap={0} wrap>
           <StatTile label="Total Value"    value={isLoading ? "..." : totalValue.toLocaleString("en-GB", { minimumFractionDigits: 2 })} sub="GBP" />
-          {/* <div className="stat-tile-divider" /> */}
+          <div className="stat-tile-divider" />
           <StatTile label="Total Holdings" value={isLoading ? "..." : String(totalHoldings)} sub="Currencies" />
-          {/* <div className="stat-tile-divider" /> */}
+          <div className="stat-tile-divider" />
           <StatTile label="Base Currency"  value="GBP" sub="Primary" />
-        </FlexLayout>
+          </FlexLayout>
       </Card>
 
       <Card className="portfolio-holdings-card">
@@ -50,8 +50,8 @@ export const PortfolioPage = () => {
         ) : rowData.length === 0 ? (
           <div className="portfolio-empty"><Text style={{ color: "#9ca3af" }}>No holdings yet</Text></div>
         ) : (
-          <div className="ag-theme-alpine" style={{ width: "100%", height: gridHeight }}>
-            <AgGridReact rowData={rowData} columnDefs={columnDefs} defaultColDef={defaultColDef} rowHeight={62} headerHeight={46} suppressCellFocus suppressMovableColumns getRowId={(p) => p.data.currency.code} animateRows />
+            <div className="ag-theme-alpine" style={{ width: "100%", height: gridHeight }}>
+              <AgGridReact rowData={rowData} columnDefs={columnDefs} defaultColDef={defaultColDef} rowHeight={62} headerHeight={46} suppressCellFocus suppressMovableColumns getRowId={(p) => p.data.currency.code} animateRows />
           </div>
         )}
       </Card>
